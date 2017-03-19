@@ -41,7 +41,7 @@ public class OzlympicGame {
 			if(bException)
 				continue;
 			
-			bValidate = inputValifation(sInput, userInput);
+			bValidate = inputValidation(sInput, userInput);
 			if(!bValidate)
 				continue;
 			
@@ -84,7 +84,7 @@ public class OzlympicGame {
 		System.out.println("Input Invalid, please make sure can only enter number (1-6)\n");
 		return true;
 	}
-	public static boolean inputValifation(String sInput, int input)
+	public static boolean inputValidation(String sInput, int input)
 	{
 		if(input < 0 || input > 6)
 		{
