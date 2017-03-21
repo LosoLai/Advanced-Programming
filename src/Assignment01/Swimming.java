@@ -3,9 +3,10 @@ package Assignment01;
 import java.util.Random;
 
 public class Swimming extends Game {
-	private final int TIMELIMITE_MIN   = 100;
-	private final int TIMELIMITE_MAX   = 200;
-	private static String GAMETYPE_SWIM = "S";
+	private final int TIMELIMITE_MIN         = 100;
+	private final int TIMELIMITE_MAX         = 200;
+	
+	public static final String GAMETYPE_SWIM = "S";
 	
 	public Swimming()
 	{

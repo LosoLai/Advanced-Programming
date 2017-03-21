@@ -3,9 +3,10 @@ package Assignment01;
 import java.util.Random;
 
 public class Running extends Game {
-	private final int TIMELIMITE_MIN   = 10;
-	private final int TIMELIMITE_MAX   = 20;
-	private static String GAMETYPE_RUN = "R";
+	private final int TIMELIMITE_MIN        = 10;
+	private final int TIMELIMITE_MAX        = 20;
+	
+	public static final String GAMETYPE_RUN = "R";
 	
 	public Running()
 	{

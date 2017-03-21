@@ -19,7 +19,20 @@ public class Driver {
 		{
 			case OzlympicGame.SELECT_GAME:
 			{
+				// create a Game obj randomly
+				Random rand = new Random();
+				Game currentGame;
+				int randomNum = rand.nextInt(Game.GAMETYPE_NUMBER);
+				if(randomNum == Game.GAME_RUNNING)
+					currentGame = new Running();
+				else if(randomNum == Game.GAME_SWIMMING)
+					currentGame = new Swimming();
+				else
+					currentGame = new Cycling();
+				gameList.add(currentGame);
 				
+				//test - display gameID 
+				//System.out.println(currentGame.getGameID());
 			}
 				break;
 			case OzlympicGame.PREDIT_WINNER:
