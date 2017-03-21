@@ -10,11 +10,16 @@ import java.util.*;
 
 public class Driver {
 	private ArrayList<Game> gameList = new ArrayList<Game>();
-	//private ArrayList<Participant> participantList;
+	private ArrayList<Participant> participantList;
 	
 	public boolean processByUserInput(int userInput)
 	{
 		boolean bProcessResult = false;
+		
+		bProcessResult = initialParticipantList();
+		if(!bProcessResult)    //initial data fail 
+			return false;
+		
 		switch(userInput)
 		{
 			case OzlympicGame.SELECT_GAME:
@@ -47,6 +52,44 @@ public class Driver {
 			default:
 				return false;
 		}
+		return true;
+	}
+	
+	private boolean initialParticipantList()
+	{
+		//setting dummy data here for testing ()
+		//need to use read file to set info.
+		
+		for(int i=0 ; i<6 ; i++)
+		{
+			//setting athlete
+			String name = "ATH-" + Integer.toString(Athlete.SWIMMER) 
+					             + Integer.toString(i);
+			int age = 20 + i;
+			Participant swimmer = new Athlete(name, age, "VIC", Athlete.SWIMMER);
+			participantList.add(swimmer);
+			
+			name = "ATH-" + Integer.toString(Athlete.CYCLIST) 
+		                  + Integer.toString(i);
+			Participant cyclist = new Athlete(name, age, "VIC", Athlete.CYCLIST);
+			participantList.add(cyclist);
+			
+			name = "ATH-" + Integer.toString(Athlete.SPRINTER) 
+	                      + Integer.toString(i);
+			Participant sprinter = new Athlete(name, age, "VIC", Athlete.SPRINTER);
+			participantList.add(sprinter);
+			
+			name = "ATH-" + Integer.toString(Athlete.SUPERATHLETE) 
+                          + Integer.toString(i);
+			Participant superAthlete = new Athlete(name, age, "VIC", Athlete.SUPERATHLETE);
+			participantList.add(superAthlete);
+			
+			//setting offical
+			name = "OFF-" + Integer.toString(i);
+			Participant offical = new Offical(name, age, "VIC");
+			participantList.add(offical);
+		}
+		
 		return true;
 	}
 }

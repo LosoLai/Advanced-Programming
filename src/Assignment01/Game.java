@@ -1,14 +1,19 @@
 package Assignment01;
 
+import java.util.ArrayList;
+
 public abstract class Game {
-	public static final int GAME_RUNNING    = 0;
-	public static final int GAME_SWIMMING   = 1;
-	public static final int GAME_CYCLING    = 2;
+	public static final int GAME_SWIMMING   = 0;
+	public static final int GAME_CYCLING    = 1;
+	public static final int GAME_RUNNING    = 2;
 	public static final int GAMETYPE_NUMBER = 3; //total 3 types of game
 	public static int gameRoundNum = 0;
 	
 	private String gameType;
 	private String gameID;
+	
+	private Offical            referee;
+	private ArrayList<Athlete> candidate;
 	
 	public Game()
 	{
@@ -20,6 +25,8 @@ public abstract class Game {
 	{
 		this.gameRoundNum++;
 		setGameID(gameType);
+		
+		//setting offical and canidate info.
 	}
 	
 	public void setGameID(String gameType)
