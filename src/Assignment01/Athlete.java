@@ -1,29 +1,59 @@
 package Assignment01;
 
-public class Athlete extends Participant {
-	public static final String ATHLETE = "A"; 
-	public static final int SWIMMER      = 0;
-	public static final int CYCLIST      = 1;
-	public static final int SPRINTER     = 2;
-	public static final int SUPERATHLETE = 3;
+/**Author: Arion
+ * Athlete inheritance from Participant class 
+ * multi-inheritance interface : Competable & Comparable
+ */
+public class Athlete extends Participant implements Competable, Comparable<Athlete>{
 	
-	private int athleteType;
-	private double points;
+	//Extra variables for recording compete time and points
+	private double executeTime;
+	private int points;
 	
-	public Athlete(String name, int age, String state, int athleteType)
+	public Athlete(String name, int age, String state, String athleteType)
 	{
-		super(name, age, state, ATHLETE);
-		this.athleteType = athleteType;
-		this.setPoints(0.0);
+		super(name, age, state, athleteType);
+		executeTime = 0;
+		points = 0;
 	}
 
-	public double getPoints() {
+	public double getExecuteTime() {
+		return executeTime;
+	}
+
+	public void setExecuteTime(double executeTime) {
+		this.executeTime = executeTime;
+	}
+	public int getPoints() {
 		return points;
 	}
 
-	public void setPoints(double points) {
-		this.points = points;
+	public void setPoints(int points) {
+		this.points += points;
 	}
 	
+	/* Overridden method from Competable
+	 * Gets the compete time by current game type
+	 */
+	public double Compete()
+	{
+		double competeSec = Driver.currentGame.generateTime(); 
+		return competeSec;
+	}
 	
+	/* Overridden method from Comparable
+	 * For sorting purposes
+	 */
+	public int compareTo(Athlete comparePerson)
+	{
+		double compareTime = comparePerson.getExecuteTime();
+		return Double.compare(this.executeTime, compareTime);
+	}
+	
+	@Override
+    public String toString() 
+	{
+        return String.format("\n" + super.getName() +
+        					 "-> " + this.getExecuteTime());
+    }
 }

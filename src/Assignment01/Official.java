@@ -1,15 +1,10 @@
 package Assignment01;
 import java.util.ArrayList;
-/**
- * Offical inheritance Participant class 
- * 1. with two extra variables for recording 
- *    the ranking list which contain Athlete info. and game result
- * 2. provide setResultTopList() method
- * - generate game result by giving two params
- * @param : String gameID, ArrayList<Athlete> sortedList
- * @return String : game result 
+
+/**Author: Arion
+ * Official inheritance from Participant class 
  */
-public class Offical extends Participant {
+public class Official extends Participant {
 	public static final int RESULT_TOP3 = 3;
 	private final int INDEX_1ST = 0;
 	private final int INDEX_2ND = 1;
@@ -18,10 +13,11 @@ public class Offical extends Participant {
 	private final int POINT_2ND = 2;
 	private final int POINT_3RD = 1;
 	
+	//Extra variables for recording ranking list and game result
 	private Athlete[] resultTop3;
 	private String gameResult;
 	
-	public Offical(String name, int age, String state)
+	public Official(String name, int age, String state)
 	{
 		super(name, age, state, OFFICIAL);
 		this.resultTop3 = new Athlete[RESULT_TOP3];
@@ -39,10 +35,12 @@ public class Offical extends Participant {
 	public Athlete[] getResultTopList() {
 		return resultTop3;
 	}
+	
+	//Generates game result and stores points in Athlete objects
 	public String setResultTopList(String gameID, ArrayList<Athlete> sortedList) 
 	{
 		//display gameID first
-		this.gameResult = "========= " + gameID + " result ==========";
+		this.gameResult = "\n========= " + gameID + " Top 3 ==========\n";
 		if(sortedList != null)
 		{
 			int index = 0;
@@ -57,10 +55,10 @@ public class Offical extends Participant {
 					record.setPoints(POINT_3RD);
 					
 				resultTop3[index] = record;
-				this.gameResult += record.toString() + "\t" + record.getPoints();
+				this.gameResult += record.toString();
 				index++;
 			}
-			this.gameResult += "\n";
+			this.gameResult += "\n\nReferee: " + this.getName() + "\n";
 		}
 		return this.gameResult;
 	}
