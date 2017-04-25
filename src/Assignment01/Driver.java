@@ -1,13 +1,11 @@
 package Assignment01;
-
+import java.util.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+
 
 /**Author: Loso
  * The role of the Driver is to control the games
@@ -137,7 +135,7 @@ public class Driver {
 	{
 		//Modified by Arion--------------------------
 		Participant temp;	
-		final int NAME_INDEX = 0, AGE_INDEX = 1, STATE_INDEX = 2, TYPE_INDEX = 3;
+		final int ID_INDEX = 0, TYPE_INDEX = 1, NAME_INDEX = 2, AGE_INDEX = 3, STATE_INDEX = 4;
 		//Modified by Loso
 		String rootPath = this.getClass().getResource("Participants.csv").getFile();
 		//File fileToBeFound = findFile(rootPath, "Participants.csv");
@@ -158,35 +156,46 @@ public class Driver {
                 fileList.add(line.split(cvsSplitBy));
             }
             
+            Set<String> unique_id = new HashSet<String>();
+            
+            for (int i=0; i<fileList.size(); i++){
+            	if (!unique_id.add(fileList.get(i)[ID_INDEX])) {
+            		fileList.remove(i);
+            	}
+            	if (fileList.get(i)[ID_INDEX].isEmpty()) {
+            		fileList.remove(i);
+            	}
+            }
+            
             for (int i=0; i<fileList.size(); i++) {
-        		
-    			if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("swimmer")) {
-    				temp = new Swimmer(fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
-    				swimmerList.add(temp);
-    			}
-    			else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("sprinter")) {
-    				temp = new Sprinter(fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
-    				sprinterList.add(temp);
-    			}
-    			else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("cyclist")) {
-    				temp = new Cyclist(fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
-    				cyclistList.add(temp);
-    			}
-    			else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("official")) {
-    				temp = new Official(fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
-    				officialList.add(temp);
-    			}
-    			else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("superathlete")) {
-    				temp = new SuperAthlete(fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
-    				superAthList.add(temp);
-    				swimmerList.add(temp);
-    				sprinterList.add(temp);
-    				cyclistList.add(temp);
-    			}
-    			
-    		}
+       
+            	if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("swimmer")) {
+            		temp = new Swimmer(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
+           			swimmerList.add(temp);
+           		}
+           		else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("sprinter")) {
+           			temp = new Sprinter(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
+           			sprinterList.add(temp);
+           		}
+           		else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("cyclist")) {
+           			temp = new Cyclist(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
+           			cyclistList.add(temp);
+           		}
+           		else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("official")) {
+           			temp = new Official(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);       
+           			officialList.add(temp);
+            	}
+            	else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("superathlete")) {
+            		temp = new SuperAthlete(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
+           			superAthList.add(temp);
+           			swimmerList.add(temp);
+           			sprinterList.add(temp);
+           			cyclistList.add(temp);
+           		}
+           	}
+            
             //-------------------------------------------
-    		
+            
     		participantList.put(Participant.SWIMMER, swimmerList);
     		participantList.put(Participant.CYCLIST, cyclistList);
     		participantList.put(Participant.SPRINTER, sprinterList);
@@ -364,23 +373,24 @@ public class Driver {
 			String name = "ATH-" + Swimmer.SWIMMER 
 							     + Integer.toString(i);
 			int age = 20 + i;
-			Participant swimmer = new Swimmer(name, age, "VIC");
+			String id = "Oz000" +i;
+			Participant swimmer = new Swimmer(id, name, age, "VIC");
 			swimmerList.add(swimmer);
 					
 					
 			name = "ATH-" + Cyclist.CYCLIST
 				          + Integer.toString(i);
-			Participant cyclist = new Cyclist(name, age, "VIC");
+			Participant cyclist = new Cyclist(id, name, age, "VIC");
 			cyclistList.add(cyclist);
 					
 			name = "ATH-" + Sprinter.SPRINTER
 			              + Integer.toString(i);
-			Participant sprinter = new Sprinter(name, age, "VIC");
+			Participant sprinter = new Sprinter(id, name, age, "VIC");
 			sprinterList.add(sprinter);
 					
 			name = "ATH-" + SuperAthlete.SUPERATHLETE 
 		                  + Integer.toString(i);
-			Participant superAthlete = new SuperAthlete(name, age, "VIC");
+			Participant superAthlete = new SuperAthlete(id, name, age, "VIC");
 			superAthList.add(superAthlete);
 					
 			//for implement candidate list
@@ -391,7 +401,7 @@ public class Driver {
 					
 			//setting offical
 			name = "OFF-" + Integer.toString(i);
-			Participant offical = new Official(name, age, "VIC");
+			Participant offical = new Official(id, name, age, "VIC");
 			officialList.add(offical);
 		}
 				
