@@ -6,8 +6,8 @@ package Assignment01;
  */
 public class Sprinter extends Athlete {
 	
-	public Sprinter(String name, int age, String state)
+	public Sprinter(String id, String name, int age, String state)
 	{
-		super(name, age, state, SPRINTER);
+		super(id, SPRINTER, name, age, state);
 	}
 }

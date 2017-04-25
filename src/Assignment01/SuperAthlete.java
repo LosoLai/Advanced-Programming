@@ -6,8 +6,8 @@ package Assignment01;
  */
 public class SuperAthlete extends Athlete {
 		
-	public SuperAthlete(String name, int age, String state)
+	public SuperAthlete(String id, String name, int age, String state)
 	{
-		super(name, age, state, SUPERATHLETE);
+		super(id, SUPERATHLETE, name, age, state);
 	}
 }

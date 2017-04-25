@@ -10,9 +10,9 @@ public class Athlete extends Participant implements Competable, Comparable<Athle
 	private double executeTime;
 	private int points;
 	
-	public Athlete(String name, int age, String state, String athleteType)
+	public Athlete(String id, String athleteType, String name, int age, String state)
 	{
-		super(name, age, state, athleteType);
+		super(id, athleteType, name, age, state);
 		executeTime = 0;
 		points = 0;
 	}

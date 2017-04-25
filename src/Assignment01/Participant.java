@@ -16,19 +16,15 @@ public class Participant {
 	private String id;
 	private String personType;
 	
-	//static variable for counting the game round number
-	private static int secquenceID = 0;
 	
 	//constructor for initial variables
-	public Participant(String name, int age, String state, String personType)
+	public Participant(String id, String personType, String name, int age, String state)
 	{
-		secquenceID++;
-		
+		this.id = id;
+		this.personType = personType;
 		this.name = name;
 		this.age = age;
 		this.state = state;
-		this.id = personType + Integer.toString(secquenceID);
-		this.personType = personType;
 	}
 	
 	//getter-setters
