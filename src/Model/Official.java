@@ -17,9 +17,9 @@ public class Official extends Participant {
 	private Athlete[] resultTop3;
 	private String gameResult;
 	
-	public Official(String name, int age, String state)
+	public Official(String id, String name, int age, String state)
 	{
-		super(name, age, state, OFFICIAL);
+		super(id, OFFICIAL, name, age, state);
 		this.resultTop3 = new Athlete[RESULT_TOP3];
 		this.gameResult = "";
 	}

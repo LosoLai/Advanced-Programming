@@ -6,8 +6,8 @@ package Model;
  */
 public class Cyclist extends Athlete {
 	
-	public Cyclist(String name, int age, String state)
+	public Cyclist(String id, String name, int age, String state)
 	{
-		super(name, age, state, CYCLIST);
+		super(id, CYCLIST, name, age, state);
 	}
 }
