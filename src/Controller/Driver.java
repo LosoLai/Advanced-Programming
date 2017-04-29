@@ -12,7 +12,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,7 +47,8 @@ public class Driver {
 	private ArrayList<Participant> sprinterList = new ArrayList<Participant>();
 	private ArrayList<Participant> superAthList = new ArrayList<Participant>();
 	private ArrayList<Participant> officialList = new ArrayList<Participant>();
-	
+	private String writePath = this.getClass().getResource("gameResults.txt").getFile();
+	private boolean appendToFile = true;
 	
 	public static Driver getInstance()
 	{
@@ -219,6 +222,20 @@ public class Driver {
 				
 				return true;
 	}
+	
+	 public void writeToFile(String text){
+	    	try 
+	    	{
+	    	 FileWriter write = new FileWriter(writePath, appendToFile);
+	    	 PrintWriter printLine = new PrintWriter(write);
+	    	
+	    	 printLine.printf("%s" + "%n", text);
+	    	 printLine.close();
+	    	}
+	    	catch(IOException e) {
+	    		e.printStackTrace();
+	    	}
+	    }
 	
 	private boolean createGameByInput(String gameType)
 	{
