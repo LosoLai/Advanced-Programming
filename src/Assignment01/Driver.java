@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 
 /**Author: Loso
@@ -32,9 +34,10 @@ public class Driver {
 	private ArrayList<Participant> sprinterList = new ArrayList<Participant>();
 	private ArrayList<Participant> superAthList = new ArrayList<Participant>();
 	private ArrayList<Participant> officialList = new ArrayList<Participant>();
+	private String writePath = "C:/Users/Arion/Desktop/Uni/Advanced Programming/Assignment 2/gameResults.txt";//this.getClass().getResource("gameResults.txt").getFile();
+	private boolean appendToFile = true;
 	
-	
-	public Driver()
+ 	public Driver()
 	{
 		boolean bProcessResult = initialParticipantList();
 		
@@ -222,7 +225,19 @@ public class Driver {
 		
 		return true;
 	}
-	
+    public void writeToFile(String text){
+    	try 
+    	{
+    	 FileWriter write = new FileWriter(writePath, appendToFile);
+    	 PrintWriter printLine = new PrintWriter(write);
+    	
+    	 printLine.printf("%s" + "%n", text);
+    	 printLine.close();
+    	}
+    	catch(IOException e) {
+    		e.printStackTrace();
+    	}
+    }
 	private boolean createGameByInput(int gameType)
 	{
 		if(gameType == Game.GAME_RUNNING)

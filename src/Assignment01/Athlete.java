@@ -54,6 +54,6 @@ public class Athlete extends Participant implements Competable, Comparable<Athle
     public String toString() 
 	{
         return String.format("\n" + super.getName() +
-        					 "-> " + this.getExecuteTime());
+        					 ", " + this.getExecuteTime());
     }
 }

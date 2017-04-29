@@ -104,15 +104,6 @@ public abstract class Game {
 		
 		Collections.sort(athList);
 		
-		// showing result here <need to store in referee>
-		System.out.println("\n" + this.getGameID() + " result:\n" +
-						   "-------------------------------");
-		
-		for(int i=0; i<athList.size(); i++) {
-			System.out.println(i+1 + ". " + athList.get(i).getName() + " -> " 
-		                       + athList.get(i).getExecuteTime());
-		}
-		
 		//setting info into referee
 		Official referee;
 		if(getReferee() instanceof Official)
