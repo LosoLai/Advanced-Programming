@@ -137,8 +137,8 @@ public class Driver {
 		Participant temp;	
 		final int ID_INDEX = 0, TYPE_INDEX = 1, NAME_INDEX = 2, AGE_INDEX = 3, STATE_INDEX = 4;
 		//Modified by Loso
-		String rootPath = this.getClass().getResource("Participants.csv").getFile();
-		//File fileToBeFound = findFile(rootPath, "Participants.csv");
+		String rootPath = "C:/Users/Arion/Desktop/Uni/Advanced Programming/Assignment 1/Participants.txt";//this.getClass().getResource("Participants.csv").getFile();
+		//File fileToBeFound = findFile(rootPath, "Participants.txt");
 		File fileToBeFound = new File(rootPath);
 		if(fileToBeFound == null)
 			return fileNotFoundRecovery();
@@ -159,14 +159,18 @@ public class Driver {
             Set<String> unique_id = new HashSet<String>();
             
             for (int i=0; i<fileList.size(); i++){
-            	if (!unique_id.add(fileList.get(i)[ID_INDEX])) {
-            		fileList.remove(i);
+            	if (fileList.get(i).length != 5) {
+            		fileList.remove(i--);	
             	}
-            	if (fileList.get(i)[ID_INDEX].isEmpty()) {
-            		fileList.remove(i);
+            	else if (!unique_id.add(fileList.get(i)[ID_INDEX])) {
+            		fileList.remove(i--);	
             	}
+            	else if (fileList.get(i)[ID_INDEX].isEmpty() || fileList.get(i)[TYPE_INDEX].isEmpty() || fileList.get(i)[NAME_INDEX].isEmpty() || fileList.get(i)[AGE_INDEX].isEmpty() || fileList.get(i)[STATE_INDEX].isEmpty()) {
+            		fileList.remove(i--);	
+            	}
+            		
             }
-            
+          
             for (int i=0; i<fileList.size(); i++) {
        
             	if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("swimmer")) {
