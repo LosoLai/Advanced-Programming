@@ -1,5 +1,8 @@
 package Model;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import Controller.Driver;
 
 /**Author: Arion
  * Official inheritance from Participant class 
@@ -12,6 +15,7 @@ public class Official extends Participant {
 	private final int POINT_1ST = 5;
 	private final int POINT_2ND = 2;
 	private final int POINT_3RD = 1;
+	private final int NO_POINTS = 0;
 	
 	//Extra variables for recording ranking list and game result
 	private Athlete[] resultTop3;
@@ -39,27 +43,50 @@ public class Official extends Participant {
 	//Generates game result and stores points in Athlete objects
 	public String setResultTopList(String gameID, ArrayList<Athlete> sortedList) 
 	{
+		//Timestamp for gameResults file
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SS").format(new Date());
+		
+		Driver d = new Driver();
 		//display gameID first
-		this.gameResult = "\n========= " + gameID + " Top 3 ==========\n";
+		this.gameResult = "\n========= " + gameID + " Results ==========\n";
+		
+		//Write to file
+		d.writeToFile(timeStamp);
+		d.writeToFile(gameResult);
+		
 		if(sortedList != null)
 		{
 			int index = 0;
-			while(index < RESULT_TOP3)
+			while(index < sortedList.size())
 			{
 				Athlete record = sortedList.get(index);
-				if(index == INDEX_1ST)
+				if(index == INDEX_1ST){
 					record.setPoints(POINT_1ST);
-				if(index == INDEX_2ND)
+					resultTop3[index] = record;
+					d.writeToFile(record.toString() + ", " + POINT_1ST + "\n");
+					this.gameResult += record.toString() + ", " + POINT_1ST + "\n";
+				}
+				else if(index == INDEX_2ND){
 					record.setPoints(POINT_2ND);
-				if(index == INDEX_3RD)
+					resultTop3[index] = record;
+					d.writeToFile(record.toString() + ", " + POINT_2ND + "\n");
+					this.gameResult += record.toString() + ", " + POINT_2ND + "\n";
+				}
+				else if(index == INDEX_3RD){
 					record.setPoints(POINT_3RD);
-					
-				resultTop3[index] = record;
-				this.gameResult += record.toString();
+					resultTop3[index] = record;
+					d.writeToFile(record.toString() + ", " + POINT_3RD + "\n");
+					this.gameResult += record.toString() + ", " + POINT_3RD + "\n";
+				}
+				else {	
+					d.writeToFile(record.toString() + ", " + NO_POINTS + "\n");
+					this.gameResult += record.toString() + ", " + NO_POINTS + "\n";
+				}
 				index++;
 			}
-			this.gameResult += "\n\nReferee: " + this.getName() + "\n";
+			this.gameResult += "\n\nReferee: " + this.getName();
 		}
+		d.writeToFile("\n");
 		return this.gameResult;
 	}
 }
