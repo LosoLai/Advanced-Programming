@@ -114,13 +114,10 @@ public class OzlympicGameView extends Application {
 	}
 	private void createDisplayPane(BorderPane root)
 	{
-		AnchorPane displayArea = new AnchorPane();
 		String str = "1. Select a game type from menu bar.\n" +
 				 	 "2. Choose athlete and referee to participant the game.\n" +
 				 	 "3. Click the 'Play' button to start the game";
 		TextArea content = new TextArea(str);
-		displayArea.getChildren().add(content);
-		displayArea.setMinSize(root.getPrefWidth(), root.getPrefHeight());
-		root.setCenter(displayArea);
+		root.setCenter(content);
 	}
 }
