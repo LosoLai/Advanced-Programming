@@ -6,15 +6,16 @@
 package View;
 import Controller.Driver;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.TitledBorder;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 
-
-public class OzlympicGameView {
+public class OzlympicGameView extends Application {
 	//define main menu options
 	public static final int SELECT_GAME 			= 1;
 	public static final int SELECT_PARTICIPANT		= 2;
@@ -28,126 +29,98 @@ public class OzlympicGameView {
 	public static final int GAME_EXECUTED 	= 2;
 	public static int gameStatus 			= GAME_DEFAULT;
 	
-	private JFrame 		frmOzlympicgame;
-	private JMenuItem 	mntmSwimming;
-	private JMenuItem 	mntmCycling;
-	private JMenuItem 	mntmRunning;
-	private JLabel 		lbGameType;
-	private JPanel      plContent;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					OzlympicGameView window = new OzlympicGameView();
-					window.frmOzlympicgame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public OzlympicGameView() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frmOzlympicgame = new JFrame();
-		frmOzlympicgame.setTitle("OzlympicGame");
-		frmOzlympicgame.setBounds(100, 100, 800, 600);
-		frmOzlympicgame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmOzlympicgame.getContentPane().setLayout(null);	
-		
-		JLabel lbContentDisplay = new JLabel();
-		lbContentDisplay.setBounds(10, 70, 764, 460);
-		lbContentDisplay.setBorder ( new TitledBorder ( new EtchedBorder (), "Display Area" ) );
-		frmOzlympicgame.getContentPane().add(lbContentDisplay);
-		
-		lbGameType = new JLabel("Instraction:");
-		lbGameType.setFont(new Font("Arial Black", Font.PLAIN, 18));
-		lbGameType.setBounds(10, 10, 764, 50);
-		frmOzlympicgame.getContentPane().add(lbGameType);
-		
-		plContent = new JPanel();
-		plContent.setBounds(25, 90, 720, 400);
-		String instraction = "Game instraction:\n" +
-				 			 "1. Select a game type from menu bar.\n" +
-				 			 "2. Choose participant and referee to run the game.\n" +
-				 			 "3. Click 'Play' button to start the game";
-		JTextArea textInstraction = new JTextArea(instraction);
-		textInstraction.setFont(new Font("Monospaced", Font.BOLD, 30));
-		textInstraction.setEditable(false);
-		textInstraction.setBounds(0, 0, 720, 400);
-		plContent.add(textInstraction);
-		frmOzlympicgame.add(plContent);
-		
-		JMenuBar menuBar = new JMenuBar();
-		frmOzlympicgame.setJMenuBar(menuBar);
-		
-		JMenu mnGameType = new JMenu("GAME TYPE");
-		menuBar.add(mnGameType);
-		
-		mntmSwimming = new JMenuItem("Swimming");
-		mntmSwimming.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setGameTypeLabel(mntmSwimming.getText());
-			}
-		});
-		mnGameType.add(mntmSwimming);
-		
-		mntmCycling = new JMenuItem("Cycling");
-		mntmCycling.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setGameTypeLabel(mntmCycling.getText());
-			}
-		});
-		mnGameType.add(mntmCycling);
-		
-		mntmRunning = new JMenuItem("Running");
-		mntmRunning.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setGameTypeLabel(mntmRunning.getText());
-			}
-		});
-		mnGameType.add(mntmRunning);
-		
-		JMenu mnResults = new JMenu("RESULTS");
-		menuBar.add(mnResults);
-		
-		JMenuItem mntmAthlete = new JMenuItem("Athlete points");
-		mnResults.add(mntmAthlete);
-		
-		JMenuItem mntmGameResult = new JMenuItem("Game result");
-		mnResults.add(mntmGameResult);
-		
-		JMenu mnHelp = new JMenu("Help");
-		menuBar.add(mnHelp);
-		
-		JMenuItem mntmGameRules = new JMenuItem("Game rules");
-		mnHelp.add(mntmGameRules);
+	@Override
+	public void start(Stage primaryStage) {
+		try {
+			BorderPane root = new BorderPane();
+			Scene scene = new Scene(root,600,400);
+			//create menu bar on the top of view
+			createMenuBar(root);
+			//create navigation menu
+			createNavigationMenu(root);
+			//create display area
+			createDisplayPane(root);
+			
+			primaryStage.setScene(scene);
+			primaryStage.setTitle("OzlympicGame");
+			primaryStage.show();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public void setGameTypeLabel(String str)
+	public static void main(String[] args) {
+		launch(args);
+	}
+	
+	private void createMenuBar(BorderPane root)
 	{
-		Driver controller = Driver.getInstance();
-		if(controller != null)
-			controller.processByUserInput(SELECT_GAME, str);
-			
-		str += " Game:";
-		lbGameType.setText(str);
+		String[] menu = {"Save", "Help"};
+		String[] menuItem = {"Game Result Saving", 
+							 "Rules Explaination"};
+		MenuBar menuBar = new MenuBar();
+        // --- Menu Save
+        Menu menuSave = new Menu(menu[0]);
+        MenuItem menuItem_0 = new MenuItem(menuItem[0]);
+        menuItem_0.setOnAction((ActionEvent e) -> {
+                System.out.println(menuItem[0]);
+        });
+        menuSave.getItems().add(menuItem_0);
+        // --- Menu Help
+        Menu menuHelp = new Menu(menu[1]);
+        MenuItem menuItem_1 = new MenuItem(menuItem[1]);
+        menuItem_1.setOnAction((e) -> {
+                System.out.println(menuItem[1]);
+        });
+        menuHelp.getItems().add(menuItem_1);
+        menuBar.getMenus().addAll(menuSave, menuHelp);
+        root.setTop(menuBar);
+	}
+	private void createNavigationMenu(BorderPane root)
+	{
+		VBox optionMenu = new VBox();
+		optionMenu.setPadding(new Insets(10));
+		optionMenu.setSpacing(8);
+	    //create game type options
+		TitledPane gameType = new TitledPane();
+		/*instractions.setStyle("-fx-padding: 10;" + 
+                			  "-fx-border-style: solid inside;" + 
+                			  "-fx-border-width: 2;" +
+                			  "-fx-border-insets: 5;" + 
+                			  "-fx-border-radius: 5;" + 
+                			  "-fx-border-color: blue;");*/
 		
-		//clear content
-		plContent.removeAll();
-		frmOzlympicgame.repaint();
+		gameType.setText("Game Type");
+		GridPane typeOptions = new GridPane();
+		typeOptions.setVgap(4);
+		typeOptions.setPadding(new Insets(5, 5, 5, 5));
+		typeOptions.add(new Button("Swimming"), 0, 0);
+		typeOptions.add(new Button("Cycling"), 0, 1);
+		typeOptions.add(new Button("Running"), 0, 2);
+		gameType.setContent(typeOptions);
+		optionMenu.getChildren().add(gameType);
+		
+		//create display result options
+		TitledPane displayResult = new TitledPane();
+		displayResult.setText("Display Results");
+		GridPane resultOptions = new GridPane();
+		resultOptions.setVgap(4);
+		resultOptions.setPadding(new Insets(5, 5, 5, 5));
+		resultOptions.add(new Button("Athlete Points"), 0, 0);
+		resultOptions.add(new Button("Game Result History"), 0, 1);
+		displayResult.setContent(resultOptions);
+		optionMenu.getChildren().add(displayResult);
+		root.setLeft(optionMenu);
+	}
+	private void createDisplayPane(BorderPane root)
+	{
+		AnchorPane displayArea = new AnchorPane();
+		String str = "1. Select a game type from menu bar.\n" +
+				 	 "2. Choose athlete and referee to participant the game.\n" +
+				 	 "3. Click the 'Play' button to start the game";
+		TextArea content = new TextArea(str);
+		displayArea.getChildren().add(content);
+		displayArea.setMinSize(root.getPrefWidth(), root.getPrefHeight());
+		root.setCenter(displayArea);
 	}
 }
