@@ -45,6 +45,7 @@ public class Driver {
 	
 	public static Game currentGame;
 	public static Driver gameDriver = new Driver();
+	public Connection connection = null;
 	private ArrayList<Game> gameList = new ArrayList<Game>();	
 	private ArrayList<String[]> fileList = new ArrayList<String[]>();
 	private ArrayList<Participant> swimmerList = new ArrayList<Participant>();
@@ -145,7 +146,6 @@ public class Driver {
 	public boolean ozlympicDB() {
 		
 		Server hsqlServer = null;
-		Connection connection = null;
 		ResultSet rs = null;
 		Participant temp;
 		
@@ -162,7 +162,9 @@ public class Driver {
 			Class.forName("org.hsqldb.jdbcDriver");
 			connection = DriverManager.getConnection("jdbc:hsqldb:OzlympicDB", "sa", "123");
 			connection.prepareStatement("drop table participants if exists;").execute();
+			connection.prepareStatement("drop table participants if exists;").execute();
 			connection.prepareStatement("create table participants (id varchar(7) not null, type varchar(10) not null, name varchar(50) not null, age integer not null, state varchar(20) not null, primary key(id));").execute();
+			connection.prepareStatement("create table results (gameID varchar(10), officialID varchar(10), athleteID varchar(10), time double, points integer);").execute();
 			
 			for(int i=0 ; i<40 ; i++)
 			{

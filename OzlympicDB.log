@@ -1,6 +1,10 @@
 /*C3*/SET SCHEMA PUBLIC
 drop table participants if exists
+drop table results if exists
 create table participants (id varchar(7) not null, type varchar(10) not null, name varchar(50) not null, age integer not null, state varchar(20) not null, primary key(id))
+create table results (gameID varchar(10), officialID varchar(10), athleteID varchar(10), time double, points integer)
+INSERT INTO RESULTS VALUES('Test','Test','Test',200.865E0,6)
+COMMIT
 INSERT INTO PARTICIPANTS VALUES('Oz0000','Cyclist ','Cyclist 0',15,'VIC')
 COMMIT
 INSERT INTO PARTICIPANTS VALUES('Oz0001','Runner  ','Runner  0',16,'SA')

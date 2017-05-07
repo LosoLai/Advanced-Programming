@@ -29,8 +29,10 @@ public class TestDB {
 			Class.forName("org.hsqldb.jdbcDriver");
 			connection = DriverManager.getConnection("jdbc:hsqldb:OzlympicDB", "sa", "123");
 			connection.prepareStatement("drop table participants if exists;").execute();
+			connection.prepareStatement("drop table results if exists;").execute();
 			connection.prepareStatement("create table participants (id varchar(7) not null, type varchar(10) not null, name varchar(50) not null, age integer not null, state varchar(20) not null, primary key(id));").execute();
-			
+			connection.prepareStatement("create table results (gameID varchar(10), officialID varchar(10), athleteID varchar(10), time double, points integer);").execute();
+			connection.prepareStatement("insert into results values ('Test','Test','Test',200.865,6);").execute();
 			for(int i=0 ; i<40 ; i++)
 			{
 				String id = "Oz000" + Integer.toString(i);
@@ -66,8 +68,9 @@ public class TestDB {
 				connection.prepareStatement("insert into participants values ('" + id + "', '" + type + "', '" + name + "', " + age + ", '" + state + "');").execute();
 			}
 			
-			rs = connection.prepareStatement("select * from participants").executeQuery();
-			
+			rs = connection.prepareStatement("select * from results").executeQuery();
+			rs.next();
+			System.out.println(rs.getDouble("time") + rs.getInt("points"));
 			while (rs.next()){
 				System.out.println(rs.getString("id"));
 			}

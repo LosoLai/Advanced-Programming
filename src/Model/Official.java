@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import Controller.Driver;
 
+
+
 /**Author: Arion
  * Official inheritance from Participant class 
  */
@@ -41,12 +43,12 @@ public class Official extends Participant {
 	}
 	
 	//Generates game result and stores points in Athlete objects
-	public String setResultTopList(String gameID, ArrayList<Athlete> sortedList) 
+	public String setResultTopList(String gameID, ArrayList<Athlete> sortedList) throws Exception
 	{
 		//Timestamp for gameResults file
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SS").format(new Date());
-		
 		Driver d = new Driver();
+		
 		//display gameID first
 		this.gameResult = "\n========= " + gameID + " Results ==========\n";
 		
@@ -63,22 +65,26 @@ public class Official extends Participant {
 				if(index == INDEX_1ST){
 					record.setPoints(POINT_1ST);
 					resultTop3[index] = record;
+					d.connection.prepareStatement("insert into results values ('" + gameID +"', '" + this.getPersonID() + "', '" + sortedList.get(index).getPersonID() + "', '" + sortedList.get(index).getExecuteTime() + "', '" + POINT_1ST + "');");
 					d.writeToFile(record.toString() + ", " + POINT_1ST + "\n");
 					this.gameResult += record.toString() + ", " + POINT_1ST + "\n";
 				}
 				else if(index == INDEX_2ND){
 					record.setPoints(POINT_2ND);
 					resultTop3[index] = record;
+					d.connection.prepareStatement("insert into results values ('" + gameID +"', '" + this.getPersonID() + "', '" + sortedList.get(index).getPersonID() + "', '" + sortedList.get(index).getExecuteTime() + "', '" + POINT_2ND + "');");
 					d.writeToFile(record.toString() + ", " + POINT_2ND + "\n");
 					this.gameResult += record.toString() + ", " + POINT_2ND + "\n";
 				}
 				else if(index == INDEX_3RD){
 					record.setPoints(POINT_3RD);
 					resultTop3[index] = record;
+					d.connection.prepareStatement("insert into results values ('" + gameID +"', '" + this.getPersonID() + "', '" + sortedList.get(index).getPersonID() + "', '" + sortedList.get(index).getExecuteTime() + "', '" + POINT_3RD + "');");
 					d.writeToFile(record.toString() + ", " + POINT_3RD + "\n");
 					this.gameResult += record.toString() + ", " + POINT_3RD + "\n";
 				}
 				else {	
+					d.connection.prepareStatement("insert into results values ('" + gameID +"', '" + this.getPersonID() + "', '" + sortedList.get(index).getPersonID() + "', '" + sortedList.get(index).getExecuteTime() + "', '" + NO_POINTS + "');");
 					d.writeToFile(record.toString() + ", " + NO_POINTS + "\n");
 					this.gameResult += record.toString() + ", " + NO_POINTS + "\n";
 				}

@@ -1,4 +1,5 @@
 package Model;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
@@ -109,8 +110,16 @@ public class Game {
 		if(getReferee() instanceof Official)
 		{
 			referee = ((Official)getReferee());
-			setGameResult(referee.setResultTopList(this.getGameID(), athList));
 			
+			try {
+			setGameResult(referee.setResultTopList(this.getGameID(), athList));
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			} catch (ClassNotFoundException e2) {
+				e2.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			//display game result
 			System.out.println("\n" + getGameResult() + "\n\n");
 			
