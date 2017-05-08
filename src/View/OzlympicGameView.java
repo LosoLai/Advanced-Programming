@@ -5,7 +5,7 @@
 
 package View;
 import Controller.Driver;
-
+import Model.Game;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -29,8 +29,13 @@ public class OzlympicGameView extends Application {
 	public static final int GAME_EXECUTED 	= 2;
 	public static int gameStatus 			= GAME_DEFAULT;
 	
+	//the role is game controller
+	private Driver gameDriver;
+	
 	@Override
 	public void start(Stage primaryStage) {
+		gameDriver = Driver.getInstance();
+		
 		try {
 			BorderPane root = new BorderPane();
 			Scene scene = new Scene(root,600,400);
@@ -83,26 +88,53 @@ public class OzlympicGameView extends Application {
 		optionMenu.setSpacing(8);
 	    //create game type options
 		TitledPane gameType = new TitledPane();
-		/*instractions.setStyle("-fx-padding: 10;" + 
-                			  "-fx-border-style: solid inside;" + 
-                			  "-fx-border-width: 2;" +
-                			  "-fx-border-insets: 5;" + 
-                			  "-fx-border-radius: 5;" + 
-                			  "-fx-border-color: blue;");*/
+		/*gameType.setStyle("-fx-padding: 10;" + 
+                		  "-fx-border-style: solid inside;" + 
+                		  "-fx-border-width: 2;" +
+                		  "-fx-border-insets: 5;" + 
+                		  "-fx-border-radius: 5;" + 
+               			  "-fx-background-color: #DFB951" +
+               			  "-fx-border-color: blue;");*/
 		
-		gameType.setText("Game Type");
+		gameType.setText("1. Game Type");
 		GridPane typeOptions = new GridPane();
 		typeOptions.setVgap(4);
 		typeOptions.setPadding(new Insets(5, 5, 5, 5));
-		typeOptions.add(new Button("Swimming"), 0, 0);
-		typeOptions.add(new Button("Cycling"), 0, 1);
-		typeOptions.add(new Button("Running"), 0, 2);
+		//create swimming button
+		Button swimming = new Button(Game.GAME_SWIMMING);
+		swimming.setOnAction((ActionEvent e) -> {
+			gameTypeButtonHandler(root, Game.GAME_SWIMMING);
+		});
+		typeOptions.add(swimming, 0, 0);
+		//create cycling button
+		Button cycling = new Button(Game.GAME_CYCLING);
+		cycling.setOnAction((e) -> {
+			gameTypeButtonHandler(root, Game.GAME_CYCLING);
+		});
+		typeOptions.add(cycling, 0, 1);
+		//create running button
+		Button running = new Button(Game.GAME_RUNNING);
+		running.setOnAction((e) -> {
+			gameTypeButtonHandler(root, Game.GAME_RUNNING);
+		});
+		typeOptions.add(running, 0, 2);
 		gameType.setContent(typeOptions);
 		optionMenu.getChildren().add(gameType);
 		
+		//create candidate info. 
+		TitledPane participantInfo = new TitledPane();
+		participantInfo.setText("2. Participant Info.");
+		GridPane participant = new GridPane();
+		participant.setVgap(4);
+		participant.setPadding(new Insets(5, 5, 5, 5));
+		participant.add(new Label("Referee :"), 0, 0);
+		participant.add(new Label("Athlete List :"), 0, 1);
+		participantInfo.setContent(participant);
+		optionMenu.getChildren().add(participantInfo);
+		
 		//create display result options
 		TitledPane displayResult = new TitledPane();
-		displayResult.setText("Display Results");
+		displayResult.setText("3. Display Results");
 		GridPane resultOptions = new GridPane();
 		resultOptions.setVgap(4);
 		resultOptions.setPadding(new Insets(5, 5, 5, 5));
@@ -110,14 +142,34 @@ public class OzlympicGameView extends Application {
 		resultOptions.add(new Button("Game Result History"), 0, 1);
 		displayResult.setContent(resultOptions);
 		optionMenu.getChildren().add(displayResult);
+		
 		root.setLeft(optionMenu);
 	}
 	private void createDisplayPane(BorderPane root)
 	{
+		StackPane display = new StackPane();
+		display.setPrefHeight(root.getHeight());
+		
+		VBox displayContent = new VBox();
+		displayContent.setPadding(new Insets(10));
+		displayContent.setSpacing(8);
+		Label title = new Label("Display Area:");		
 		String str = "1. Select a game type from menu bar.\n" +
-				 	 "2. Choose athlete and referee to participant the game.\n" +
+				 	 "2. Choose athlete and referee to participate the game.\n" +
 				 	 "3. Click the 'Play' button to start the game";
 		TextArea content = new TextArea(str);
-		root.setCenter(content);
+		content.setPrefHeight(root.getHeight());
+		displayContent.getChildren().addAll(title, content);
+		display.getChildren().add(displayContent);
+		root.setCenter(display);
+	}
+	private boolean gameTypeButtonHandler(BorderPane root, String gameType)
+	{
+		root.setCenter(null);
+		boolean bResult = 
+				gameDriver.processByUserInput(SELECT_GAME, gameType);
+		//test
+		System.out.println("result :" + bResult);
+		return bResult;
 	}
 }
