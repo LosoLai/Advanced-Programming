@@ -9,6 +9,7 @@ public class Participant {
 	public static final String SWIMMER = "Swimmer";
 	public static final String SUPERATHLETE  = "SuperAth";
 	public static final String OFFICIAL = "Official";
+	public static final String ATHLETE  = "Athlete";
 	
 	private String name;
 	private int age;
