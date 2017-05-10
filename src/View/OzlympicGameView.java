@@ -227,6 +227,8 @@ public class OzlympicGameView extends Application {
         FlowPane pane2 = new FlowPane();
         
         ArrayList<Participant> official = allParticipant.get(Participant.OFFICIAL);
+        pane1.getChildren().add(new Label(Participant.OFFICIAL + "List :"));
+        pane2.getChildren().add(new Label(Participant.OFFICIAL + "Selected :"));
         for(int i=0 ; i<official.size() ; i++)
         {
         	pane1.getChildren().add(createButton(official.get(i).getName()));
@@ -236,6 +238,7 @@ public class OzlympicGameView extends Application {
         addDropHandling(pane2);
 
         SplitPane splitPane_Ref = new SplitPane(pane1, pane2);
+        splitPane_Ref.setStyle("-fx-border-color: #f26704;");
         splitPane_Ref.setOrientation(Orientation.VERTICAL);
         splitPane_Ref.setDividerPositions(0.5f, 0.5f);
         splitPane_Ref.setPrefSize(400, 400);
@@ -246,6 +249,8 @@ public class OzlympicGameView extends Application {
         FlowPane pane4 = new FlowPane();
         
         ArrayList<Participant> swimmer = allParticipant.get(Participant.SWIMMER);
+        pane3.getChildren().add(new Label(Participant.ATHLETE + "List :"));
+        pane4.getChildren().add(new Label(Participant.ATHLETE + "Selected :"));
         for(int i=0 ; i<swimmer.size() ; i++)
         {
         	pane3.getChildren().add(createButton(swimmer.get(i).getName()));
@@ -255,6 +260,7 @@ public class OzlympicGameView extends Application {
         addDropHandling(pane4);
 
         SplitPane splitPane_Ath = new SplitPane(pane3, pane4);
+        splitPane_Ath.setStyle("-fx-border-color: #206bd6;");
         splitPane_Ath.setOrientation(Orientation.VERTICAL);
         splitPane_Ath.setDividerPositions(0.5f, 0.5f);
         splitPane_Ath.setPrefSize(400, 400);
