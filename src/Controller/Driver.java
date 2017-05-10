@@ -26,10 +26,11 @@ public class Driver {
 	public static Game currentGame;
 	public static Driver gameDriver = new Driver();
 	private ArrayList<Game> gameList = new ArrayList<Game>();	
-	private ArrayList<Participant> swimmerList = data.getSwimmerList();
-	private ArrayList<Participant> cyclistList = data.getCyclistList();
-	private ArrayList<Participant> sprinterList = data.getSprinterList();
-	private ArrayList<Participant> superAthList = data.getSuperAthList();
+	private ArrayList<Participant> swimmerList;
+	private ArrayList<Participant> cyclistList;
+	private ArrayList<Participant> sprinterList;
+	private ArrayList<Participant> superAthList;
+	private ArrayList<Participant> officialList;
 	
 	
 	public static Driver getInstance()
@@ -47,7 +48,10 @@ public class Driver {
 	
 	public Driver()
 	{
-		boolean bProcessResult1 = data.ozlympicDB();
+		//Modified by Loso 10/05/17--------------------------------------------
+		//Comment the connect DB feature for testing the file reading part
+		//To retrieve participant lists 
+		/*boolean bProcessResult1 = data.ozlympicDB();
 		
 		//failure in hsql database
 		if(!bProcessResult1) {
@@ -61,7 +65,21 @@ public class Driver {
 				System.out.println("Participant list read successfully from text file!!!\n\n");
 		}
 		else 
-			System.out.print("Participant list read successfully from database!!\n\n");
+			System.out.print("Participant list read successfully from database!!\n\n");*/
+		
+		//Reading data from file
+		boolean bProcessResult2 = data.initialParticipantList();
+		if (!bProcessResult2)
+			System.out.println("Failed to read participant list from text file.\n\n");
+		else
+			System.out.println("Participant list read successfully from text file!!!\n\n");
+		
+		swimmerList = data.getSwimmerList();
+		cyclistList = data.getCyclistList();
+		sprinterList = data.getSprinterList();
+		superAthList = data.getSuperAthList();
+		officialList = data.getOfficialList();
+		//---------------------------------------------------------------------
 	}
 	
 	public boolean processByUserInput(int userInput, String gameType)
