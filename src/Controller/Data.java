@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import Model.Athlete;
 import Model.Cyclist;
 import Model.Official;
 import Model.Participant;
@@ -32,7 +33,19 @@ public class Data {
 	private boolean appendToFile = true;
 	private ArrayList<String[]> fileList = new ArrayList<String[]>();
 	public Connection connection = null;
-	private ArrayList<Participant> swimmerList = new ArrayList<Participant>();
+	//Modified by Loso 10/05/17------------------------------------------
+	public static HashMap<String, Participant> participant = new HashMap<String, Participant>();
+	private ArrayList<Official> officialList = new ArrayList<Official>();
+	private ArrayList<Athlete> athleteList = new ArrayList<Athlete>();
+	
+	public ArrayList<Official> getOfficialList() {
+		return officialList;
+	}
+	public ArrayList<Athlete> getAthletelList() {
+		return athleteList;
+	}
+	//-------------------------------------------------------------------
+	/*private ArrayList<Participant> swimmerList = new ArrayList<Participant>();
 	private ArrayList<Participant> cyclistList = new ArrayList<Participant>();
 	private ArrayList<Participant> sprinterList = new ArrayList<Participant>();
 	private ArrayList<Participant> superAthList = new ArrayList<Participant>();
@@ -53,12 +66,12 @@ public class Data {
 	}
 	public ArrayList<Participant> getOfficialList() {
 		return officialList;
-	}
+	}*/
 	public boolean ozlympicDB() {
 		
 		Server hsqlServer = null;
 		ResultSet rs = null;
-		Participant temp;
+		Participant temp = null;
 		
 		hsqlServer = new Server();
 		hsqlServer.setLogWriter(null);
@@ -120,35 +133,40 @@ public class Data {
 				
 			if (rs.getString("type").equalsIgnoreCase("swimmer")) {
         		temp = new Swimmer(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
-       			swimmerList.add(temp);
+       			//swimmerList.add(temp);
+        		athleteList.add((Athlete)temp);
        		}
        		else if (rs.getString("type").equalsIgnoreCase("sprinter")) {
        			temp = new Sprinter(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
-       			sprinterList.add(temp);
+       			//sprinterList.add(temp);
+       			athleteList.add((Athlete)temp);
        		}
        		else if (rs.getString("type").equalsIgnoreCase("cyclist")) {
        			temp = new Cyclist(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
-       			cyclistList.add(temp);
+       			//cyclistList.add(temp);
+       			athleteList.add((Athlete)temp);
        		}
        		else if (rs.getString("type").equalsIgnoreCase("official")) {
        			temp = new Official(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));       
-       			officialList.add(temp);
+       			officialList.add((Official)temp);
         	}
         	else if (rs.getString("type").equalsIgnoreCase("superathlete")) {
         		temp = new SuperAthlete(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
-       			superAthList.add(temp);
-       			swimmerList.add(temp);
-       			sprinterList.add(temp);
-       			cyclistList.add(temp);
+       			//superAthList.add(temp);
+       			//swimmerList.add(temp);
+       			//sprinterList.add(temp);
+       			//cyclistList.add(temp);
+        		athleteList.add((Athlete)temp);
        		}
+			participant.put(temp.getPersonID(), temp);
        	}
         
         //-------------------------------------------
         
-		participantList.put(Participant.SWIMMER, swimmerList);
-		participantList.put(Participant.CYCLIST, cyclistList);
-		participantList.put(Participant.SPRINTER, sprinterList);
-		participantList.put(Participant.OFFICIAL, officialList);
+		//participantList.put(Participant.SWIMMER, swimmerList);
+		//participantList.put(Participant.CYCLIST, cyclistList);
+		//participantList.put(Participant.SPRINTER, sprinterList);
+		//participantList.put(Participant.OFFICIAL, officialList);
 			
 		
 			} catch (SQLException e2) {
@@ -164,91 +182,93 @@ public class Data {
 	{
 		
 		//Modified by Arion--------------------------
-				Participant temp;	
-				final int ID_INDEX = 0, TYPE_INDEX = 1, NAME_INDEX = 2, AGE_INDEX = 3, STATE_INDEX = 4;
-				//Modified by Loso
-				String rootPath = this.getClass().getResource("Participants.txt").getFile();
-				File fileToBeFound = new File(rootPath);
-				if(fileToBeFound == null)
-					return fileNotFoundRecovery();
-				//-------------------------------------------
-			    BufferedReader br = null;
-			    String line = "";
-			    String cvsSplitBy = ",";
+		Participant temp = null;	
+		final int ID_INDEX = 0, TYPE_INDEX = 1, NAME_INDEX = 2, AGE_INDEX = 3, STATE_INDEX = 4;
+		//Modified by Loso
+		String rootPath = this.getClass().getResource("Participants.txt").getFile();
+		File fileToBeFound = new File(rootPath);
+		if(fileToBeFound == null)
+			return fileNotFoundRecovery();
+		//-------------------------------------------
+		BufferedReader br = null;
+		String line = "";
+		String cvsSplitBy = ",";
 			    
-				try {
+		try {
+            br = new BufferedReader(new FileReader(fileToBeFound.getAbsolutePath()));
+            while ((line = br.readLine()) != null) {
+            // use comma as separator
+		    fileList.add(line.split(cvsSplitBy));
+            }
+		            
+            Set<String> unique_id = new HashSet<String>();
+		            
+            for (int i=0; i<fileList.size(); i++){
+            	if (fileList.get(i).length != 5) {
+            		fileList.remove(i--);
+            	}
+            	else if (!unique_id.add(fileList.get(i)[ID_INDEX])) {
+            		fileList.remove(i--);
+            	}
+            	else if (fileList.get(i)[ID_INDEX].isEmpty() || fileList.get(i)[TYPE_INDEX].isEmpty() || fileList.get(i)[NAME_INDEX].isEmpty() || fileList.get(i)[AGE_INDEX].isEmpty() || fileList.get(i)[STATE_INDEX].isEmpty()) {
+            		fileList.remove(i--);
+            	}
+            }
+		            
+            for (int i=0; i<fileList.size(); i++) {	       
+            	if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("swimmer")) {
+            		temp = new Swimmer(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
+            		//swimmerList.add(temp);
+            		athleteList.add((Athlete)temp);
+            	}
+            	else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("sprinter")) {
+            		temp = new Sprinter(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
+            		//sprinterList.add(temp);
+            		athleteList.add((Athlete)temp);
+            	}
+            	else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("cyclist")) {
+            		temp = new Cyclist(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
+            		//cyclistList.add(temp);
+            		athleteList.add((Athlete)temp);
+            	}
+            	else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("official")) {
+            		temp = new Official(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);       
+            		officialList.add((Official)temp);
+            	}
+            	else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("superathlete")) {
+            		temp = new SuperAthlete(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
+            		//superAthList.add(temp);
+            		//swimmerList.add(temp);
+            		//sprinterList.add(temp);
+            		//cyclistList.add(temp);
+            		athleteList.add((Athlete)temp);
+            	}
+            	participant.put(temp.getPersonID(), temp);
+            }
+		            
+            //-------------------------------------------
+		            
+            //participantList.put(Participant.SWIMMER, swimmerList);
+            //participantList.put(Participant.CYCLIST, cyclistList);
+            //participantList.put(Participant.SPRINTER, sprinterList);
+            //participantList.put(Participant.OFFICIAL, officialList);		
 
-		            br = new BufferedReader(new FileReader(fileToBeFound.getAbsolutePath()));
-		            while ((line = br.readLine()) != null) {
-
-		                // use comma as separator
-		                fileList.add(line.split(cvsSplitBy));
-		            }
-		            
-		            Set<String> unique_id = new HashSet<String>();
-		            
-		            for (int i=0; i<fileList.size(); i++){
-		            	if (fileList.get(i).length != 5) {
-		            		fileList.remove(i--);
-		            	}
-		            	else if (!unique_id.add(fileList.get(i)[ID_INDEX])) {
-		            		fileList.remove(i--);
-		            	}
-		            	else if (fileList.get(i)[ID_INDEX].isEmpty() || fileList.get(i)[TYPE_INDEX].isEmpty() || fileList.get(i)[NAME_INDEX].isEmpty() || fileList.get(i)[AGE_INDEX].isEmpty() || fileList.get(i)[STATE_INDEX].isEmpty()) {
-		            		fileList.remove(i--);
-		            	}
-		            }
-		            
-		            for (int i=0; i<fileList.size(); i++) {
-		       
-		            	if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("swimmer")) {
-		            		temp = new Swimmer(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
-		           			swimmerList.add(temp);
-		           		}
-		           		else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("sprinter")) {
-		           			temp = new Sprinter(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
-		           			sprinterList.add(temp);
-		           		}
-		           		else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("cyclist")) {
-		           			temp = new Cyclist(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
-		           			cyclistList.add(temp);
-		           		}
-		           		else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("official")) {
-		           			temp = new Official(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);       
-		           			officialList.add(temp);
-		            	}
-		            	else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("superathlete")) {
-		            		temp = new SuperAthlete(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
-		           			superAthList.add(temp);
-		           			swimmerList.add(temp);
-		           			sprinterList.add(temp);
-		           			cyclistList.add(temp);
-		           		}
-		           	}
-		            
-		            //-------------------------------------------
-		            
-		    		participantList.put(Participant.SWIMMER, swimmerList);
-		    		participantList.put(Participant.CYCLIST, cyclistList);
-		    		participantList.put(Participant.SPRINTER, sprinterList);
-		    		participantList.put(Participant.OFFICIAL, officialList);		
-
-		        } catch (FileNotFoundException e) {
-		        	fileNotFoundRecovery();
-		            e.printStackTrace();
-		        } catch (IOException e) {
-		            e.printStackTrace();
-		        } finally {
-		            if (br != null) {
-		                try {
-		                    br.close();
-		                } catch (IOException e) {
-		                    e.printStackTrace();
-		                }
-		            }
-		        }
+		} catch (FileNotFoundException e) {
+		    fileNotFoundRecovery();
+		    e.printStackTrace();
+		} catch (IOException e) {
+		    e.printStackTrace();
+		} finally {
+		    if (br != null) {
+		        try {
+		             br.close();
+		         } catch (IOException e) {
+		             e.printStackTrace();
+		         }
+		    }
+		 }
 				
-				return true;
+		return true;
 	}
 	public void writeToFile(String text){
 	    	try 
@@ -276,43 +296,49 @@ public class Data {
 			int age = 20 + i;
 			String id = "Oz000" + Integer.toString(j++);
 			Participant swimmer = new Swimmer(id, name, age, "VIC");
-			swimmerList.add(swimmer);
+			athleteList.add((Athlete)swimmer);
 		
 			id = "Oz000" + Integer.toString(j++);		
 			name = "ATH-" + Cyclist.CYCLIST
 				          + Integer.toString(i);
 			Participant cyclist = new Cyclist(id, name, age, "VIC");
-			cyclistList.add(cyclist);
+			athleteList.add((Athlete)cyclist);
 			
 			id = "Oz000" + Integer.toString(j++);		
 			name = "ATH-" + Sprinter.SPRINTER
 			              + Integer.toString(i);
 			Participant sprinter = new Sprinter(id, name, age, "VIC");
-			sprinterList.add(sprinter);
+			athleteList.add((Athlete)sprinter);
 			
 			id = "Oz000" + Integer.toString(j++);
 			name = "ATH-" + SuperAthlete.SUPERATHLETE 
 		                  + Integer.toString(i);
 			Participant superAthlete = new SuperAthlete(id, name, age, "VIC");
-			superAthList.add(superAthlete);
+			athleteList.add((Athlete)superAthlete);
 					
 			//for implement candidate list
 			//adding superAth into each list
-			swimmerList.add(superAthlete);
-			cyclistList.add(superAthlete);
-			sprinterList.add(superAthlete);
+			//swimmerList.add(superAthlete);
+			//cyclistList.add(superAthlete);
+			//sprinterList.add(superAthlete);
 					
 			//setting offical
 			id = "Oz000" + Integer.toString(j++);
 			name = "OFF-" + Integer.toString(i);
 			Participant offical = new Official(id, name, age, "VIC");
-			officialList.add(offical);
+			officialList.add((Official)offical);
+			
+			participant.put(swimmer.getPersonID(), swimmer);
+			participant.put(cyclist.getPersonID(), cyclist);
+			participant.put(sprinter.getPersonID(), sprinter);
+			participant.put(superAthlete.getPersonID(), superAthlete);
+			participant.put(offical.getPersonID(), offical);
 		}
 				
-		participantList.put(Participant.SWIMMER, swimmerList);
-		participantList.put(Participant.CYCLIST, cyclistList);
-		participantList.put(Participant.SPRINTER, sprinterList);
-		participantList.put(Participant.OFFICIAL, officialList);
+		//participantList.put(Participant.SWIMMER, swimmerList);
+		//participantList.put(Participant.CYCLIST, cyclistList);
+		//participantList.put(Participant.SPRINTER, sprinterList);
+		//participantList.put(Participant.OFFICIAL, officialList);
 		return true;
 	}
 }

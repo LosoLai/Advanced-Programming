@@ -7,6 +7,7 @@ package View;
 import Controller.Driver;
 import Model.Athlete;
 import Model.Game;
+import Model.Official;
 import Model.Participant;
 import java.util.*;
 import java.util.Map.Entry;
@@ -73,7 +74,7 @@ public class OzlympicGameView extends Application {
 		
 		try {
 			root = new BorderPane();
-			Scene scene = new Scene(root,600,400);
+			Scene scene = new Scene(root,800,600);
 			//create menu bar on the top of view
 			createMenuBar();
 			//create navigation menu
@@ -208,7 +209,7 @@ public class OzlympicGameView extends Application {
 	private void createListView_SelectParticipants()
 	{
 		//get all participant lists
-		HashMap<String, ArrayList<Participant>> allParticipant = gameDriver.getParticipantList();
+		HashMap<String, Participant> allParticipant = gameDriver.getParticipantList();
 		//test
 		Iterator entries = allParticipant.entrySet().iterator();
 		while(entries.hasNext()) {
@@ -226,7 +227,7 @@ public class OzlympicGameView extends Application {
 		FlowPane pane1 = new FlowPane();
         FlowPane pane2 = new FlowPane();
         
-        ArrayList<Participant> official = allParticipant.get(Participant.OFFICIAL);
+        ArrayList<Official> official = gameDriver.officialList;
         pane1.getChildren().add(new Label(Participant.OFFICIAL + "List :"));
         pane2.getChildren().add(new Label(Participant.OFFICIAL + "Selected :"));
         for(int i=0 ; i<official.size() ; i++)
@@ -240,7 +241,7 @@ public class OzlympicGameView extends Application {
         SplitPane splitPane_Ref = new SplitPane(pane1, pane2);
         splitPane_Ref.setStyle("-fx-border-color: #f26704;");
         splitPane_Ref.setOrientation(Orientation.VERTICAL);
-        splitPane_Ref.setDividerPositions(0.5f, 0.5f);
+        splitPane_Ref.setDividerPositions(0.7f, 0.3f);
         splitPane_Ref.setPrefSize(400, 400);
         selectParticipant.add(splitPane_Ref, 0, 1);
 
@@ -248,12 +249,12 @@ public class OzlympicGameView extends Application {
         FlowPane pane3 = new FlowPane();
         FlowPane pane4 = new FlowPane();
         
-        ArrayList<Participant> swimmer = allParticipant.get(Participant.SWIMMER);
+        ArrayList<Athlete> athlete = gameDriver.athleteList;
         pane3.getChildren().add(new Label(Participant.ATHLETE + "List :"));
         pane4.getChildren().add(new Label(Participant.ATHLETE + "Selected :"));
-        for(int i=0 ; i<swimmer.size() ; i++)
+        for(int i=0 ; i<athlete.size() ; i++)
         {
-        	pane3.getChildren().add(createButton(swimmer.get(i).getName()));
+        	pane3.getChildren().add(createButton(athlete.get(i).getName()));
         }
 	    
         addDropHandling(pane3);
@@ -262,7 +263,7 @@ public class OzlympicGameView extends Application {
         SplitPane splitPane_Ath = new SplitPane(pane3, pane4);
         splitPane_Ath.setStyle("-fx-border-color: #206bd6;");
         splitPane_Ath.setOrientation(Orientation.VERTICAL);
-        splitPane_Ath.setDividerPositions(0.5f, 0.5f);
+        splitPane_Ath.setDividerPositions(0.7f, 0.3f);
         splitPane_Ath.setPrefSize(400, 400);
         selectParticipant.add(splitPane_Ath, 1, 1);
         

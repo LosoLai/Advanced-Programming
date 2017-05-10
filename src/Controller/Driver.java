@@ -25,21 +25,24 @@ public class Driver {
 	Data data = new Data();
 	public static Game currentGame;
 	public static Driver gameDriver = new Driver();
-	private ArrayList<Game> gameList = new ArrayList<Game>();	
-	private ArrayList<Participant> swimmerList;
-	private ArrayList<Participant> cyclistList;
-	private ArrayList<Participant> sprinterList;
-	private ArrayList<Participant> superAthList;
-	private ArrayList<Participant> officialList;
-	
+	private ArrayList<Game> gameList = new ArrayList<Game>();
+	//Modified by Loso 10/05/17----------------------------------
+	public static ArrayList<Official> officialList;
+	public static ArrayList<Athlete> athleteList;
+	//private ArrayList<Participant> swimmerList;
+	//private ArrayList<Participant> cyclistList;
+	//private ArrayList<Participant> sprinterList;
+	//private ArrayList<Participant> superAthList;
+	//private ArrayList<Participant> officialList;
+	//-----------------------------------------------------------
 	
 	public static Driver getInstance()
 	{
 		return gameDriver;
 	}
-	public static HashMap<String, ArrayList<Participant>> getParticipantList()
+	public static HashMap<String, Participant> getParticipantList()
 	{
-		return Data.participantList;
+		return Data.participant;
 	}
 	public ArrayList<Game> getGameList()
 	{
@@ -74,11 +77,9 @@ public class Driver {
 		else
 			System.out.println("Participant list read successfully from text file!!!\n\n");
 		
-		swimmerList = data.getSwimmerList();
-		cyclistList = data.getCyclistList();
-		sprinterList = data.getSprinterList();
-		superAthList = data.getSuperAthList();
+		
 		officialList = data.getOfficialList();
+		athleteList = data.getAthletelList();
 		//---------------------------------------------------------------------
 	}
 	
@@ -210,7 +211,7 @@ public class Driver {
 	private void displayAllAthletePoints()
 	{
 		//need to remove all superAthletes from each list first
-		swimmerList.removeAll(superAthList);
+		/*swimmerList.removeAll(superAthList);
 		String swimmersResult = "===== Swimmers result =====\n";
 		for(int i=0 ; i<swimmerList.size() ; i++)
 		{
@@ -263,9 +264,6 @@ public class Driver {
 								   " -> " + Integer.toString(point) + "\n");
 			}
 		}
-		System.out.println(superAthResult);
+		System.out.println(superAthResult);*/
 	}
-	//Add by Arion
-	
-	
 }
