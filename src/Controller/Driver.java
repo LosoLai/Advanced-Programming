@@ -36,6 +36,15 @@ public class Driver {
 	{
 		return gameDriver;
 	}
+	public static HashMap<String, ArrayList<Participant>> getParticipantList()
+	{
+		return Data.participantList;
+	}
+	public ArrayList<Game> getGameList()
+	{
+		return gameList;
+	}
+	
 	public Driver()
 	{
 		boolean bProcessResult1 = data.ozlympicDB();
