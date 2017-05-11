@@ -164,8 +164,11 @@ public class OzlympicGameView extends Application {
 		GridPane participant = new GridPane();
 		participant.setVgap(4);
 		participant.setPadding(new Insets(5, 5, 5, 5));
-		participant.add(new Label("Referee :"), 0, 0);
-		participant.add(new Label("Athlete List :"), 0, 1);
+		participant.add(new Label("Referee :\n" + 
+								  "one official only"), 0, 0);
+		participant.add(new Label("Athlete List :\n" + 
+								  "Minimum: 4 athletes" + 
+								  "Maximum: 8 athletes"), 0, 1);
 		participantInfo.setContent(participant);
 		optionMenu.getChildren().add(participantInfo);
 		
@@ -176,8 +179,10 @@ public class OzlympicGameView extends Application {
 		resultOptions.setVgap(4);
 		resultOptions.setPadding(new Insets(5, 5, 5, 5));
 		Button athletePoints = new Button("Athlete Points");
-		AthletePointsButtonHandler apHandler = new AthletePointsButtonHandler();
-		athletePoints.setOnAction(apHandler);
+		//AthletePointsButtonHandler apHandler = new AthletePointsButtonHandler();
+		athletePoints.setOnAction((e) -> {
+			displayAthletePoint();
+		});
 		resultOptions.add(athletePoints, 0, 0);
 		Button gameResult = new Button("Game Result History");
 		GameResultButtonHandler grHandler = new GameResultButtonHandler();
@@ -347,13 +352,19 @@ public class OzlympicGameView extends Application {
 		//remove the display content node first
 		displayContent.getChildren().remove(1);
 		boolean bResult =
-				gameDriver.processGameViewRequirements(OzlympicGameView.SELECT_GAME, 
-											  		   gameType);
+				gameDriver.selectGameTypeForCreateAGame(gameType);
 		//test
 		System.out.println("result :" + bResult);
 		
 		//create lists showing all the participants
 		createListView_SelectParticipants();
+	}
+	private void displayAthletePoint()
+	{
+		displayContent.getChildren().remove(1);
+		createTableView_AthletePoints(Driver.athleteList);
+		//test
+		System.out.println("Athlete points clicked");
 	}
 	private Button createButton(String text) {
         Button button = new Button(text);

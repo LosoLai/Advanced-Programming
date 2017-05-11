@@ -84,53 +84,25 @@ public class Driver {
 	}
 	
 	//Modified by Loso---------------------------------------------------------
-	public boolean processGameViewRequirements(int userInput, String gameType)
+	//SELECT_GAME: deal with user click a game type for creating a game
+	public boolean selectGameTypeForCreateAGame(String gameType)
 	{
-		if(userInput != OzlympicGameView.SELECT_GAME)
-		{
-			//check game status
-			if(OzlympicGameView.gameStatus == OzlympicGameView.GAME_DEFAULT ||
-					   currentGame == null)
-				return DisplayMenuAndErrorMsg.errorMsg_GameUninitialized();	
-		}
+		//check game status
+		if(OzlympicGameView.gameStatus == OzlympicGameView.GAME_DEFAULT ||
+		   currentGame == null)
+			return DisplayMenuAndErrorMsg.errorMsg_GameUninitialized();	
 		
-		//implement game control
-		switch(userInput)
-		{
-			case OzlympicGameView.SELECT_GAME:
-			{
-				//check game status to prevent initialization without executing
-				if(OzlympicGameView.gameStatus == OzlympicGameView.GAME_INITIATED)
-					return DisplayMenuAndErrorMsg.errorMsg_GameUnexecuted();
+
+		//check game status to prevent initialization without executing
+		if(OzlympicGameView.gameStatus == OzlympicGameView.GAME_INITIATED)
+			return DisplayMenuAndErrorMsg.errorMsg_GameUnexecuted();
 						
-				// create a Game object by userInput
-				createGameByInput(gameType);
+		//create a Game object by game type
+		boolean bCreated = createGameByInput(gameType);
 						
-				OzlympicGameView.gameStatus = OzlympicGameView.GAME_INITIATED;
-			}
-			break;
-			case OzlympicGameView.SELECT_PARTICIPANT:
-			{
-				
-			}
-			break;
-			case OzlympicGameView.START_GAME:
-			{				
-				
-			}
-			break;
-			case OzlympicGameView.DISPLAY_FINALRESULT:
-			{
-				
-			}
-			break;
-			case OzlympicGameView.DISPLAY_ATHLETEPOINTS:
-			{
-				
-			}
-			break;
-		}
-		return true;
+		OzlympicGameView.gameStatus = OzlympicGameView.GAME_INITIATED;
+
+		return bCreated;
 	}
 	private boolean createGameByInput(String gameType)
 	{
