@@ -21,6 +21,11 @@ import java.util.Scanner;
  */
 
 public class Driver {
+	//define game status
+	public static final int GAME_DEFAULT 	= 0;
+	public static final int GAME_INITIATED 	= 1;
+	public static final int GAME_EXECUTED 	= 2;
+	public static int gameStatus 			= GAME_DEFAULT;
 	
 	Data data = new Data();
 	public static Game currentGame;
@@ -86,21 +91,15 @@ public class Driver {
 	//Modified by Loso---------------------------------------------------------
 	//SELECT_GAME: deal with user click a game type for creating a game
 	public boolean selectGameTypeForCreateAGame(String gameType)
-	{
-		//check game status
-		if(OzlympicGameView.gameStatus == OzlympicGameView.GAME_DEFAULT ||
-		   currentGame == null)
-			return DisplayMenuAndErrorMsg.errorMsg_GameUninitialized();	
-		
-
+	{	
 		//check game status to prevent initialization without executing
-		if(OzlympicGameView.gameStatus == OzlympicGameView.GAME_INITIATED)
+		if(gameStatus == GAME_INITIATED)
 			return DisplayMenuAndErrorMsg.errorMsg_GameUnexecuted();
 						
 		//create a Game object by game type
 		boolean bCreated = createGameByInput(gameType);
 						
-		OzlympicGameView.gameStatus = OzlympicGameView.GAME_INITIATED;
+		gameStatus = GAME_INITIATED;
 
 		return bCreated;
 	}
@@ -111,6 +110,30 @@ public class Driver {
 		
 		//test - display gameID 
 		System.out.println("\n" + "Game selected: " + currentGame.getGameID());
+		return true;
+	}
+	
+	//SET CANDIDATE & REFEREE
+	public boolean setRefereeAndCandidate(String refereeID, ArrayList<String> athleteIDList)
+	{
+		if(currentGame == null)
+			return false;
+		
+		Participant referee = Data.participant.get(refereeID);
+		if(referee == null)
+			return false;
+		currentGame.setReferee(referee);
+		for(int i=0 ; i<athleteIDList.size() ; i++)
+		{
+			String id = athleteIDList.get(i);
+			Athlete cadidate = (Athlete)Data.participant.get(id);
+			if(cadidate == null)
+				continue;
+			currentGame.addCandidate(cadidate);
+		}
+		int cadidateNum = currentGame.getCandidate().size();
+		if(cadidateNum < Game.CANDIDATELIMIT_MIN || cadidateNum > Game.CANDIDATELIMIT_MAX)
+			return false;
 		return true;
 	}
 	//-------------------------------------------------------------------------

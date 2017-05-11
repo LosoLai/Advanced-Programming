@@ -27,6 +27,7 @@ public class Game {
 	public static final String GAME_CYCLING    = "Cycling";
 	public static final String GAME_RUNNING    = "Running";
 	public static final int GAMETYPE_NUMBER = 3; //total 3 types of games
+	public static final int REFEREELIMIT = 1;
 	public static final int CANDIDATELIMIT_MIN = 4;
 	public static final int CANDIDATELIMIT_MAX = 8;
 	public final int S_TIMELIMIT_MIN   = 100;
