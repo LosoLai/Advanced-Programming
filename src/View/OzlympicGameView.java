@@ -185,8 +185,9 @@ public class OzlympicGameView extends Application {
 		});
 		resultOptions.add(athletePoints, 0, 0);
 		Button gameResult = new Button("Game Result History");
-		GameResultButtonHandler grHandler = new GameResultButtonHandler();
-		gameResult.setOnAction(grHandler);
+		gameResult.setOnAction((e) -> {
+			displayGameResult();
+		});
 		resultOptions.add(gameResult, 0, 1);
 		displayResult.setContent(resultOptions);
 		optionMenu.getChildren().add(displayResult);
@@ -365,6 +366,14 @@ public class OzlympicGameView extends Application {
 		createTableView_AthletePoints(Driver.athleteList);
 		//test
 		System.out.println("Athlete points clicked");
+	}
+	private void displayGameResult()
+	{
+		displayContent.getChildren().remove(1);
+		ArrayList<Game> gameList = gameDriver.getGameList();
+		createTableView_GameResults(gameList);
+		//test
+		System.out.println("Game result history clicked");
 	}
 	private Button createButton(String text) {
         Button button = new Button(text);
