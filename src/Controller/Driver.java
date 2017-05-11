@@ -83,7 +83,66 @@ public class Driver {
 		//---------------------------------------------------------------------
 	}
 	
-	public boolean processByUserInput(int userInput, String gameType)
+	//Modified by Loso---------------------------------------------------------
+	public boolean processGameViewRequirements(int userInput, String gameType)
+	{
+		if(userInput != OzlympicGameView.SELECT_GAME)
+		{
+			//check game status
+			if(OzlympicGameView.gameStatus == OzlympicGameView.GAME_DEFAULT ||
+					   currentGame == null)
+				return DisplayMenuAndErrorMsg.errorMsg_GameUninitialized();	
+		}
+		
+		//implement game control
+		switch(userInput)
+		{
+			case OzlympicGameView.SELECT_GAME:
+			{
+				//check game status to prevent initialization without executing
+				if(OzlympicGameView.gameStatus == OzlympicGameView.GAME_INITIATED)
+					return DisplayMenuAndErrorMsg.errorMsg_GameUnexecuted();
+						
+				// create a Game object by userInput
+				createGameByInput(gameType);
+						
+				OzlympicGameView.gameStatus = OzlympicGameView.GAME_INITIATED;
+			}
+			break;
+			case OzlympicGameView.SELECT_PARTICIPANT:
+			{
+				
+			}
+			break;
+			case OzlympicGameView.START_GAME:
+			{				
+				
+			}
+			break;
+			case OzlympicGameView.DISPLAY_FINALRESULT:
+			{
+				
+			}
+			break;
+			case OzlympicGameView.DISPLAY_ATHLETEPOINTS:
+			{
+				
+			}
+			break;
+		}
+		return true;
+	}
+	private boolean createGameByInput(String gameType)
+	{
+		currentGame = new Game(gameType);
+		gameList.add(currentGame);
+		
+		//test - display gameID 
+		System.out.println("\n" + "Game selected: " + currentGame.getGameID());
+		return true;
+	}
+	//-------------------------------------------------------------------------
+	/*public boolean processByUserInput(int userInput, String gameType)
 	{
 		if(userInput != OzlympicGameView.SELECT_GAME)
 		{
@@ -108,13 +167,13 @@ public class Driver {
 				OzlympicGameView.gameStatus = OzlympicGameView.GAME_INITIATED;
 			}
 			break;
-			/*case OzlympicGameView.SELECT_PARTICIPANT:
+			case OzlympicGameView.SELECT_PARTICIPANT:
 			{
 				boolean bFuncWork = displayCandidateList();
 				if(!bFuncWork)
 					return true; //back to main menu
 			}
-			break;*/
+			break;
 			case OzlympicGameView.START_GAME:
 			{				
 				//re-run game checking
@@ -211,7 +270,7 @@ public class Driver {
 	private void displayAllAthletePoints()
 	{
 		//need to remove all superAthletes from each list first
-		/*swimmerList.removeAll(superAthList);
+		swimmerList.removeAll(superAthList);
 		String swimmersResult = "===== Swimmers result =====\n";
 		for(int i=0 ; i<swimmerList.size() ; i++)
 		{
@@ -264,6 +323,6 @@ public class Driver {
 								   " -> " + Integer.toString(point) + "\n");
 			}
 		}
-		System.out.println(superAthResult);*/
-	}
+		System.out.println(superAthResult);
+	}*/
 }

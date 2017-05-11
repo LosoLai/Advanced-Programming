@@ -344,10 +344,13 @@ public class OzlympicGameView extends Application {
 	
 	private void gameTypeButtonHandler(String gameType)
 	{
-		//remove the displaycontent node first
+		//remove the display content node first
 		displayContent.getChildren().remove(1);
-		GameTypeButtonHandler buttonHandler = new GameTypeButtonHandler(gameType);
-		boolean bResult = buttonHandler.handle();
+		boolean bResult =
+				gameDriver.processGameViewRequirements(OzlympicGameView.SELECT_GAME, 
+											  		   gameType);
+		//test
+		System.out.println("result :" + bResult);
 		
 		//create lists showing all the participants
 		createListView_SelectParticipants();
