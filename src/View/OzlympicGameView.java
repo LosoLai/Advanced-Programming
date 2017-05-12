@@ -4,11 +4,13 @@
  */
 
 package View;
+import Assignment02.GameUnexecutedException;
 import Controller.Driver;
 import Model.Athlete;
 import Model.Game;
 import Model.Official;
 import Model.Participant;
+
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -360,8 +362,12 @@ public class OzlympicGameView extends Application {
 	{
 		//remove the display content node first
 		displayContent.getChildren().remove(1);
-		boolean bResult =
-				gameDriver.selectGameTypeForCreateAGame(gameType);
+		boolean bResult = false;
+		try {
+		bResult = gameDriver.selectGameTypeForCreateAGame(gameType);
+		} catch (GameUnexecutedException e){
+			System.err.println(e.getMessage());
+		}
 		//test
 		System.out.println("result :" + bResult);
 		

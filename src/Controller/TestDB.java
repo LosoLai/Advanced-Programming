@@ -5,10 +5,18 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.hsqldb.Server;
 
+import Model.Athlete;
+import Model.Cyclist;
+import Model.Official;
 import Model.Participant;
+import Model.Sprinter;
+import Model.SuperAthlete;
+import Model.Swimmer;
 
 public class TestDB {
 	
@@ -24,6 +32,10 @@ public class TestDB {
 		hsqlServer.setDatabaseName(0, "OzlympicDB");
 		hsqlServer.setDatabasePath(0, "file:MYDB");
 		hsqlServer.start();
+		Participant temp = null;
+		ArrayList<Athlete> athleteList = new ArrayList<Athlete>();
+		HashMap<String, Participant> participant = new HashMap<String, Participant>();
+		ArrayList<Official> officialList = new ArrayList<Official>();
 		
 		try {
 			Class.forName("org.hsqldb.jdbcDriver");
@@ -68,13 +80,45 @@ public class TestDB {
 				connection.prepareStatement("insert into participants values ('" + id + "', '" + type + "', '" + name + "', " + age + ", '" + state + "');").execute();
 			}
 			
-			rs = connection.prepareStatement("select * from results").executeQuery();
-			rs.next();
-			System.out.println(rs.getDouble("time") + rs.getInt("points"));
-			while (rs.next()){
-				System.out.println(rs.getString("id"));
-			}
+			rs = connection.prepareStatement("select * from participants").executeQuery();
 			connection.commit();
+			while (rs.next()) {
+				
+				if (rs.getString("type").equalsIgnoreCase("swimmer")) {
+	        		temp = new Swimmer(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
+	       			//swimmerList.add(temp);
+	        		athleteList.add((Athlete)temp);
+	       		}
+	       		else if (rs.getString("type").equalsIgnoreCase("sprinter")) {
+	       			temp = new Sprinter(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
+	       			//sprinterList.add(temp);
+	       			athleteList.add((Athlete)temp);
+	       		}
+	       		else if (rs.getString("type").equalsIgnoreCase("cyclist")) {
+	       			temp = new Cyclist(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
+	       			//cyclistList.add(temp);
+	       			athleteList.add((Athlete)temp);
+	       		}
+	       		else if (rs.getString("type").equalsIgnoreCase("official")) {
+	       			temp = new Official(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));       
+	       			officialList.add((Official)temp);
+	        	}
+	        	else if (rs.getString("type").equalsIgnoreCase("superathlete")) {
+	        		temp = new SuperAthlete(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
+	       			//superAthList.add(temp);
+	       			//swimmerList.add(temp);
+	       			//sprinterList.add(temp);
+	       			//cyclistList.add(temp);
+	        		athleteList.add((Athlete)temp);
+	       		}
+				participant.put(temp.getPersonID(), temp);
+	       	}
+			
+
+			for (int i=0; i<8; i++){
+				System.out.println(athleteList.get(i).getName());
+			}
+			
 			} catch (SQLException e2) {
 				e2.printStackTrace();
 			} catch (ClassNotFoundException e2) {

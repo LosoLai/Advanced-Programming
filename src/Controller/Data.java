@@ -187,15 +187,14 @@ public class Data {
 		//Modified by Loso
 		String rootPath = this.getClass().getResource("Participants.txt").getFile();
 		File fileToBeFound = new File(rootPath);
-		if(fileToBeFound == null)
-			return fileNotFoundRecovery();
+		
 		//-------------------------------------------
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
 			    
 		try {
-            br = new BufferedReader(new FileReader(fileToBeFound.getAbsolutePath()));
+			br = new BufferedReader(new FileReader(fileToBeFound.getAbsolutePath()));
             while ((line = br.readLine()) != null) {
             // use comma as separator
 		    fileList.add(line.split(cvsSplitBy));

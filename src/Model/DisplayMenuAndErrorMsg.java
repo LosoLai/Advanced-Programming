@@ -75,12 +75,7 @@ public class DisplayMenuAndErrorMsg {
 			System.out.println("Please select game type first.");
 			return true;
 		}
-		// display error message when game object is unexecuted
-		public static boolean errorMsg_GameUnexecuted()
-		{
-			System.out.println("Please start game to get result.");
-			return true;
-		}
+		
 		public static void errorMsg_InvalidCandidateList()
 		{
 			System.out.println("Candidate number is invalid, game is cancelled.\n" +

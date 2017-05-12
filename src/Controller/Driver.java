@@ -1,5 +1,6 @@
 package Controller;
 
+import Assignment02.GameUnexecutedException;
 import Model.*;
 import View.*;
 
@@ -59,7 +60,7 @@ public class Driver {
 		//Modified by Loso 10/05/17--------------------------------------------
 		//Comment the connect DB feature for testing the file reading part
 		//To retrieve participant lists 
-		/*boolean bProcessResult1 = data.ozlympicDB();
+/*		boolean bProcessResult1 = data.ozlympicDB();
 		
 		//failure in hsql database
 		if(!bProcessResult1) {
@@ -71,9 +72,13 @@ public class Driver {
 				System.out.println("Failed to read participant list from text file.\n\n");
 			else 
 				System.out.println("Participant list read successfully from text file!!!\n\n");
+			officialList = data.getOfficialList();
+			athleteList = data.getAthletelList();
 		}
 		else 
-			System.out.print("Participant list read successfully from database!!\n\n");*/
+			System.out.print("Participant list read successfully from database!!\n\n");
+		officialList = data.getOfficialList();
+		athleteList = data.getAthletelList();*/
 		
 		//Reading data from file
 		boolean bProcessResult2 = data.initialParticipantList();
@@ -90,11 +95,11 @@ public class Driver {
 	
 	//Modified by Loso---------------------------------------------------------
 	//SELECT_GAME: deal with user click a game type for creating a game
-	public boolean selectGameTypeForCreateAGame(String gameType)
+	public boolean selectGameTypeForCreateAGame(String gameType) throws GameUnexecutedException
 	{	
 		//check game status to prevent initialization without executing
 		if(gameStatus == GAME_INITIATED)
-			return DisplayMenuAndErrorMsg.errorMsg_GameUnexecuted();
+			throw new GameUnexecutedException("Please start game to get result.");
 						
 		//create a Game object by game type
 		boolean bCreated = createGameByInput(gameType);
