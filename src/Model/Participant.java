@@ -5,9 +5,9 @@ package Model;
 public class Participant {
 	
 	public static final String CYCLIST = "Cyclist";
-	public static final String SPRINTER = "Runner";
+	public static final String SPRINTER = "Sprinter";
 	public static final String SWIMMER = "Swimmer";
-	public static final String SUPERATHLETE  = "SuperAth";
+	public static final String SUPERATHLETE  = "Super";
 	public static final String OFFICIAL = "Official";
 	public static final String ATHLETE  = "Athlete";
 	

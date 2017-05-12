@@ -91,7 +91,7 @@ public class OzlympicGameView extends Application {
 	{
 		String[] menu = {"Save", "Help"};
 		String[] menuItem = {"Game Result Saving", 
-							 "Rules Explaination"};
+							 "Rules Explanation"};
 		MenuBar menuBar = new MenuBar();
         // --- Menu Save
         Menu menuSave = new Menu(menu[0]);
@@ -198,8 +198,8 @@ public class OzlympicGameView extends Application {
 		Label title = new Label("Display Area:");		
 		String str = "Instructions:\n" +
 					 "1. Select a game type from navigation menu.\n" +
-				 	 "2. Choose athlete and referee to participate the game.\n" +
-				 	 "3. Click the 'Confirm' button to set the candidate.\n" +
+				 	 "2. Drag and drop athletes and a referee to participate in the game.\n" +
+				 	 "3. Click the 'Confirm' button to set the participants.\n" +
 				 	 "4. Select Athlete Points to list the scores for each athlete.\n" +
 				 	 "5. Select Game Result History to show the all game result.";
 		TextArea content = new TextArea(str);
@@ -395,7 +395,7 @@ public class OzlympicGameView extends Application {
 		//test
 		System.out.println("Game result history clicked");
 	}
-	private void setCandidateList(FlowPane referee, FlowPane athlete)
+	private void setCandidateList(FlowPane referee, FlowPane athlete) 
 	{
 		boolean bSet = false;
 		//get referee ID
