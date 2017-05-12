@@ -30,10 +30,6 @@ public class OfficialTest {
 	Athlete swimmer1, swimmer2, swimmer3, swimmer4; 
 	Official official;
 	
-	@BeforeClass
-	public static void setUpClass() throws Exception {
-		Driver driver = new Driver();
-		}
 	
 	@Before
 	public void setUp() throws Exception {

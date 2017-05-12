@@ -4,9 +4,13 @@
 package JUnitTest;
 
 import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import Controller.Driver;
 import Model.Athlete;
+import Model.Game;
 import Model.Swimmer;
 import Model.Cyclist;
 import Model.Sprinter;
@@ -37,14 +41,16 @@ public class AthleteTest_compareTo {
 	 */
 	@Test
 	public void testCompareTo_Swimmer() {
-		swimmer1.Compete();
-		swimmer2.Compete();
-		time1 = swimmer1.getExecuteTime();
-		time2 = swimmer2.getExecuteTime();
+		Driver.currentGame = new Game("Swimming");
+		time1 = swimmer1.Compete();
+		time2 = swimmer2.Compete();
+		swimmer1.setExecuteTime(time1);
+		swimmer2.setExecuteTime(time2);
 		System.out.println("Swimmer1 time: " + time1 + "\nSwimmer2 time: " + time2);
 		
 		if (time1 > time2) assertTrue(swimmer1.compareTo(swimmer2) > 0);
-		if (time1 < time2) assertFalse(swimmer1.compareTo(swimmer2) > 0);
+		if (time1 < time2) assertTrue(swimmer1.compareTo(swimmer2) < 0);
+		if (time1 == time2) assertEquals(0,swimmer1.compareTo(swimmer2));
 	}
 
 	/**
@@ -52,14 +58,16 @@ public class AthleteTest_compareTo {
 	 */
 	@Test
 	public void testCompareTo_Cyclist() {
-		cyclist1.Compete();
-		cyclist2.Compete();
-		time1 = cyclist1.getExecuteTime();
-		time2 = cyclist2.getExecuteTime();
+		Driver.currentGame = new Game("Cycling");
+		time1 = cyclist1.Compete();
+		time2 = cyclist2.Compete();
+		cyclist1.setExecuteTime(time1);
+		cyclist2.setExecuteTime(time2);
 		System.out.println("Cyclist1 time: " + time1 + "\nCyclist2 time: " + time2);
 		
 		if (time1 > time2) assertTrue(cyclist1.compareTo(cyclist2) > 0);
-		if (time1 < time2) assertFalse(cyclist1.compareTo(cyclist2) > 0);
+		if (time1 < time2) assertTrue(cyclist1.compareTo(cyclist2) < 0);
+		if (time1 == time2) assertEquals(0,cyclist1.compareTo(cyclist2));
 	}
 	
 	/**
@@ -67,13 +75,15 @@ public class AthleteTest_compareTo {
 	 */
 	@Test
 	public void testCompareTo_Sprinter() {
-		sprinter1.Compete();
-		sprinter2.Compete();
-		time1 = sprinter1.getExecuteTime();
-		time2 = sprinter2.getExecuteTime();
+		Driver.currentGame = new Game("Running");
+		time1 = sprinter1.Compete();
+		time2 = sprinter2.Compete();
+		sprinter1.setExecuteTime(time1);
+		sprinter2.setExecuteTime(time2);
 		System.out.println("Sprinter1 time: " + time1 + "\nSprinter2 time: " + time2);
 		
 		if (time1 > time2) assertTrue(sprinter1.compareTo(sprinter2) > 0);
-		if (time1 < time2) assertFalse(sprinter1.compareTo(sprinter2) > 0);
+		if (time1 < time2) assertTrue(sprinter1.compareTo(sprinter2) < 0);
+		if (time1 == time2) assertEquals(0,sprinter1.compareTo(sprinter2));
 	}
 }

@@ -28,10 +28,6 @@ public class AthleteTest_compete {
 	String type;
 	double time;
 	
-	@BeforeClass
-	public static void setUpClass() throws Exception {
-		Driver driver = new Driver();
-		}
 	
 	@Before
 	public void setUp() throws Exception {
@@ -82,8 +78,8 @@ public class AthleteTest_compete {
 	 */
 	@Test
 	public void testCompete_Swimmer() {
-		swimmer.Compete();
-		time = swimmer.getExecuteTime();
+		Driver.currentGame = new Game("Swimming");
+		time = swimmer.Compete();
 		System.out.println("Swimmer time: " + time);
 		assertTrue(time > 100);
 		assertTrue(time < 200);
@@ -94,8 +90,8 @@ public class AthleteTest_compete {
 	 */
 	@Test
 	public void testCompete_Cyclist() {
+		Driver.currentGame = new Game("Cycling");
 		time = cyclist.Compete();
-		//time = cyclist.getExecuteTime();
 		System.out.println("Cyclist time: " + time);
 		assertTrue(time > 500);
 		assertTrue(time < 800);
@@ -106,8 +102,8 @@ public class AthleteTest_compete {
 	 */
 	@Test
 	public void testCompete_Sprinter() {
-		sprinter.Compete();
-		time = sprinter.getExecuteTime();
+		Driver.currentGame = new Game("Running");
+		time = sprinter.Compete();
 		System.out.println("Sprinter time: " + time);
 		assertTrue(time > 10);
 		assertTrue(time < 20);

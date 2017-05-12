@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
+import Controller.Driver;
 import Model.Athlete;
 import Model.Game;
 import Model.Official;
@@ -34,7 +35,7 @@ public class GameTest_ExecuteGame {
 		swimmer3 = new Swimmer("swimmer3 id", "swimmer3 name", 22, "swimmer3 state");
 		swimmer4 = new Swimmer("swimmer4 id", "swimmer4 name", 23, "swimmer4 state");
 		official = new Official("official id", "official name", 24, "official state");
-		game = new Game("Swimming");
+		Driver.currentGame = new Game("Swimming");
 	}
 
 	/**
@@ -48,11 +49,11 @@ public class GameTest_ExecuteGame {
 		candidateList.add(swimmer2);
 		candidateList.add(swimmer3);
 		candidateList.add(swimmer4);
-		game.addCandidate(swimmer1);
-		game.addCandidate(swimmer2);
-		game.addCandidate(swimmer3);
-		game.addCandidate(swimmer4);
-		assertEquals(candidateList,game.getCandidate());
+		Driver.currentGame.addCandidate(swimmer1);
+		Driver.currentGame.addCandidate(swimmer2);
+		Driver.currentGame.addCandidate(swimmer3);
+		Driver.currentGame.addCandidate(swimmer4);
+		assertEquals(candidateList,Driver.currentGame.getCandidate());
 	}
 
 	/**
@@ -60,8 +61,8 @@ public class GameTest_ExecuteGame {
 	 */
 	@Test
 	public void testSetReferee() {
-		game.setReferee(official);
-		assertEquals(official,game.getReferee());
+		Driver.currentGame.setReferee(official);
+		assertEquals(official,Driver.currentGame.getReferee());
 	}
 	
 	/**
@@ -69,7 +70,7 @@ public class GameTest_ExecuteGame {
 	 */
 	@Test
 	public void testExecuteGame1() {
-		assertFalse(game.executeGame());
+		assertFalse(Driver.currentGame.executeGame());
 	}
 	
 	/**
@@ -77,8 +78,8 @@ public class GameTest_ExecuteGame {
 	 */
 	@Test
 	public void testExecuteGame2() {
-		game.setReferee(official);
-		assertFalse(game.executeGame());
+		Driver.currentGame.setReferee(official);
+		assertFalse(Driver.currentGame.executeGame());
 	}
 	
 	/**
@@ -86,11 +87,11 @@ public class GameTest_ExecuteGame {
 	 */
 	@Test
 	public void testExecuteGame3() {
-		game.addCandidate(swimmer1);
-		game.addCandidate(swimmer2);
-		game.addCandidate(swimmer3);
-		game.addCandidate(swimmer4);
-		assertFalse(game.executeGame());
+		Driver.currentGame.addCandidate(swimmer1);
+		Driver.currentGame.addCandidate(swimmer2);
+		Driver.currentGame.addCandidate(swimmer3);
+		Driver.currentGame.addCandidate(swimmer4);
+		assertFalse(Driver.currentGame.executeGame());
 	}
 	
 	/**
@@ -98,12 +99,12 @@ public class GameTest_ExecuteGame {
 	 */
 	@Test
 	public void testExecuteGame4() {
-		game.addCandidate(swimmer1);
-		game.addCandidate(swimmer2);
-		game.addCandidate(swimmer3);
-		game.addCandidate(swimmer4);
-		game.setReferee(official);
-		assertTrue(game.executeGame());
+		Driver.currentGame.addCandidate(swimmer1);
+		Driver.currentGame.addCandidate(swimmer2);
+		Driver.currentGame.addCandidate(swimmer3);
+		Driver.currentGame.addCandidate(swimmer4);
+		Driver.currentGame.setReferee(official);
+		assertTrue(Driver.currentGame.executeGame());
 	}
 
 }
