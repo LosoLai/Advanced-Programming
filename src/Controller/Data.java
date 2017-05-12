@@ -27,6 +27,14 @@ import Model.Sprinter;
 import Model.SuperAthlete;
 import Model.Swimmer;
 
+/**Author: Arion
+ * The role of the Data class is to implement data reading/writing
+ * 1. ozlympicDB() <Modified by Loso>
+ * 2. initialParticipantList() <Modified by Loso>
+ * 3. writeToFile()
+ * 4. fileNotFoundRecovery() <Added by Loso>
+ */
+
 public class Data {
 	
 	private String writePath = this.getClass().getResource("gameResults.txt").getFile();
@@ -67,6 +75,8 @@ public class Data {
 	public ArrayList<Participant> getOfficialList() {
 		return officialList;
 	}*/
+	
+	//Initialize DB and import data
 	public boolean ozlympicDB() {
 		
 		Server hsqlServer = null;
@@ -86,7 +96,7 @@ public class Data {
 			Class.forName("org.hsqldb.jdbcDriver");
 			connection = DriverManager.getConnection("jdbc:hsqldb:OzlympicDB", "sa", "123");
 			connection.prepareStatement("drop table participants if exists;").execute();
-			connection.prepareStatement("drop table participants if exists;").execute();
+			connection.prepareStatement("drop table results if exists;").execute();
 			connection.prepareStatement("create table participants (id varchar(7) not null, type varchar(10) not null, name varchar(50) not null, age integer not null, state varchar(20) not null, primary key(id));").execute();
 			connection.prepareStatement("create table results (gameID varchar(10), officialID varchar(10), athleteID varchar(10), time double, points integer);").execute();
 			

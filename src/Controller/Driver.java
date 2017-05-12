@@ -60,7 +60,7 @@ public class Driver {
 		//Modified by Loso 10/05/17--------------------------------------------
 		//Comment the connect DB feature for testing the file reading part
 		//To retrieve participant lists 
-/*		boolean bProcessResult1 = data.ozlympicDB();
+		boolean bProcessResult1 = data.ozlympicDB();
 		
 		//failure in hsql database
 		if(!bProcessResult1) {
@@ -78,19 +78,8 @@ public class Driver {
 		else 
 			System.out.print("Participant list read successfully from database!!\n\n");
 		officialList = data.getOfficialList();
-		athleteList = data.getAthletelList();*/
-		
-		//Reading data from file
-		boolean bProcessResult2 = data.initialParticipantList();
-		if (!bProcessResult2)
-			System.out.println("Failed to read participant list from text file.\n\n");
-		else
-			System.out.println("Participant list read successfully from text file!!!\n\n");
-		
-		
-		officialList = data.getOfficialList();
 		athleteList = data.getAthletelList();
-		//---------------------------------------------------------------------
+		
 	}
 	
 	//Modified by Loso---------------------------------------------------------
