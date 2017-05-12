@@ -28,7 +28,9 @@ public class DisplayMenuAndErrorMsg {
 							 "4. Back to main menu\n\n" +
 							 "Enter an option:");
 		}
-		public static boolean showOverflowWarning()
+		/*REDUNDANT
+		 * 
+		 * public static boolean showOverflowWarning()
 		{
 			System.out.println("Input overflow, please enter valid range\n");
 			return true;
@@ -68,14 +70,21 @@ public class DisplayMenuAndErrorMsg {
 				return false;
 			}
 			return true;
-		}
+		}*/
 		// display error message when game object is uninitialized
 		public static boolean errorMsg_GameUninitialized()
 		{
 			System.out.println("Please select game type first.");
 			return true;
 		}
-		
+		// display error message when game object is unexecuted
+			/*	
+			 * MADE INTO GameUnexecutedException
+			 * public static boolean errorMsg_GameUnexecuted()
+				{
+					System.out.println("Please start game to get result.");
+					return true;
+				}*/
 		public static void errorMsg_InvalidCandidateList()
 		{
 			System.out.println("Candidate number is invalid, game is cancelled.\n" +
