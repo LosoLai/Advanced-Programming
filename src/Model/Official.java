@@ -49,50 +49,33 @@ public class Official extends Participant {
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SS").format(new Date());
 		Data data = new Data();
 		
+		//Modified by Loso 13/05/17----------------------------------------
+		//remove write file and DB 
+		//reason: should do write file / DB when user close the application
+		//because write file / DB is time expensive, shouldn't execute each time after setResult
 		//display gameID first
-		this.gameResult = "\n========= " + gameID + " Results ==========\n";
-		
-		//Write to file
-		data.writeToFile(timeStamp);
-		data.writeToFile(gameResult);
-		
+		this.gameResult = "\n Current System Time : " + timeStamp;
+		this.gameResult += "\n========= " + gameID + " Results ==========\n";
 		if(sortedList != null)
 		{
 			int index = 0;
-			while(index < sortedList.size())
+			while(index < RESULT_TOP3)
 			{
 				Athlete record = sortedList.get(index);
-				if(index == INDEX_1ST){
+				if(index == INDEX_1ST)
 					record.setPoints(POINT_1ST);
-					resultTop3[index] = record;
-					data.connection.prepareStatement("insert into results values ('" + gameID +"', '" + this.getPersonID() + "', '" + sortedList.get(index).getPersonID() + "', '" + sortedList.get(index).getExecuteTime() + "', '" + POINT_1ST + "');");
-					data.writeToFile(record.toString() + ", " + POINT_1ST + "\n");
-					this.gameResult += record.toString() + ", " + POINT_1ST + "\n";
-				}
-				else if(index == INDEX_2ND){
+				if(index == INDEX_2ND)
 					record.setPoints(POINT_2ND);
-					resultTop3[index] = record;
-					data.connection.prepareStatement("insert into results values ('" + gameID +"', '" + this.getPersonID() + "', '" + sortedList.get(index).getPersonID() + "', '" + sortedList.get(index).getExecuteTime() + "', '" + POINT_2ND + "');");
-					data.writeToFile(record.toString() + ", " + POINT_2ND + "\n");
-					this.gameResult += record.toString() + ", " + POINT_2ND + "\n";
-				}
-				else if(index == INDEX_3RD){
+				if(index == INDEX_3RD)
 					record.setPoints(POINT_3RD);
-					resultTop3[index] = record;
-					data.connection.prepareStatement("insert into results values ('" + gameID +"', '" + this.getPersonID() + "', '" + sortedList.get(index).getPersonID() + "', '" + sortedList.get(index).getExecuteTime() + "', '" + POINT_3RD + "');");
-					data.writeToFile(record.toString() + ", " + POINT_3RD + "\n");
-					this.gameResult += record.toString() + ", " + POINT_3RD + "\n";
-				}
-				else {	
-					data.connection.prepareStatement("insert into results values ('" + gameID +"', '" + this.getPersonID() + "', '" + sortedList.get(index).getPersonID() + "', '" + sortedList.get(index).getExecuteTime() + "', '" + NO_POINTS + "');");
-					data.writeToFile(record.toString() + ", " + NO_POINTS + "\n");
-					this.gameResult += record.toString() + ", " + NO_POINTS + "\n";
-				}
+					
+				resultTop3[index] = record;
+				this.gameResult += record.toString();
 				index++;
 			}
-			this.gameResult += "\n\nReferee: " + this.getName();
+			this.gameResult += "\n\nReferee: " + this.getName() + "\n";
 		}
-		data.writeToFile("\n");
 		return this.gameResult;
+		//-----------------------------------------------------------------
 	}
 }

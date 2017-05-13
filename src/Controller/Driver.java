@@ -108,7 +108,7 @@ public class Driver {
 	}
 	
 	//SET CANDIDATE & REFEREE
-	public boolean setRefereeAndCandidate(String refereeID, ArrayList<String> athleteIDList)
+	public boolean setRefereeAndCandidate(String refereeID, ArrayList<String> athleteIDList) throws GameUnexecutedException
 	{
 		if(currentGame == null)
 			return false;
@@ -128,7 +128,24 @@ public class Driver {
 		int cadidateNum = currentGame.getCandidate().size();
 		if(cadidateNum < Game.CANDIDATELIMIT_MIN || cadidateNum > Game.CANDIDATELIMIT_MAX)
 			return false;
-		return true;
+		
+		//execute the game
+		boolean bExecute = executeCurrentGame();
+		return bExecute;
+	}
+	private boolean executeCurrentGame() throws GameUnexecutedException
+	{
+		boolean bExecuted = false;
+		//re-run game checking
+		if(gameStatus == GAME_EXECUTED) {
+			throw new GameUnexecutedException("Re-run game exception");
+		}
+		if(gameStatus == GAME_INITIATED) {
+			bExecuted = currentGame.executeGame();
+			if(bExecuted)
+				gameStatus = GAME_EXECUTED;
+		}
+		return bExecuted;
 	}
 	//-------------------------------------------------------------------------
 	/*public boolean processByUserInput(int userInput, String gameType)

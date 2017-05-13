@@ -4,21 +4,32 @@
  */
 
 package View;
-import Assignment02.GameUnexecutedException;
 import Controller.Driver;
 import Model.Athlete;
 import Model.Game;
 import Model.Official;
 import Model.Participant;
-
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import Assignment02.GameUnexecutedException;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.ParallelTransition;
+import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -32,13 +43,16 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
-import javafx.scene.control.Button;
-import javafx.scene.control.SplitPane;
 import javafx.scene.input.DataFormat;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.CubicCurveTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextBoundsType;
 
 public class OzlympicGameView extends Application {
 	public static OzlympicGameView gameView;
@@ -72,14 +86,14 @@ public class OzlympicGameView extends Application {
 			//create navigation menu
 			createNavigationMenu();
 			//create display area
-			createDisplayPane();
+			displayContentPane();
 			
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("OzlympicGame");
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
-		}
+		} 
 	}
 	
 	public static void main(String[] args) {
@@ -91,7 +105,7 @@ public class OzlympicGameView extends Application {
 	{
 		String[] menu = {"Save", "Help"};
 		String[] menuItem = {"Game Result Saving", 
-							 "Rules Explanation"};
+							 "Rules Explaination"};
 		MenuBar menuBar = new MenuBar();
         // --- Menu Save
         Menu menuSave = new Menu(menu[0]);
@@ -187,7 +201,7 @@ public class OzlympicGameView extends Application {
 		root.setLeft(optionMenu);
 	}
 	//create display area for showing the information required
-	private void createDisplayPane()
+	private void displayContentPane()
 	{
 		StackPane display = new StackPane();
 		display.setPrefHeight(root.getHeight());
@@ -198,8 +212,8 @@ public class OzlympicGameView extends Application {
 		Label title = new Label("Display Area:");		
 		String str = "Instructions:\n" +
 					 "1. Select a game type from navigation menu.\n" +
-				 	 "2. Drag and drop athletes and a referee to participate in the game.\n" +
-				 	 "3. Click the 'Confirm' button to set the participants.\n" +
+				 	 "2. Choose athlete and referee to participate the game.\n" +
+				 	 "3. Click the 'Confirm' button to set the candidate.\n" +
 				 	 "4. Select Athlete Points to list the scores for each athlete.\n" +
 				 	 "5. Select Game Result History to show the all game result.";
 		TextArea content = new TextArea(str);
@@ -230,6 +244,10 @@ public class OzlympicGameView extends Application {
 		//create splitePane for referee 
 		FlowPane pane1 = new FlowPane();
         FlowPane pane2 = new FlowPane();
+        pane1.setVgap(2);
+		pane1.setHgap(2);
+		pane2.setVgap(2);
+		pane2.setHgap(2);
         
         ArrayList<Official> official = gameDriver.officialList;
         pane1.getChildren().add(new Label(Participant.OFFICIAL + "List :"));
@@ -252,13 +270,18 @@ public class OzlympicGameView extends Application {
         //create splitePane for athlete
         FlowPane pane3 = new FlowPane();
         FlowPane pane4 = new FlowPane();
+        pane3.setVgap(2);
+        pane3.setHgap(2);
+        pane4.setVgap(2);
+        pane4.setHgap(2);
         
         ArrayList<Athlete> athlete = gameDriver.athleteList;
         pane3.getChildren().add(new Label(Participant.ATHLETE + "List :"));
         pane4.getChildren().add(new Label(Participant.ATHLETE + "Selected :"));
         for(int i=0 ; i<athlete.size() ; i++)
         {
-        	pane3.getChildren().add(createButton(athlete.get(i).getPersonID()));
+        	pane3.getChildren().add(createButton(athlete.get(i).getPersonID(), 
+        										 athlete.get(i).getPersonType()));
         }
 	    
         addDropHandling(pane3);
@@ -363,10 +386,10 @@ public class OzlympicGameView extends Application {
 		//remove the display content node first
 		displayContent.getChildren().remove(1);
 		boolean bResult = false;
-		try {
-		bResult = gameDriver.selectGameTypeForCreateAGame(gameType);
-		} catch (GameUnexecutedException e){
-			System.err.println(e.getMessage());
+		try{
+			bResult = gameDriver.selectGameTypeForCreateAGame(gameType);
+		} catch (GameUnexecutedException e) {
+			e.printStackTrace();
 		}
 		//test
 		System.out.println("result :" + bResult);
@@ -381,11 +404,57 @@ public class OzlympicGameView extends Application {
 		//test
 		System.out.println("Athlete points clicked");
 	}
-	private void displayCurrentGameResult()
+	private void displayGameResult()
 	{
+		
 		//clean center and bottom
 		root.setCenter(null);
 		root.setBottom(null);
+		
+		VBox vbox = new VBox(30);
+		vbox.setPadding(new Insets(25, 25, 25, 25));
+		
+		int listSize = gameDriver.currentGame.getCandidate().size();
+		final double ONEMINUTE = 60;
+		final double theMaxSec = gameDriver.currentGame.getCandidate().get(listSize-1).getExecuteTime();
+		IntegerProperty seconds = new SimpleIntegerProperty();
+		for(int i=0 ; i<listSize ; i++)
+		{
+			Athlete candidate = gameDriver.currentGame.getCandidate().get(i);
+			ProgressBar progress = new ProgressBar();
+	        progress.setMinWidth(300);
+	        double v = ((candidate.getExecuteTime() / theMaxSec) * ONEMINUTE);
+	        System.out.println("divide by " + v);
+	        progress.progressProperty().bind(seconds.divide(v));
+	        vbox.getChildren().add(progress);
+			//Test
+			System.out.println(candidate.getName() + " :" + candidate.getExecuteTime());
+		}
+		
+		Text currTimeText = new Text("Current time: 0 secs" );
+		currTimeText.setBoundsType(TextBoundsType.VISUAL);
+		vbox.getChildren().add(currTimeText);
+		root.setCenter(vbox);
+		
+		Timeline timeline = new Timeline(
+	        new KeyFrame(Duration.ZERO, new KeyValue(seconds, 0)),
+	        new KeyFrame(Duration.minutes(1), e-> {
+	            // do anything you need here on completion...
+	            System.out.println("game end");
+	        }, new KeyValue(seconds, 60))   
+	    );
+		timeline.currentTimeProperty().addListener(new InvalidationListener() {
+			
+			public void invalidated(Observable ov) {
+			
+				int time = (int) timeline.getCurrentTime().toSeconds();
+				double exect = (theMaxSec / ONEMINUTE) * time;
+				currTimeText.setText("Current time: " + time + " secs\n" +
+									 "Exect time : " + exect);
+			}
+		});
+	    timeline.setCycleCount(1);
+	    timeline.play();
 	}
 	private void displayGameResultHistory()
 	{
@@ -395,7 +464,7 @@ public class OzlympicGameView extends Application {
 		//test
 		System.out.println("Game result history clicked");
 	}
-	private void setCandidateList(FlowPane referee, FlowPane athlete) 
+	private void setCandidateList(FlowPane referee, FlowPane athlete)
 	{
 		boolean bSet = false;
 		//get referee ID
@@ -416,14 +485,15 @@ public class OzlympicGameView extends Application {
 			if(item instanceof Button)
 				athleteIDList.add(((Button) item).getText());
 		}
-		bSet = gameDriver.setRefereeAndCandidate(refereeID, athleteIDList);
+		
+		try {
+			bSet = gameDriver.setRefereeAndCandidate(refereeID, athleteIDList);
+		} catch (GameUnexecutedException e){
+			e.printStackTrace();
+		}
 		//display the game result
 		if(bSet)
-		{
-			displayCurrentGameResult();
-			//test
-			System.out.println("Display the game result - animation view.");
-		}
+			displayGameResult();
 	}
 	//-----------------------------------------------------------
 	//create draggable buttons
@@ -438,7 +508,25 @@ public class OzlympicGameView extends Application {
             draggingButton = button ;
         });
         button.setOnDragDone(e -> draggingButton = null);
+        button.setStyle("-fx-background-color: #d3c2d6;" + 
+        				"-fx-border-color: black;");
         return button ;
+    }
+	private Button createButton(String ID, String athleteType) {
+        Button button = createButton(ID);
+        if(athleteType == Participant.SWIMMER)
+        	button.setStyle("-fx-background-color: #8fb1e8;" +
+        					"-fx-border-color: black;");
+        if(athleteType == Participant.CYCLIST)
+        	button.setStyle("-fx-background-color: #7bfca2;" +
+							"-fx-border-color: black;");
+        if(athleteType == Participant.SPRINTER)
+        	button.setStyle("-fx-background-color: #fcfc7b;" +
+							"-fx-border-color: black;");
+        if(athleteType == Participant.SUPERATHLETE)
+        	button.setStyle("-fx-background-color: #fc9d7b;" +
+							"-fx-border-color: black;");
+        return button;
     }
 	//dealing with drag buttons----------------------------------
 	private void addDropHandling(Pane pane) {
