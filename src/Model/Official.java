@@ -54,7 +54,7 @@ public class Official extends Participant {
 		//reason: should do write file / DB when user close the application
 		//because write file / DB is time expensive, shouldn't execute each time after setResult
 		//display gameID first
-		this.gameResult = "\n Current System Time : " + timeStamp;
+		this.gameResult = "Current System Time : " + timeStamp;
 		this.gameResult += "\n========= " + gameID + " Results ==========\n";
 		if(sortedList != null)
 		{

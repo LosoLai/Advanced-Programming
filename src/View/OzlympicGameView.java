@@ -59,7 +59,7 @@ public class OzlympicGameView extends Application {
 	//private Stage primaryStage;
 	private static Driver gameDriver;	//the role is game controller
 	private static BorderPane root;
-	private static VBox displayContent;
+	//private static VBox displayContent;
 	
 	private final DataFormat buttonFormat = new DataFormat("com.example.myapp.formats.button");
 	private Button draggingButton ;
@@ -67,10 +67,6 @@ public class OzlympicGameView extends Application {
 	public static BorderPane getRoot()
 	{
 		return root;
-	}
-	public static VBox getDisplayContent()
-	{
-		return displayContent;
 	}
 	
 	@Override
@@ -206,9 +202,9 @@ public class OzlympicGameView extends Application {
 		StackPane display = new StackPane();
 		display.setPrefHeight(root.getHeight());
 		
-		displayContent = new VBox();
-		displayContent.setPadding(new Insets(10));
-		displayContent.setSpacing(8);
+		VBox vbox = new VBox();
+		vbox.setPadding(new Insets(10));
+		vbox.setSpacing(8);
 		Label title = new Label("Display Area:");		
 		String str = "Instructions:\n" +
 					 "1. Select a game type from navigation menu.\n" +
@@ -219,8 +215,8 @@ public class OzlympicGameView extends Application {
 		TextArea content = new TextArea(str);
 		content.setPrefHeight(root.getHeight());
 		content.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
-		displayContent.getChildren().addAll(title, content);
-		display.getChildren().add(displayContent);
+		vbox.getChildren().addAll(title, content);
+		display.getChildren().add(vbox);
 		root.setCenter(display);
 	}
 	
@@ -294,7 +290,7 @@ public class OzlympicGameView extends Application {
         splitPane_Ath.setPrefSize(400, 400);
         selectParticipant.add(splitPane_Ath, 1, 1);
         
-        displayContent.getChildren().add(selectParticipant);
+        root.setCenter(selectParticipant);
         
         setConfirmButton(pane2, pane4);
 	}
@@ -337,7 +333,7 @@ public class OzlympicGameView extends Application {
         vbox.setPadding(new Insets(10, 0, 0, 10));
         vbox.getChildren().addAll(table);
 		
-	    displayContent.getChildren().add(vbox);
+        root.setCenter(vbox);
 	    
 		//test
 		Iterator itr = set.iterator();
@@ -371,7 +367,7 @@ public class OzlympicGameView extends Application {
         vbox.setPadding(new Insets(10, 0, 0, 10));
         vbox.getChildren().addAll(table);
 		
-	    displayContent.getChildren().add(vbox);
+	    root.setCenter(vbox);
 	    
 		//test
 		System.out.println(gameList.size());
@@ -384,7 +380,6 @@ public class OzlympicGameView extends Application {
 	private void gameTypeButtonHandler(String gameType)
 	{
 		//remove the display content node first
-		displayContent.getChildren().remove(1);
 		boolean bResult = false;
 		try{
 			bResult = gameDriver.selectGameTypeForCreateAGame(gameType);
@@ -399,18 +394,12 @@ public class OzlympicGameView extends Application {
 	}
 	private void displayAthletePoint()
 	{
-		displayContent.getChildren().remove(1);
 		createTableView_AthletePoints(Driver.athleteList);
 		//test
 		System.out.println("Athlete points clicked");
 	}
 	private void displayGameResult()
 	{
-		
-		//clean center and bottom
-		root.setCenter(null);
-		root.setBottom(null);
-		
 		VBox vbox = new VBox(30);
 		vbox.setPadding(new Insets(25, 25, 25, 25));
 		
@@ -458,7 +447,6 @@ public class OzlympicGameView extends Application {
 	}
 	private void displayGameResultHistory()
 	{
-		displayContent.getChildren().remove(1);
 		ArrayList<Game> gameList = gameDriver.getGameList();
 		createTableView_GameResults(gameList);
 		//test
@@ -514,16 +502,16 @@ public class OzlympicGameView extends Application {
     }
 	private Button createButton(String ID, String athleteType) {
         Button button = createButton(ID);
-        if(athleteType == Participant.SWIMMER)
+        if(athleteType == Participant.SWIMMER) // blue
         	button.setStyle("-fx-background-color: #8fb1e8;" +
         					"-fx-border-color: black;");
-        if(athleteType == Participant.CYCLIST)
+        if(athleteType == Participant.CYCLIST) // green
         	button.setStyle("-fx-background-color: #7bfca2;" +
 							"-fx-border-color: black;");
-        if(athleteType == Participant.SPRINTER)
+        if(athleteType == Participant.SPRINTER) // yellow
         	button.setStyle("-fx-background-color: #fcfc7b;" +
 							"-fx-border-color: black;");
-        if(athleteType == Participant.SUPERATHLETE)
+        if(athleteType == Participant.SUPERATHLETE) //orange
         	button.setStyle("-fx-background-color: #fc9d7b;" +
 							"-fx-border-color: black;");
         return button;
