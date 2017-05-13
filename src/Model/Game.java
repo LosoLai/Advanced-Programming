@@ -51,17 +51,25 @@ public class Game {
 	public Game(String gameType)
 	{
 		this.gameRoundNum++;
+		setGameType(gameType);
 		setGameID(gameType);
 	}
 	
 	public void setGameID(String gameType)
 	{
-		this.gameType = gameType;
 		this.gameID = gameType.substring(0, 1) + String.format("%02d", gameRoundNum);
 	}
 	public String getGameID()
 	{
 		return this.gameID;
+	}
+	public void setGameType(String gameType)
+	{
+		this.gameType = gameType;
+	}
+	public String getGameType()
+	{
+		return this.gameType;
 	}
 	public ArrayList<Athlete> getCandidate() {
 		return this.candidate;
