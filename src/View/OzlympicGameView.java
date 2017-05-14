@@ -13,7 +13,7 @@ import Model.Participant;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import Assignment02.GameUnexecutedException;
+import Assignment02.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -22,14 +22,12 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -78,7 +76,15 @@ public class OzlympicGameView extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("OzlympicGame");
 			primaryStage.show();
-		} catch(Exception e) {
+		} /*catch(GameFullException e) {
+			e.printStackTrace();
+		} catch(NoRefereeException e) {
+			e.printStackTrace();
+		} catch(TooFewAthleteException e) {
+			e.printStackTrace();
+		} catch(WrongTypeException e) {
+			e.printStackTrace();
+		} */catch(Exception e) {
 			e.printStackTrace();
 		} 
 	}
@@ -250,7 +256,12 @@ public class OzlympicGameView extends Application {
 		try{
 			bResult = gameDriver.selectGameTypeForCreateAGame(gameType);
 		} catch (GameUnexecutedException e) {
-			e.printStackTrace();
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("GameUnexecutedException Dialog");
+			alert.setHeaderText("Warning Dialog : Unexecuted");
+			alert.setContentText(e.getMessage());
+			alert.showAndWait();
+			//e.printStackTrace();
 		}
 		//test
 		System.out.println("result :" + bResult);
@@ -264,7 +275,7 @@ public class OzlympicGameView extends Application {
 		//test
 		System.out.println("Athlete points clicked");
 	}
-	private void displayGameResult(ArrayList<String> athleteIDList)
+	private void displayGameResultAnimation(ArrayList<String> athleteIDList)
 	{
 		//remove button at the bottom
 		root.setBottom(null);
@@ -354,9 +365,9 @@ public class OzlympicGameView extends Application {
 		} catch (GameUnexecutedException e){
 			e.printStackTrace();
 		}
-		//display the game result
+		//display the game result progress
 		if(bSet)
-			displayGameResult(athleteIDList);
+			displayGameResultAnimation(athleteIDList);
 	}
 	//-----------------------------------------------------------
 	//create draggable buttons
