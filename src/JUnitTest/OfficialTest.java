@@ -17,7 +17,6 @@ import org.junit.Test;
 import Controller.Driver;
 import Model.Athlete;
 import Model.Official;
-import Model.Swimmer;
 
 /**
  * @author Arion
@@ -33,10 +32,10 @@ public class OfficialTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		swimmer1 = new Swimmer("swimmer1 id", "swimmer1 name", 20, "swimmer1 state");
-		swimmer2 = new Swimmer("swimmer2 id", "swimmer2 name", 21, "swimmer2 state");
-		swimmer3 = new Swimmer("swimmer3 id", "swimmer3 name", 22, "swimmer3 state");
-		swimmer4 = new Swimmer("swimmer4 id", "swimmer4 name", 23, "swimmer4 state");
+		swimmer1 = new Athlete("swimmer1 id", "Swimmer", "","swimmer1 name", 20, "swimmer1 state");
+		swimmer2 = new Athlete("swimmer2 id", "Swimmer", "","swimmer2 name", 21, "swimmer2 state");
+		swimmer3 = new Athlete("swimmer3 id", "Swimmer", "","swimmer3 name", 22, "swimmer3 state");
+		swimmer4 = new Athlete("swimmer4 id", "Swimmer", "","swimmer4 name", 23, "swimmer4 state");
 		official = new Official("official id", "official name", 24, "official state");
 	}
 

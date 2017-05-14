@@ -11,9 +11,6 @@ import org.junit.Test;
 import Controller.Driver;
 import Model.Athlete;
 import Model.Game;
-import Model.Swimmer;
-import Model.Cyclist;
-import Model.Sprinter;
 
 /**
  * @author Arion
@@ -28,12 +25,12 @@ public class AthleteTest_compareTo {
 	
 	@Before
 	public void setUp() throws Exception {
-		swimmer1 = new Swimmer("swimmer1 id", "swimmer1 name", 20, "swimmer1 state");
-		swimmer2 = new Swimmer("swimmer2 id", "swimmer2 name", 21, "swimmer2 state");
-		cyclist1 = new Cyclist("cyclist1 id", "cyclist1 name", 20, "cyclist1 state");
-		cyclist2 = new Cyclist("cyclist2 id", "cyclist2 name", 21, "cyclist2 state");
-		sprinter1 = new Sprinter("sprinter1 id", "sprinter1 name", 20, "sprinter1 state");
-		sprinter2 = new Sprinter("sprinter2 id", "sprinter2 name", 20, "sprinter2 state");
+		swimmer1 = new Athlete("swimmer1 id", "Swimmer", "","swimmer1 name", 20, "swimmer1 state");
+		swimmer2 = new Athlete("swimmer2 id", "Swimmer", "","swimmer2 name", 21, "swimmer2 state");
+		cyclist1 = new Athlete("cyclist1 id", "Cyclist", "","cyclist1 name", 20, "cyclist1 state");
+		cyclist2 = new Athlete("cyclist2 id", "Cyclist", "","cyclist2 name", 21, "cyclist2 state");
+		sprinter1 = new Athlete("sprinter1 id", "Sprinter", "","sprinter1 name", 20, "sprinter1 state");
+		sprinter2 = new Athlete("sprinter2 id", "Sprinter", "","sprinter2 name", 20, "sprinter2 state");
 	}
 
 	/**

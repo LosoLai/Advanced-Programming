@@ -6,14 +6,18 @@ import Controller.*;
  * multi-inheritance interface : Competable & Comparable
  */
 public class Athlete extends Participant implements Competable, Comparable<Athlete>{
-	
+	//Modified by Loso 14/05/17----------------------------------------
+	//Athlete can have less and equal two types
+	private String extraType;
+	//-----------------------------------------------------------------
 	//Extra variables for recording compete time and points
 	private double executeTime;
 	private int points;
 	
-	public Athlete(String id, String athleteType, String name, int age, String state)
+	public Athlete(String id, String athleteType, String extraType, String name, int age, String state)
 	{
 		super(id, athleteType, name, age, state);
+		this.extraType = extraType;
 		executeTime = 0;
 		points = 0;
 	}
@@ -55,6 +59,7 @@ public class Athlete extends Participant implements Competable, Comparable<Athle
     public String toString() 
 	{
 		return String.format("\n" + super.getName() +
+				 ", " + this.getPersonType() +
 				 ", " + this.getExecuteTime());
     }
 }

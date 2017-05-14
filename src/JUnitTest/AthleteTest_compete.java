@@ -9,9 +9,6 @@ import org.junit.Test;
 import Controller.Driver;
 import Model.Athlete;
 import Model.Game;
-import Model.Swimmer;
-import Model.Cyclist;
-import Model.Sprinter;
 import Model.SuperAthlete;
 
 /**
@@ -24,17 +21,14 @@ public class AthleteTest_compete {
 	Athlete cyclist;
 	Athlete sprinter;
 	Athlete superath;
-	Game game;
-	String type;
-	double time;
 	
 	
 	@Before
 	public void setUp() throws Exception {
-		swimmer = new Swimmer("swimmer id", "swimmer name", 20, "swimmer state");
-		cyclist = new Cyclist("cyclist id", "cyclist name", 20, "cyclist state");
-		sprinter = new Sprinter("sprinter id", "sprinter name", 20, "sprinter state");
-		superath = new SuperAthlete("super id", "super name", 20, "super state");
+		swimmer = new Athlete("swimmer id", "Swimmer", "","swimmer name", 20, "swimmer state");
+		cyclist = new Athlete("cyclist id", "Cyclist", "","cyclist name", 20, "cyclist state");
+		sprinter = new Athlete("sprinter id", "Sprinter", "","sprinter name", 20, "sprinter state");
+		superath = new SuperAthlete("super id", "Super", "","super name", 20, "super state");
 	}
 
 	/**
@@ -42,8 +36,7 @@ public class AthleteTest_compete {
 	 */
 	@Test
 	public void testType_Swimmer() {
-		type = swimmer.SWIMMER;
-		assertEquals("Swimmer",type);
+		assertEquals("Swimmer", swimmer.getPersonType());
 	}
 	
 	/**
@@ -51,8 +44,7 @@ public class AthleteTest_compete {
 	 */
 	@Test
 	public void testType_Cyclist() {
-		type = cyclist.CYCLIST;
-		assertEquals("Cyclist",type);
+		assertEquals("Cyclist", cyclist.getPersonType());
 	}
 	
 	/**
@@ -60,8 +52,7 @@ public class AthleteTest_compete {
 	 */
 	@Test
 	public void testType_Sprinter() {
-		type = sprinter.SPRINTER;
-		assertEquals("Runner",type);
+		assertEquals("Runner", sprinter.getPersonType());
 	}
 	
 	/**
@@ -69,8 +60,7 @@ public class AthleteTest_compete {
 	 */
 	@Test
 	public void testType_Superath() {
-		type = superath.SUPERATHLETE;
-		assertEquals("SuperAth",type);
+		assertEquals("SuperAth", superath.getPersonType());
 	}
 	
 	/**
@@ -79,10 +69,9 @@ public class AthleteTest_compete {
 	@Test
 	public void testCompete_Swimmer() {
 		Driver.currentGame = new Game("Swimming");
-		time = swimmer.Compete();
-		System.out.println("Swimmer time: " + time);
-		assertTrue(time > 100);
-		assertTrue(time < 200);
+		System.out.println("Swimmer time: " + swimmer.Compete());
+		assertTrue(swimmer.Compete() > 100);
+		assertTrue(swimmer.Compete() < 200);
 	}
 	
 	/**
@@ -91,10 +80,9 @@ public class AthleteTest_compete {
 	@Test
 	public void testCompete_Cyclist() {
 		Driver.currentGame = new Game("Cycling");
-		time = cyclist.Compete();
-		System.out.println("Cyclist time: " + time);
-		assertTrue(time > 500);
-		assertTrue(time < 800);
+		System.out.println("Cyclist time: " + cyclist.getExecuteTime());
+		assertTrue(cyclist.getExecuteTime() > 500);
+		assertTrue(cyclist.getExecuteTime() < 800);
 	}
 	
 	/**
@@ -103,10 +91,9 @@ public class AthleteTest_compete {
 	@Test
 	public void testCompete_Sprinter() {
 		Driver.currentGame = new Game("Running");
-		time = sprinter.Compete();
-		System.out.println("Sprinter time: " + time);
-		assertTrue(time > 10);
-		assertTrue(time < 20);
+		System.out.println("Sprinter time: " + sprinter.Compete());
+		assertTrue(sprinter.Compete() > 10);
+		assertTrue(sprinter.Compete() < 20);
 	}
 	
 	

@@ -25,6 +25,7 @@ public class Official extends Participant {
 	
 	public Official(String id, String name, int age, String state)
 	{
+		//assume that the offical can not be athlete 
 		super(id, OFFICIAL, name, age, state);
 		this.resultTop3 = new Athlete[RESULT_TOP3];
 		this.gameResult = "";
@@ -41,6 +42,13 @@ public class Official extends Participant {
 	public Athlete[] getResultTopList() {
 		return resultTop3;
 	}
+	
+	@Override
+    public String toString() 
+	{
+		return String.format("\n" + super.getName() +
+				 ", " + this.getGameResult());
+    }
 	
 	//Generates game result and stores points in Athlete objects
 	public String setResultTopList(String gameID, ArrayList<Athlete> sortedList) throws Exception

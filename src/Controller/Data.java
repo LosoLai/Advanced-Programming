@@ -20,12 +20,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import Model.Athlete;
-import Model.Cyclist;
 import Model.Official;
 import Model.Participant;
-import Model.Sprinter;
 import Model.SuperAthlete;
-import Model.Swimmer;
 
 /**Author: Arion
  * The role of the Data class is to implement data reading/writing
@@ -45,6 +42,21 @@ public class Data {
 	public static HashMap<String, Participant> participant = new HashMap<String, Participant>();
 	private ArrayList<Official> officialList = new ArrayList<Official>();
 	private ArrayList<Athlete> athleteList = new ArrayList<Athlete>();
+	//Modified by Loso 14/05/17------------------------------------------
+	//DEFINE PARTICIPANT FORTMAT
+	public final int ID_INDEX   	 = 0;
+	public final int TYPE_INDEX 	 = 1;
+	public final int EXTRATYPE_INDEX = 2;
+	public final int NAME_INDEX 	 = 3;
+	public final int AGE_INDEX 		 = 4;
+	public final int STATE_INDEX 	 = 5;
+	private final int[] TABLE_COL_FORTMAT = new int[]{ID_INDEX,
+													  TYPE_INDEX,
+													  EXTRATYPE_INDEX,
+													  NAME_INDEX,
+													  AGE_INDEX,
+													  STATE_INDEX};
+	//-------------------------------------------------------------------
 	
 	public ArrayList<Official> getOfficialList() {
 		return officialList;
@@ -53,28 +65,6 @@ public class Data {
 		return athleteList;
 	}
 	//-------------------------------------------------------------------
-	/*private ArrayList<Participant> swimmerList = new ArrayList<Participant>();
-	private ArrayList<Participant> cyclistList = new ArrayList<Participant>();
-	private ArrayList<Participant> sprinterList = new ArrayList<Participant>();
-	private ArrayList<Participant> superAthList = new ArrayList<Participant>();
-	private ArrayList<Participant> officialList = new ArrayList<Participant>();
-	public static HashMap<String, ArrayList<Participant>> participantList = new HashMap<String, ArrayList<Participant>>();
-
-	public ArrayList<Participant> getSwimmerList() {
-		return swimmerList;
-	}
-	public ArrayList<Participant> getCyclistList() {
-		return cyclistList;
-	}
-	public ArrayList<Participant> getSprinterList() {
-		return sprinterList;
-	}
-	public ArrayList<Participant> getSuperAthList() {
-		return superAthList;
-	}
-	public ArrayList<Participant> getOfficialList() {
-		return officialList;
-	}*/
 	
 	//Initialize DB and import data
 	public boolean ozlympicDB() {
@@ -97,12 +87,16 @@ public class Data {
 			connection = DriverManager.getConnection("jdbc:hsqldb:OzlympicDB", "sa", "123");
 			connection.prepareStatement("drop table participants if exists;").execute();
 			connection.prepareStatement("drop table results if exists;").execute();
-			connection.prepareStatement("create table participants (id varchar(7) not null, type varchar(10) not null, name varchar(50) not null, age integer not null, state varchar(20) not null, primary key(id));").execute();
+			connection.prepareStatement("create table participants (id varchar(7) not null, type varchar(10) not null, extratype varchar(10) not null, name varchar(50) not null, age integer not null, state varchar(20) not null, primary key(id));").execute();
 			connection.prepareStatement("create table results (gameID varchar(10), officialID varchar(10), athleteID varchar(10), time double, points integer);").execute();
 			
 			int cy_index = 0, sp_index = 0, sw_index = 0, su_index = 0, of_index = 0;
 			int age = 15;
-			String id = "", type = "", name = "", state = "";
+			String id = ""; 
+			String type = ""; 
+			String name = ""; 
+			String state = "";
+			String extratype = " ";
 			for(int i=0 ; i<40 ; i++)
 			{
 				id = "Oz000" + Integer.toString(i);
@@ -133,68 +127,43 @@ public class Data {
 					state = "NSW";
 					name = type + Integer.toString(of_index++);
 				}
-				connection.prepareStatement("insert into participants values ('" + id + "', '" + type + "', '" + name + "', " + age + ", '" + state + "');").execute();
+				String str = "insert into participants values ('" + id + "', '" + type + "', '" + extratype + "', '" + name + "', " + age + ", '" + state + "');";
+				connection.prepareStatement(str).execute();
 			}
 			
 			rs = connection.prepareStatement("select * from participants;").executeQuery();
 			connection.commit();
-			
 			//Reading table data into arraylists
 			while (rs.next()) {
-				
-			if (rs.getString("type").equalsIgnoreCase(Participant.SWIMMER)) {
-        		temp = new Swimmer(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
-       			//swimmerList.add(temp);
-        		athleteList.add((Athlete)temp);
-       		}
-       		else if (rs.getString("type").equalsIgnoreCase(Participant.SPRINTER)) {
-       			temp = new Sprinter(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
-       			//sprinterList.add(temp);
-       			athleteList.add((Athlete)temp);
-       		}
-       		else if (rs.getString("type").equalsIgnoreCase(Participant.CYCLIST)) {
-       			temp = new Cyclist(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
-       			//cyclistList.add(temp);
-       			athleteList.add((Athlete)temp);
-       		}
-       		else if (rs.getString("type").equalsIgnoreCase(Participant.OFFICIAL)) {
-       			temp = new Official(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));       
-       			officialList.add((Official)temp);
-        	}
-        	else if (rs.getString("type").equalsIgnoreCase(Participant.SUPERATHLETE)) {
-        		temp = new SuperAthlete(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
-       			//superAthList.add(temp);
-       			//swimmerList.add(temp);
-       			//sprinterList.add(temp);
-       			//cyclistList.add(temp);
-        		athleteList.add((Athlete)temp);
-       		}
+			if (rs.getString("type").equalsIgnoreCase(Participant.SUPERATHLETE)) {
+	        	temp = new SuperAthlete(rs.getString("id"), rs.getString("type"), rs.getString("extratype"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
+	        	athleteList.add((Athlete)temp);
+	       	}
+			else if(rs.getString("type").equalsIgnoreCase(Participant.OFFICIAL)) {
+				temp = new Official(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
+				officialList.add((Official)temp);
+			}
+	        else{
+	        	temp = new Athlete(rs.getString("id"), rs.getString("type"), rs.getString("extratype"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
+	        	athleteList.add((Athlete)temp);
+	       	}
 			participant.put(temp.getPersonID(), temp);
        	}
-        
         //-------------------------------------------
-        
-		//participantList.put(Participant.SWIMMER, swimmerList);
-		//participantList.put(Participant.CYCLIST, cyclistList);
-		//participantList.put(Participant.SPRINTER, sprinterList);
-		//participantList.put(Participant.OFFICIAL, officialList);
-			
-		
-			} catch (SQLException e2) {
-				e2.printStackTrace();
-			} catch (ClassNotFoundException e2) {
-				e2.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+		} catch (ClassNotFoundException e2) {
+			e2.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return true;
 	}
 	public boolean initialParticipantList()
 	{
-		
 		//Modified by Arion--------------------------
 		Participant temp = null;	
-		final int ID_INDEX = 0, TYPE_INDEX = 1, NAME_INDEX = 2, AGE_INDEX = 3, STATE_INDEX = 4;
 		//Modified by Loso
 		String rootPath = this.getClass().getResource("Participants.txt").getFile();
 		File fileToBeFound = new File(rootPath);
@@ -226,42 +195,22 @@ public class Data {
             }
 		            
             for (int i=0; i<fileList.size(); i++) {	       
-            	if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("swimmer")) {
-            		temp = new Swimmer(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
-            		//swimmerList.add(temp);
-            		athleteList.add((Athlete)temp);
-            	}
-            	else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("sprinter")) {
-            		temp = new Sprinter(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
-            		//sprinterList.add(temp);
-            		athleteList.add((Athlete)temp);
-            	}
-            	else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("cyclist")) {
-            		temp = new Cyclist(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
-            		//cyclistList.add(temp);
+            	if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("superathlete")) {
+            		temp = new SuperAthlete(fileList.get(i)[ID_INDEX], fileList.get(i)[TYPE_INDEX], fileList.get(i)[EXTRATYPE_INDEX],fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
             		athleteList.add((Athlete)temp);
             	}
             	else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("official")) {
             		temp = new Official(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);       
             		officialList.add((Official)temp);
             	}
-            	else if (fileList.get(i)[TYPE_INDEX].equalsIgnoreCase("superathlete")) {
-            		temp = new SuperAthlete(fileList.get(i)[ID_INDEX], fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
-            		//superAthList.add(temp);
-            		//swimmerList.add(temp);
-            		//sprinterList.add(temp);
-            		//cyclistList.add(temp);
+            	else {
+            		temp = new Athlete(fileList.get(i)[ID_INDEX], fileList.get(i)[TYPE_INDEX], fileList.get(i)[EXTRATYPE_INDEX],fileList.get(i)[NAME_INDEX],Integer.parseInt(fileList.get(i)[AGE_INDEX]),fileList.get(i)[STATE_INDEX]);
             		athleteList.add((Athlete)temp);
             	}
             	participant.put(temp.getPersonID(), temp);
             }
 		            
-            //-------------------------------------------
-		            
-            //participantList.put(Participant.SWIMMER, swimmerList);
-            //participantList.put(Participant.CYCLIST, cyclistList);
-            //participantList.put(Participant.SPRINTER, sprinterList);
-            //participantList.put(Participant.OFFICIAL, officialList);		
+            //-------------------------------------------	
 
 		} catch (FileNotFoundException e) {
 		    fileNotFoundRecovery();
@@ -300,38 +249,32 @@ public class Data {
 		{
 			//setting athlete
 			//name format using (personType + id)
-			String name = "ATH-" + Swimmer.SWIMMER 
+			String name = "ATH-" + Participant.SWIMMER 
 							     + Integer.toString(i);
 			int j = 0;
 			int age = 20 + i;
 			String id = "Oz000" + Integer.toString(j++);
-			Participant swimmer = new Swimmer(id, name, age, "VIC");
+			Participant swimmer = new Athlete(id, name, Participant.SWIMMER, "",age, "VIC");
 			athleteList.add((Athlete)swimmer);
 		
 			id = "Oz000" + Integer.toString(j++);		
-			name = "ATH-" + Cyclist.CYCLIST
+			name = "ATH-" + Participant.CYCLIST
 				          + Integer.toString(i);
-			Participant cyclist = new Cyclist(id, name, age, "VIC");
+			Participant cyclist = new Athlete(id, name, Participant.CYCLIST, "",age, "VIC");
 			athleteList.add((Athlete)cyclist);
 			
 			id = "Oz000" + Integer.toString(j++);		
-			name = "ATH-" + Sprinter.SPRINTER
+			name = "ATH-" + Participant.SPRINTER
 			              + Integer.toString(i);
-			Participant sprinter = new Sprinter(id, name, age, "VIC");
+			Participant sprinter = new Athlete(id, name, Participant.CYCLIST, "",age, "VIC");
 			athleteList.add((Athlete)sprinter);
 			
 			id = "Oz000" + Integer.toString(j++);
-			name = "ATH-" + SuperAthlete.SUPERATHLETE 
+			name = "ATH-" + Participant.SUPERATHLETE 
 		                  + Integer.toString(i);
-			Participant superAthlete = new SuperAthlete(id, name, age, "VIC");
+			Participant superAthlete = new SuperAthlete(id, name, Participant.SUPERATHLETE, "",age, "VIC");
 			athleteList.add((Athlete)superAthlete);
-					
-			//for implement candidate list
-			//adding superAth into each list
-			//swimmerList.add(superAthlete);
-			//cyclistList.add(superAthlete);
-			//sprinterList.add(superAthlete);
-					
+				
 			//setting offical
 			id = "Oz000" + Integer.toString(j++);
 			name = "OFF-" + Integer.toString(i);
@@ -344,11 +287,6 @@ public class Data {
 			participant.put(superAthlete.getPersonID(), superAthlete);
 			participant.put(offical.getPersonID(), offical);
 		}
-				
-		//participantList.put(Participant.SWIMMER, swimmerList);
-		//participantList.put(Participant.CYCLIST, cyclistList);
-		//participantList.put(Participant.SPRINTER, sprinterList);
-		//participantList.put(Participant.OFFICIAL, officialList);
 		return true;
 	}
 }

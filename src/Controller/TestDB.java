@@ -11,12 +11,9 @@ import java.util.HashMap;
 import org.hsqldb.Server;
 
 import Model.Athlete;
-import Model.Cyclist;
 import Model.Official;
 import Model.Participant;
-import Model.Sprinter;
 import Model.SuperAthlete;
-import Model.Swimmer;
 
 public class TestDB {
 	
@@ -42,7 +39,7 @@ public class TestDB {
 			connection = DriverManager.getConnection("jdbc:hsqldb:OzlympicDB", "sa", "123");
 			connection.prepareStatement("drop table participants if exists;").execute();
 			connection.prepareStatement("drop table results if exists;").execute();
-			connection.prepareStatement("create table participants (id varchar(7) not null, type varchar(10) not null, name varchar(50) not null, age integer not null, state varchar(20) not null, primary key(id));").execute();
+			connection.prepareStatement("create table participants (id varchar(7) not null, type varchar(10) not null, extratype varchar(10), name varchar(50) not null, age integer not null, state varchar(20) not null, primary key(id));").execute();
 			connection.prepareStatement("create table results (gameID varchar(10), officialID varchar(10), athleteID varchar(10), time double, points integer);").execute();
 			connection.prepareStatement("insert into results values ('Test','Test','Test',200.865,6);").execute();
 			
@@ -86,37 +83,22 @@ public class TestDB {
 			connection.commit();
 			while (rs.next()) {
 				
-				if (rs.getString("type").equalsIgnoreCase(Participant.SWIMMER)) {
-	        		temp = new Swimmer(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
-	       			//swimmerList.add(temp);
+				if (rs.getString("type").equalsIgnoreCase(Participant.SUPERATHLETE)) {
+	        		temp = new SuperAthlete(rs.getString("id"), rs.getString("type"), rs.getString("extratype"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
 	        		athleteList.add((Athlete)temp);
 	       		}
-	       		else if (rs.getString("type").equalsIgnoreCase(Participant.SPRINTER)) {
-	       			temp = new Sprinter(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
-	       			//sprinterList.add(temp);
-	       			athleteList.add((Athlete)temp);
-	       		}
-	       		else if (rs.getString("type").equalsIgnoreCase(Participant.CYCLIST)) {
-	       			temp = new Cyclist(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
-	       			//cyclistList.add(temp);
-	       			athleteList.add((Athlete)temp);
-	       		}
-	       		else if (rs.getString("type").equalsIgnoreCase(Participant.OFFICIAL)) {
-	       			temp = new Official(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));       
-	       			officialList.add((Official)temp);
-	        	}
-	        	else if (rs.getString("type").equalsIgnoreCase(Participant.SUPERATHLETE)) {
-	        		temp = new SuperAthlete(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
-	       			//superAthList.add(temp);
-	       			//swimmerList.add(temp);
-	       			//sprinterList.add(temp);
-	       			//cyclistList.add(temp);
+				else if(rs.getString("type").equalsIgnoreCase(Participant.OFFICIAL)) {
+					temp = new Official(rs.getString("id"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
+					officialList.add((Official)temp);
+				}
+	        	else{
+	        		temp = new Athlete(rs.getString("id"), rs.getString("type"), rs.getString("extratype"), rs.getString("name"),rs.getInt("age"),rs.getString("state"));
 	        		athleteList.add((Athlete)temp);
 	       		}
 				participant.put(temp.getPersonID(), temp);
 	       	}
 			
-System.out.println(athleteList.size());
+			System.out.println(athleteList.size());
 			for (int i=0; i<32; i++){
 				System.out.println(athleteList.get(i).getName());
 			}

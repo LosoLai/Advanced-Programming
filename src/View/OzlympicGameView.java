@@ -228,15 +228,6 @@ public class OzlympicGameView extends Application {
 	{
 		root.setPrefWidth(1000);
 		
-		//get all participant lists
-		HashMap<String, Participant> allParticipant = gameDriver.getParticipantList();
-		//test
-		Iterator entries = allParticipant.entrySet().iterator();
-		while(entries.hasNext()) {
-			Entry thisEntry = (Entry) entries.next();
-		    System.out.println(thisEntry.getKey() + " - " + thisEntry.getValue());
-		}
-		
 		GridPane selectParticipant = new GridPane();
 		selectParticipant.setVgap(4);
 		selectParticipant.setPadding(new Insets(5, 5, 5, 5));
@@ -517,16 +508,16 @@ public class OzlympicGameView extends Application {
     }
 	private Button createButton(String ID, String athleteType) {
         Button button = createButton(ID);
-        if(athleteType == Participant.SWIMMER) // blue
+        if(athleteType.equals(Participant.SWIMMER)) // blue
         	button.setStyle("-fx-background-color: #8fb1e8;" +
         					"-fx-border-color: black;");
-        if(athleteType == Participant.CYCLIST) // green
+        if(athleteType.equals(Participant.CYCLIST)) // green
         	button.setStyle("-fx-background-color: #7bfca2;" +
 							"-fx-border-color: black;");
-        if(athleteType == Participant.SPRINTER) // yellow
+        if(athleteType.equals(Participant.SPRINTER)) // yellow
         	button.setStyle("-fx-background-color: #fcfc7b;" +
 							"-fx-border-color: black;");
-        if(athleteType == Participant.SUPERATHLETE) //orange
+        if(athleteType.equals(Participant.SUPERATHLETE)) //orange
         	button.setStyle("-fx-background-color: #fc9d7b;" +
 							"-fx-border-color: black;");
         return button;

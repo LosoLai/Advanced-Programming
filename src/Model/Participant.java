@@ -21,11 +21,11 @@ public class Participant {
 	//constructor for initial variables
 	public Participant(String id, String personType, String name, int age, String state)
 	{
-		this.id = id;
-		this.personType = personType;
-		this.name = name;
-		this.age = age;
-		this.state = state;
+		setPersonID(id);
+		setName(name);
+		setAge(age);
+		setState(state);
+		setPersonType(personType);
 	}
 	
 	//getter-setters
@@ -56,6 +56,22 @@ public class Participant {
 	public String getPersonType()
 	{
 		return this.personType;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 	
 }
