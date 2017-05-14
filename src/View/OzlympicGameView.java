@@ -5,6 +5,7 @@
 
 package View;
 import Controller.Driver;
+import Controller.Data;
 import Model.Athlete;
 import Model.Game;
 import Model.Official;
@@ -50,6 +51,7 @@ public class OzlympicGameView extends Application {
 	
 	private final DataFormat buttonFormat = new DataFormat("com.example.myapp.formats.button");
 	private Button draggingButton ;
+	Data data = new Data();
 	
 	public static BorderPane getRoot()
 	{
@@ -89,7 +91,7 @@ public class OzlympicGameView extends Application {
 		} 
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		gameDriver = Driver.getInstance();
 		launch(args);
 	}
@@ -98,13 +100,15 @@ public class OzlympicGameView extends Application {
 	{
 		String[] menu = {"Save", "Help"};
 		String[] menuItem = {"Game Result Saving", 
-							 "Rules Explaination"};
+							 "Rules Explanation"};
 		MenuBar menuBar = new MenuBar();
         // --- Menu Save
         Menu menuSave = new Menu(menu[0]);
         MenuItem menuItem_0 = new MenuItem(menuItem[0]);
         menuItem_0.setOnAction((ActionEvent e) -> {
                 System.out.println(menuItem[0]);
+                data.writeToDB(gameDriver.getGameList());
+                data.writeToFile(gameDriver.getGameList());
         });
         menuSave.getItems().add(menuItem_0);
         // --- Menu Help
@@ -173,7 +177,18 @@ public class OzlympicGameView extends Application {
         }
 	    
         addDropHandling(pane1);
+        // added try/catch for TooManyRefereeException---------------------------------------
+      
+        try {
         addDropHandling_Validation_Referee(pane2);
+        } catch (TooManyRefereeException e) {
+        	Alert alert = new Alert(AlertType.WARNING);
+        	alert.setTitle("TooManyRefereeException Dialog");
+			alert.setHeaderText("Warning Dialog : Too many referees");
+			alert.setContentText(e.getMessage());
+			alert.showAndWait();
+        	//e.printStackTrace();
+        } 
 
         SplitPane splitPane_Ref = new SplitPane(pane1, pane2);
         splitPane_Ref.setStyle("-fx-border-color: #f26704;");
@@ -200,7 +215,18 @@ public class OzlympicGameView extends Application {
         }
 	    
         addDropHandling(pane3);
+        
+        // added try/catch for GameFullException--------------------------------------------------
+        try {
         addDropHandling_Validation_Athlete(pane4);
+        } catch (GameFullException e) {
+        	Alert alert = new Alert(AlertType.WARNING);
+        	alert.setTitle("GameFullException Dialog");
+			alert.setHeaderText("Warning Dialog : Game full");
+			alert.setContentText(e.getMessage());
+			alert.showAndWait();
+        	//e.printStackTrace();
+        } 
 
         SplitPane splitPane_Ath = new SplitPane(pane3, pane4);
         splitPane_Ath.setStyle("-fx-border-color: #206bd6;");
@@ -422,7 +448,7 @@ public class OzlympicGameView extends Application {
             }           
         });
     }
-	private void addDropHandling_Validation_Referee(Pane pane) {
+	private void addDropHandling_Validation_Referee(Pane pane) throws TooManyRefereeException {
         pane.setOnDragOver(e -> {
             Dragboard db = e.getDragboard();
             if (db.hasContent(buttonFormat) 
@@ -437,18 +463,21 @@ public class OzlympicGameView extends Application {
             if (db.hasContent(buttonFormat)) {
             	//test
             	System.out.println("Official selected:" + pane.getChildren().size());
-            	if(pane.getChildren().size() > Game.REFEREELIMIT)
-            		System.err.println("Too many referee"); //need to show error message(throw exception)
-            	else
+            	
+            	//throw TooManyRefereeException-------------------------------------------------------------
+            	if (pane.getChildren().size() > Game.REFEREELIMIT){
+            		throw new TooManyRefereeException("Too many referees selected. Please select only one referee.");
+            	}else
             	{
             		((Pane)draggingButton.getParent()).getChildren().remove(draggingButton);
             		pane.getChildren().add(draggingButton);
             		e.setDropCompleted(true); 
             	}
-            }           
+             	
+            } 
         });
     }
-	private void addDropHandling_Validation_Athlete(Pane pane) {
+	private void addDropHandling_Validation_Athlete(Pane pane) throws GameFullException{
         pane.setOnDragOver(e -> {
             Dragboard db = e.getDragboard();
             if (db.hasContent(buttonFormat) 
@@ -458,13 +487,14 @@ public class OzlympicGameView extends Application {
             }
         });
 
+        //throw GameFullException---------------------------------------------------------------------
         pane.setOnDragDropped(e -> {
             Dragboard db = e.getDragboard();
             if (db.hasContent(buttonFormat)) {
             	//test
             	System.out.println("Athlete selected:" + pane.getChildren().size());
             	if(pane.getChildren().size() > Game.CANDIDATELIMIT_MAX)
-            		System.err.println("Too many athletes"); //need to show error message(throw exception)
+            		throw new GameFullException("Too many athletes selected. Only up to 8 athletes allowed to compete."); 
             	else
             	{
             		((Pane)draggingButton.getParent()).getChildren().remove(draggingButton);
