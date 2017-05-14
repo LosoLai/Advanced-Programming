@@ -87,7 +87,7 @@ public class Data {
 			connection = DriverManager.getConnection("jdbc:hsqldb:OzlympicDB", "sa", "123");
 			connection.prepareStatement("drop table participants if exists;").execute();
 			connection.prepareStatement("drop table results if exists;").execute();
-			connection.prepareStatement("create table participants (id varchar(7) not null, type varchar(10) not null, extratype varchar(10) , extratype varchar(10) not null, name varchar(50) not null, age integer not null, state varchar(20) not null, primary key(id));").execute();
+			connection.prepareStatement("create table participants (id varchar(7) not null, type varchar(10) not null, extratype varchar(10) , name varchar(50) not null, age integer not null, state varchar(20) not null, primary key(id));").execute();
 			connection.prepareStatement("create table results (gameID varchar(10), officialID varchar(10), athleteID varchar(10), time double, points integer);").execute();
 			
 			int cy_index = 0, sp_index = 0, sw_index = 0, su_index = 0, of_index = 0;
@@ -185,7 +185,7 @@ public class Data {
             Set<String> unique_id = new HashSet<String>();
 		            
             for (int i=0; i<fileList.size(); i++){
-            	if (fileList.get(i).length != 5) {
+            	if (fileList.get(i).length != 6) {
             		fileList.remove(i--);
             	}
             	else if (!unique_id.add(fileList.get(i)[ID_INDEX])) {
