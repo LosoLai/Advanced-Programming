@@ -233,23 +233,7 @@ public class OzlympicGameView extends Application {
 	}
 	private void createTableView_GameResults(ArrayList<Game> gameList)
 	{
-		TableView table = new TableView();
-		table.setEditable(false);
-		ObservableList<Game> data =
-	            FXCollections.observableArrayList(gameList);
-		
-		TableColumn type = new TableColumn("Game Type");
-		type.setMinWidth(100);
-		type.setCellValueFactory(new PropertyValueFactory<>("gameType"));
-		TableColumn id = new TableColumn("ID");
-		id.setMinWidth(50);
-		id.setCellValueFactory(new PropertyValueFactory<>("gameID"));
-		TableColumn result = new TableColumn("Game Result");
-		result.setMinWidth(200);
-		result.setCellValueFactory(new PropertyValueFactory<>("gameResult"));
-		
-		table.setItems(data);
-		table.getColumns().addAll(type, id, result);
+		GameResultHistoryTable table = new GameResultHistoryTable(gameList);
 		
 		final VBox vbox = new VBox();
         vbox.setSpacing(5);
@@ -257,13 +241,6 @@ public class OzlympicGameView extends Application {
         vbox.getChildren().addAll(table);
 		
 	    root.setCenter(vbox);
-	    
-		//test
-		System.out.println(gameList.size());
-		Iterator itr = gameList.iterator();
-		while(itr.hasNext()) {
-		    System.out.println(itr.next());
-		}
 	}
 	//handling buttons' action
 	private void gameTypeButtonHandler(String gameType)
