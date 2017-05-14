@@ -63,7 +63,7 @@ public class OzlympicGameView extends Application {
 		
 		try {
 			root = new BorderPane();
-			Scene scene = new Scene(root, 400, 550);
+			Scene scene = new Scene(root, 600, 550);
 			//create menu bar on the top of view
 			createMenuBar();
 			//create navigation menu
