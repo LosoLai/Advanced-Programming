@@ -199,6 +199,7 @@ public class OzlympicGameView extends Application {
 		displayResult.setContent(resultOptions);
 		optionMenu.getChildren().add(displayResult);
 		
+		//Modified by Arion 14/05/17-------------------------------------
 		//create participant colour legend
 				TitledPane legend = new TitledPane();
 				legend.setText("4. Participant Legend");
@@ -231,6 +232,7 @@ public class OzlympicGameView extends Application {
 				legend.setContent(legend_display);
 				optionMenu.getChildren().add(legend);
 				root.setLeft(optionMenu);
+				//----------------------------------------------------------------
 
 	}
 	//create display area for showing the information required
