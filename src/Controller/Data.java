@@ -87,7 +87,7 @@ public class Data {
 			connection = DriverManager.getConnection("jdbc:hsqldb:OzlympicDB", "sa", "123");
 			connection.prepareStatement("drop table participants if exists;").execute();
 			connection.prepareStatement("drop table results if exists;").execute();
-			connection.prepareStatement("create table participants (id varchar(7) not null, type varchar(10) not null, extratype varchar(10) not null, name varchar(50) not null, age integer not null, state varchar(20) not null, primary key(id));").execute();
+			connection.prepareStatement("create table participants (id varchar(7) not null, type varchar(10) not null, extratype varchar(10) , extratype varchar(10) not null, name varchar(50) not null, age integer not null, state varchar(20) not null, primary key(id));").execute();
 			connection.prepareStatement("create table results (gameID varchar(10), officialID varchar(10), athleteID varchar(10), time double, points integer);").execute();
 			
 			int cy_index = 0, sp_index = 0, sw_index = 0, su_index = 0, of_index = 0;
@@ -96,7 +96,7 @@ public class Data {
 			String type = ""; 
 			String name = ""; 
 			String state = "";
-			String extratype = " ";
+			String extratype = "";
 			for(int i=0 ; i<40 ; i++)
 			{
 				id = "Oz000" + Integer.toString(i);
@@ -104,6 +104,7 @@ public class Data {
 				
 				if (i%5 == 0) {
 					type = Participant.CYCLIST;
+					extratype = Participant.SPRINTER;
 					state = "VIC";
 					name = type + Integer.toString(cy_index++);
 				}
@@ -128,6 +129,7 @@ public class Data {
 					name = type + Integer.toString(of_index++);
 				}
 				String str = "insert into participants values ('" + id + "', '" + type + "', '" + extratype + "', '" + name + "', " + age + ", '" + state + "');";
+				extratype = "";
 				connection.prepareStatement(str).execute();
 			}
 			
