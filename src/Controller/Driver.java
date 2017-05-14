@@ -53,7 +53,7 @@ public class Driver {
 	public Driver()
 	{
 		//Modified by Loso 10/05/17--------------------------------------------
-		boolean bProcessResult1 = data.ozlympicDB();
+		boolean bProcessResult1 = Data.ozlympicDB();
 		
 		//failure in hsql database
 		if(!bProcessResult1) {

@@ -39,11 +39,11 @@ public class Data {
 	private String writePath = this.getClass().getResource("gameResults.txt").getFile();
 	private boolean appendToFile = true;
 	private ArrayList<String[]> fileList = new ArrayList<String[]>();
-	private Connection connection = null;
+	private static Connection connection = null;
 	//Modified by Loso 10/05/17------------------------------------------
 	public static HashMap<String, Participant> participant = new HashMap<String, Participant>();
-	private ArrayList<Official> officialList = new ArrayList<Official>();
-	private ArrayList<Athlete> athleteList = new ArrayList<Athlete>();
+	private static ArrayList<Official> officialList = new ArrayList<Official>();
+	private static ArrayList<Athlete> athleteList = new ArrayList<Athlete>();
 	private ArrayList<Game> gameList;
 	//Modified by Loso 14/05/17------------------------------------------
 	//DEFINE PARTICIPANT FORTMAT
@@ -70,7 +70,7 @@ public class Data {
 	//-------------------------------------------------------------------
 	
 	//Initialize DB and import data
-	public boolean ozlympicDB() {
+	public static boolean ozlympicDB() {
 		
 		Server hsqlServer = null;
 		ResultSet rs = null;
@@ -87,7 +87,7 @@ public class Data {
 			
 			//Setting up connection and creating participants table
 			Class.forName("org.hsqldb.jdbcDriver");
-			connection = DriverManager.getConnection("jdbc:hsqldb:OzlympicDB", "sa", "123");
+			connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/OzlympicDB", "sa", "");//jdbc:hsqldb:
 			connection.prepareStatement("drop table participants if exists;").execute();
 			connection.prepareStatement("drop table results if exists;").execute();
 			connection.prepareStatement("create table participants (id varchar(7) not null, type varchar(10) not null, extratype varchar(10) , name varchar(50) not null, age integer not null, state varchar(20) not null, primary key(id));").execute();
