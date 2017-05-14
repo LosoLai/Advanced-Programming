@@ -9,6 +9,7 @@ import Model.Athlete;
 import Model.Game;
 import Model.Official;
 import Model.Participant;
+
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -50,6 +51,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -77,7 +79,7 @@ public class OzlympicGameView extends Application {
 		
 		try {
 			root = new BorderPane();
-			Scene scene = new Scene(root, 800, 500);
+			Scene scene = new Scene(root, 800, 550);
 			//create menu bar on the top of view
 			createMenuBar();
 			//create navigation menu
@@ -197,7 +199,39 @@ public class OzlympicGameView extends Application {
 		displayResult.setContent(resultOptions);
 		optionMenu.getChildren().add(displayResult);
 		
-		root.setLeft(optionMenu);
+		//create participant colour legend
+				TitledPane legend = new TitledPane();
+				legend.setText("4. Participant Legend");
+				GridPane legend_display = new GridPane();
+				legend_display.setHgap(4);
+				legend_display.setPadding(new Insets(5, 5, 5, 5));
+						
+				Rectangle swLeg = new Rectangle(10,10);
+				swLeg.setStyle("-fx-fill:#8fb1e8;");
+				Rectangle cyLeg = new Rectangle(10,10);
+				cyLeg.setStyle("-fx-fill:#7bfca2;");
+				Rectangle spLeg = new Rectangle(10,10);
+				spLeg.setStyle("-fx-fill:#fcfc7b;");
+				Rectangle supLeg = new Rectangle(10,10);
+				supLeg.setStyle("-fx-fill:#fc9d7b;");
+				Rectangle ofLeg = new Rectangle(10,10);
+				ofLeg.setStyle("-fx-fill:#d3c2d6;");
+						
+				legend_display.add(swLeg, 0, 0);
+				legend_display.add(new Label("Swimmers"), 1, 0);
+				legend_display.add(cyLeg, 0, 1);
+				legend_display.add(new Label("Cyclists"), 1, 1);
+				legend_display.add(spLeg, 0, 2);
+				legend_display.add(new Label("Sprinters"), 1, 2);
+				legend_display.add(supLeg, 0, 3);
+				legend_display.add(new Label("Superathletes"), 1, 3);
+				legend_display.add(ofLeg, 0, 4);
+				legend_display.add(new Label("Referees"), 1, 4);
+						
+				legend.setContent(legend_display);
+				optionMenu.getChildren().add(legend);
+				root.setLeft(optionMenu);
+
 	}
 	//create display area for showing the information required
 	private void displayContentPane()
