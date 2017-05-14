@@ -17,7 +17,7 @@ public class InstractionsPane extends StackPane{
 		VBox vbox = new VBox();
 		vbox.setPadding(new Insets(10));
 		vbox.setSpacing(8);
-		Label title = new Label("Instractions:");
+		Label title = new Label("Instructions:");
 		title.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
 		String str = "1. Select a game type from \nnavigation menu.\n\n" +
 				 	 "2. Choose athlete and referee \nto participate the game.\n\n" +
