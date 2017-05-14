@@ -65,7 +65,7 @@ public class OzlympicGameView extends Application {
 		
 		try {
 			root = new BorderPane();
-			Scene scene = new Scene(root, 800, 550);
+			Scene scene = new Scene(root, 400, 550);
 			//create menu bar on the top of view
 			createMenuBar();
 			//create navigation menu
@@ -135,7 +135,7 @@ public class OzlympicGameView extends Application {
 	private void displayContentPane()
 	{
 		InstractionsPane display = new InstractionsPane();
-		root.setPrefWidth(900);
+		root.setPrefWidth(600);
 		display.setPrefHeight(root.getHeight());
 		root.setCenter(display);
 	}
@@ -220,40 +220,16 @@ public class OzlympicGameView extends Application {
 	}
 	private void createTableView_AthletePoints(ArrayList<Athlete> allAthlete)
 	{
+		root.setPrefWidth(500);
 		Set<Athlete> set = new HashSet<Athlete>(allAthlete);
 		List<Athlete> list = set.stream().collect(Collectors.toList());
 		
-		TableView table = new TableView();
-		table.setEditable(false);
-		ObservableList<Athlete> data =
-	            FXCollections.observableArrayList(list);
-		
-		TableColumn name = new TableColumn("Name");
-		name.setMinWidth(200);
-		name.setCellValueFactory(new PropertyValueFactory<>("name"));
-		TableColumn type = new TableColumn("Type");
-		type.setMinWidth(100);
-		type.setCellValueFactory(new PropertyValueFactory<>("personType"));
-		TableColumn score = new TableColumn("Score");
-		score.setMinWidth(60);
-		score.setCellValueFactory(new PropertyValueFactory<>("points"));
-		
-		table.setItems(data);
-		table.getColumns().addAll(name, type, score);
-		
+		AthletePointsTable table = new AthletePointsTable(list);
 		final VBox vbox = new VBox();
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(10, 0, 0, 10));
         vbox.getChildren().addAll(table);
-		
         root.setCenter(vbox);
-	    
-		//test
-		Iterator itr = set.iterator();
-		while(itr.hasNext()) {
-		    System.out.println(itr.next());
-		}
-		System.out.println(allAthlete.size() + "\t" + set.size());
 	}
 	private void createTableView_GameResults(ArrayList<Game> gameList)
 	{
