@@ -29,6 +29,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -76,7 +77,7 @@ public class OzlympicGameView extends Application {
 		
 		try {
 			root = new BorderPane();
-			Scene scene = new Scene(root,900,500);
+			Scene scene = new Scene(root, 800, 500);
 			//create menu bar on the top of view
 			createMenuBar();
 			//create navigation menu
@@ -84,6 +85,8 @@ public class OzlympicGameView extends Application {
 			//create display area
 			displayContentPane();
 			
+			//window bind with the root prefer size
+			primaryStage.minWidthProperty().bind(root.prefWidthProperty());
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("OzlympicGame");
 			primaryStage.show();
@@ -200,6 +203,7 @@ public class OzlympicGameView extends Application {
 	private void displayContentPane()
 	{
 		StackPane display = new StackPane();
+		root.setPrefWidth(900);
 		display.setPrefHeight(root.getHeight());
 		
 		VBox vbox = new VBox();
@@ -222,6 +226,8 @@ public class OzlympicGameView extends Application {
 	
 	private void createListView_SelectParticipants()
 	{
+		root.setPrefWidth(1000);
+		
 		//get all participant lists
 		HashMap<String, Participant> allParticipant = gameDriver.getParticipantList();
 		//test
@@ -398,31 +404,40 @@ public class OzlympicGameView extends Application {
 		//test
 		System.out.println("Athlete points clicked");
 	}
-	private void displayGameResult()
+	private void displayGameResult(ArrayList<String> athleteIDList)
 	{
-		VBox vbox = new VBox(30);
-		vbox.setPadding(new Insets(25, 25, 25, 25));
+		//remove button at the bottom
+		root.setBottom(null);
 		
-		int listSize = gameDriver.currentGame.getCandidate().size();
+		GridPane vbox = new GridPane();
+		vbox.setVgap(30);
+		vbox.setHgap(30);
+		vbox.setPadding(new Insets(30, 10, 10, 20));
+		
+		int listSize = athleteIDList.size();
 		final double ONEMINUTE = 60;
 		final double theMaxSec = gameDriver.currentGame.getCandidate().get(listSize-1).getExecuteTime();
 		IntegerProperty seconds = new SimpleIntegerProperty();
 		for(int i=0 ; i<listSize ; i++)
 		{
-			Athlete candidate = gameDriver.currentGame.getCandidate().get(i);
+			String athleteID = athleteIDList.get(i);
+			Athlete candidate = (Athlete)gameDriver.getParticipantList().get(athleteID);
+			String textName = athleteID + " - " +candidate.getName() + " : ";
+			Label athleteName = new Label(textName);
 			ProgressBar progress = new ProgressBar();
 	        progress.setMinWidth(300);
 	        double v = ((candidate.getExecuteTime() / theMaxSec) * ONEMINUTE);
 	        System.out.println("divide by " + v);
 	        progress.progressProperty().bind(seconds.divide(v));
-	        vbox.getChildren().add(progress);
+	        vbox.add(athleteName, 0, i);
+	        vbox.add(progress, 1, i);
 			//Test
 			System.out.println(candidate.getName() + " :" + candidate.getExecuteTime());
 		}
 		
 		Text currTimeText = new Text("Current time: 0 secs" );
 		currTimeText.setBoundsType(TextBoundsType.VISUAL);
-		vbox.getChildren().add(currTimeText);
+		vbox.add(currTimeText, 0, listSize);
 		root.setCenter(vbox);
 		
 		Timeline timeline = new Timeline(
@@ -437,7 +452,7 @@ public class OzlympicGameView extends Application {
 			public void invalidated(Observable ov) {
 			
 				int time = (int) timeline.getCurrentTime().toSeconds();
-				double exect = (theMaxSec / ONEMINUTE) * time;
+				int exect = (int)((theMaxSec / ONEMINUTE) * time);
 				currTimeText.setText("Current time: " + time + " secs\n" +
 									 "Exect time : " + exect);
 			}
@@ -481,7 +496,7 @@ public class OzlympicGameView extends Application {
 		}
 		//display the game result
 		if(bSet)
-			displayGameResult();
+			displayGameResult(athleteIDList);
 	}
 	//-----------------------------------------------------------
 	//create draggable buttons
