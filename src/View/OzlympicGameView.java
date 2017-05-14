@@ -13,7 +13,7 @@ import Model.Participant;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import Assignment02.GameUnexecutedException;
+import Assignment02.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -22,14 +22,12 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -65,7 +63,7 @@ public class OzlympicGameView extends Application {
 		
 		try {
 			root = new BorderPane();
-			Scene scene = new Scene(root, 800, 550);
+			Scene scene = new Scene(root, 600, 550);
 			//create menu bar on the top of view
 			createMenuBar();
 			//create navigation menu
@@ -78,7 +76,15 @@ public class OzlympicGameView extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("OzlympicGame");
 			primaryStage.show();
-		} catch(Exception e) {
+		} /*catch(GameFullException e) {
+			e.printStackTrace();
+		} catch(NoRefereeException e) {
+			e.printStackTrace();
+		} catch(TooFewAthleteException e) {
+			e.printStackTrace();
+		} catch(WrongTypeException e) {
+			e.printStackTrace();
+		} */catch(Exception e) {
 			e.printStackTrace();
 		} 
 	}
@@ -135,7 +141,7 @@ public class OzlympicGameView extends Application {
 	private void displayContentPane()
 	{
 		InstractionsPane display = new InstractionsPane();
-		root.setPrefWidth(900);
+		root.setPrefWidth(600);
 		display.setPrefHeight(root.getHeight());
 		root.setCenter(display);
 	}
@@ -220,60 +226,20 @@ public class OzlympicGameView extends Application {
 	}
 	private void createTableView_AthletePoints(ArrayList<Athlete> allAthlete)
 	{
+		root.setPrefWidth(500);
 		Set<Athlete> set = new HashSet<Athlete>(allAthlete);
 		List<Athlete> list = set.stream().collect(Collectors.toList());
 		
-		TableView table = new TableView();
-		table.setEditable(false);
-		ObservableList<Athlete> data =
-	            FXCollections.observableArrayList(list);
-		
-		TableColumn name = new TableColumn("Name");
-		name.setMinWidth(200);
-		name.setCellValueFactory(new PropertyValueFactory<>("name"));
-		TableColumn type = new TableColumn("Type");
-		type.setMinWidth(100);
-		type.setCellValueFactory(new PropertyValueFactory<>("personType"));
-		TableColumn score = new TableColumn("Score");
-		score.setMinWidth(60);
-		score.setCellValueFactory(new PropertyValueFactory<>("points"));
-		
-		table.setItems(data);
-		table.getColumns().addAll(name, type, score);
-		
+		AthletePointsTable table = new AthletePointsTable(list);
 		final VBox vbox = new VBox();
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(10, 0, 0, 10));
         vbox.getChildren().addAll(table);
-		
         root.setCenter(vbox);
-	    
-		//test
-		Iterator itr = set.iterator();
-		while(itr.hasNext()) {
-		    System.out.println(itr.next());
-		}
-		System.out.println(allAthlete.size() + "\t" + set.size());
 	}
 	private void createTableView_GameResults(ArrayList<Game> gameList)
 	{
-		TableView table = new TableView();
-		table.setEditable(false);
-		ObservableList<Game> data =
-	            FXCollections.observableArrayList(gameList);
-		
-		TableColumn type = new TableColumn("Game Type");
-		type.setMinWidth(100);
-		type.setCellValueFactory(new PropertyValueFactory<>("gameType"));
-		TableColumn id = new TableColumn("ID");
-		id.setMinWidth(50);
-		id.setCellValueFactory(new PropertyValueFactory<>("gameID"));
-		TableColumn result = new TableColumn("Game Result");
-		result.setMinWidth(200);
-		result.setCellValueFactory(new PropertyValueFactory<>("gameResult"));
-		
-		table.setItems(data);
-		table.getColumns().addAll(type, id, result);
+		GameResultHistoryTable table = new GameResultHistoryTable(gameList);
 		
 		final VBox vbox = new VBox();
         vbox.setSpacing(5);
@@ -281,13 +247,6 @@ public class OzlympicGameView extends Application {
         vbox.getChildren().addAll(table);
 		
 	    root.setCenter(vbox);
-	    
-		//test
-		System.out.println(gameList.size());
-		Iterator itr = gameList.iterator();
-		while(itr.hasNext()) {
-		    System.out.println(itr.next());
-		}
 	}
 	//handling buttons' action
 	private void gameTypeButtonHandler(String gameType)
@@ -297,7 +256,12 @@ public class OzlympicGameView extends Application {
 		try{
 			bResult = gameDriver.selectGameTypeForCreateAGame(gameType);
 		} catch (GameUnexecutedException e) {
-			e.printStackTrace();
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("GameUnexecutedException Dialog");
+			alert.setHeaderText("Warning Dialog : Unexecuted");
+			alert.setContentText(e.getMessage());
+			alert.showAndWait();
+			//e.printStackTrace();
 		}
 		//test
 		System.out.println("result :" + bResult);
@@ -311,7 +275,7 @@ public class OzlympicGameView extends Application {
 		//test
 		System.out.println("Athlete points clicked");
 	}
-	private void displayGameResult(ArrayList<String> athleteIDList)
+	private void displayGameResultAnimation(ArrayList<String> athleteIDList)
 	{
 		//remove button at the bottom
 		root.setBottom(null);
@@ -401,9 +365,9 @@ public class OzlympicGameView extends Application {
 		} catch (GameUnexecutedException e){
 			e.printStackTrace();
 		}
-		//display the game result
+		//display the game result progress
 		if(bSet)
-			displayGameResult(athleteIDList);
+			displayGameResultAnimation(athleteIDList);
 	}
 	//-----------------------------------------------------------
 	//create draggable buttons

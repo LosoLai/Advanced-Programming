@@ -120,15 +120,8 @@ public class Game {
 		{
 			referee = ((Official)getReferee());
 			
-			try {
 			setGameResult(referee.setResultTopList(this.getGameID(), athList));
-			} catch (SQLException e2) {
-				e2.printStackTrace();
-			} catch (ClassNotFoundException e2) {
-				e2.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			
 			//display game result
 			System.out.println("\n" + getGameResult() + "\n\n");
 			

@@ -15,11 +15,13 @@ import java.sql.SQLException;
 import org.hsqldb.Server;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 import Model.Athlete;
+import Model.Game;
 import Model.Official;
 import Model.Participant;
 import Model.SuperAthlete;
@@ -37,11 +39,12 @@ public class Data {
 	private String writePath = this.getClass().getResource("gameResults.txt").getFile();
 	private boolean appendToFile = true;
 	private ArrayList<String[]> fileList = new ArrayList<String[]>();
-	public Connection connection = null;
+	private Connection connection = null;
 	//Modified by Loso 10/05/17------------------------------------------
 	public static HashMap<String, Participant> participant = new HashMap<String, Participant>();
 	private ArrayList<Official> officialList = new ArrayList<Official>();
 	private ArrayList<Athlete> athleteList = new ArrayList<Athlete>();
+	private ArrayList<Game> gameList;
 	//Modified by Loso 14/05/17------------------------------------------
 	//DEFINE PARTICIPANT FORTMAT
 	public final int ID_INDEX   	 = 0;
@@ -231,19 +234,66 @@ public class Data {
 				
 		return true;
 	}
-	public void writeToFile(String text){
+	public void writeToFile(ArrayList<Game> gameList){
 	    	try 
 	    	{
 	    	 FileWriter write = new FileWriter(writePath, appendToFile);
 	    	 PrintWriter printLine = new PrintWriter(write);
+	    	 
+	    	 this.gameList = gameList;
+	    	 Game game;
+	    	 
+	    	 for (int i=0; i<gameList.size(); i++) {
+	    		 game = gameList.get(i);
+	    		 printLine.printf("%s" + "%n", game.getGameResult());
+	    	 }
 	    	
-	    	 printLine.printf("%s" + "%n", text);
 	    	 printLine.close();
 	    	}
 	    	catch(IOException e) {
 	    		e.printStackTrace();
 	    	}
 	    }
+	public void writeToDB(ArrayList<Game> gameList){
+		this.gameList = gameList;
+		ArrayList<Athlete> candidates;
+		Participant referee;
+		Game game;
+		
+		for (int i=0; i<gameList.size(); i++) {
+			game = gameList.get(i);
+			candidates = game.getCandidate();
+			referee = game.getReferee();
+			Athlete record;
+			String str;
+			Collections.sort(candidates);
+			
+			for (int j=0; j<candidates.size(); i++) {
+				record = candidates.get(j);
+				try {
+					if(j == 0){
+						str = "insert into results values ('" + game.getGameID() + "', '" + referee.getPersonID() + "', '" + record.getPersonID() + "', " + record.getExecuteTime() + ", 5);";
+						connection.prepareStatement(str).execute();
+					}
+					else if(j == 1) {
+						str = "insert into results values ('" + game.getGameID() + "', '" + referee.getPersonID() + "', '" + record.getPersonID() + "', " + record.getExecuteTime() + ", 3);";
+						connection.prepareStatement(str).execute();
+					}
+					else if(j == 2) {
+						str = "insert into results values ('" + game.getGameID() + "', '" + referee.getPersonID() + "', '" + record.getPersonID() + "', " + record.getExecuteTime() + ", 1);";
+						connection.prepareStatement(str).execute();
+					}
+					else {
+						str = "insert into results values ('" + game.getGameID() + "', '" + referee.getPersonID() + "', '" + record.getPersonID() + "', " + record.getExecuteTime() + ", 0);";
+						connection.prepareStatement(str).execute();
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		}
+	}
 	private boolean fileNotFoundRecovery()
 	{
 		//setting dummy data here for testing	

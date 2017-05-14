@@ -8,6 +8,8 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class NavigationMenu extends VBox{
 	private Button swimming;
@@ -40,6 +42,7 @@ public class NavigationMenu extends VBox{
 	public NavigationMenu()
 	{
 		super();
+		this.prefWidth(150);
 		this.setPadding(new Insets(10));
 		this.setSpacing(8);
 	    //create game type options
@@ -51,6 +54,7 @@ public class NavigationMenu extends VBox{
                 		  "-fx-border-radius: 5;" + 
                			  "-fx-background-color: #DFB951" +
                			  "-fx-border-color: blue;");*/
+		gameType.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
 		
 		gameType.setText("1. Game Type");
 		GridPane typeOptions = new GridPane();
@@ -70,6 +74,7 @@ public class NavigationMenu extends VBox{
 		
 		//create candidate info. 
 		TitledPane participantInfo = new TitledPane();
+		participantInfo.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
 		participantInfo.setText("2. Participant Info.");
 		GridPane participant = new GridPane();
 		participant.setVgap(4);
@@ -84,6 +89,7 @@ public class NavigationMenu extends VBox{
 		
 		//create display result options
 		TitledPane displayResult = new TitledPane();
+		displayResult.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
 		displayResult.setText("3. Display Results");
 		GridPane resultOptions = new GridPane();
 		resultOptions.setVgap(4);
@@ -98,6 +104,7 @@ public class NavigationMenu extends VBox{
 		//Modified by Arion 14/05/17-------------------------------------
 		//create participant colour legend
 		TitledPane legend = new TitledPane();
+		legend.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
 		legend.setText("4. Participant Legend");
 		GridPane legend_display = new GridPane();
 		legend_display.setHgap(4);

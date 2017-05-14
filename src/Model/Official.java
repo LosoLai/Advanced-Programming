@@ -2,8 +2,6 @@ package Model;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import Controller.Data;
-
 
 
 /**Author: Arion
@@ -17,7 +15,6 @@ public class Official extends Participant {
 	private final int POINT_1ST = 5;
 	private final int POINT_2ND = 2;
 	private final int POINT_3RD = 1;
-	private final int NO_POINTS = 0;
 	
 	//Extra variables for recording ranking list and game result
 	private Athlete[] resultTop3;
@@ -51,11 +48,10 @@ public class Official extends Participant {
     }
 	
 	//Generates game result and stores points in Athlete objects
-	public String setResultTopList(String gameID, ArrayList<Athlete> sortedList) throws Exception
+	public String setResultTopList(String gameID, ArrayList<Athlete> sortedList) 
 	{
 		//Timestamp for gameResults file
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SS").format(new Date());
-		Data data = new Data();
 		
 		//Modified by Loso 13/05/17----------------------------------------
 		//remove write file and DB 
