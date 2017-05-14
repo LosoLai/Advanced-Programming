@@ -11,15 +11,11 @@ import Model.Official;
 import Model.Participant;
 
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import Assignment02.GameUnexecutedException;
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
-import javafx.animation.ParallelTransition;
-import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.InvalidationListener;
@@ -28,11 +24,8 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.util.Duration;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -42,15 +35,9 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.input.DataFormat;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.CubicCurveTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -127,113 +114,23 @@ public class OzlympicGameView extends Application {
 	}
 	private void createNavigationMenu()
 	{
-		VBox optionMenu = new VBox();
-		optionMenu.setPadding(new Insets(10));
-		optionMenu.setSpacing(8);
-	    //create game type options
-		TitledPane gameType = new TitledPane();
-		/*gameType.setStyle("-fx-padding: 10;" + 
-                		  "-fx-border-style: solid inside;" + 
-                		  "-fx-border-width: 2;" +
-                		  "-fx-border-insets: 5;" + 
-                		  "-fx-border-radius: 5;" + 
-               			  "-fx-background-color: #DFB951" +
-               			  "-fx-border-color: blue;");*/
-		
-		gameType.setText("1. Game Type");
-		GridPane typeOptions = new GridPane();
-		typeOptions.setVgap(4);
-		typeOptions.setPadding(new Insets(5, 5, 5, 5));
-		//create swimming button
-		Button swimming = new Button(Game.GAME_SWIMMING);
-		swimming.setOnAction((ActionEvent e) -> {
+		NavigationMenu optionMenu = new NavigationMenu();
+		optionMenu.getSwimmingButton().setOnAction((ActionEvent e) -> {
 			gameTypeButtonHandler(Game.GAME_SWIMMING);
 		});
-		typeOptions.add(swimming, 0, 0);
-		//create cycling button
-		Button cycling = new Button(Game.GAME_CYCLING);
-		cycling.setOnAction((e) -> {
+		optionMenu.getCyclingButton().setOnAction((e) -> {
 			gameTypeButtonHandler(Game.GAME_CYCLING);
 		});
-		typeOptions.add(cycling, 0, 1);
-		//create running button
-		Button running = new Button(Game.GAME_RUNNING);
-		running.setOnAction((e) -> {
+		optionMenu.getRunningButton().setOnAction((e) -> {
 			gameTypeButtonHandler(Game.GAME_RUNNING);
 		});
-		typeOptions.add(running, 0, 2);
-		gameType.setContent(typeOptions);
-		optionMenu.getChildren().add(gameType);
-		
-		//create candidate info. 
-		TitledPane participantInfo = new TitledPane();
-		participantInfo.setText("2. Participant Info.");
-		GridPane participant = new GridPane();
-		participant.setVgap(4);
-		participant.setPadding(new Insets(5, 5, 5, 5));
-		participant.add(new Label("Referee :\n" + 
-								  "One official only"), 0, 0);
-		participant.add(new Label("Athlete List :\n" + 
-								  "Minimum: 4 athletes\n" + 
-								  "Maximum: 8 athletes"), 0, 1);
-		participantInfo.setContent(participant);
-		optionMenu.getChildren().add(participantInfo);
-		
-		//create display result options
-		TitledPane displayResult = new TitledPane();
-		displayResult.setText("3. Display Results");
-		GridPane resultOptions = new GridPane();
-		resultOptions.setVgap(4);
-		resultOptions.setPadding(new Insets(5, 5, 5, 5));
-		Button athletePoints = new Button("Athlete Points");
-		//AthletePointsButtonHandler apHandler = new AthletePointsButtonHandler();
-		athletePoints.setOnAction((e) -> {
+		optionMenu.getAthletePointsButton().setOnAction((e) -> {
 			displayAthletePoint();
 		});
-		resultOptions.add(athletePoints, 0, 0);
-		Button gameResult = new Button("Game Result History");
-		gameResult.setOnAction((e) -> {
+		optionMenu.getGameResultButton().setOnAction((e) -> {
 			displayGameResultHistory();
 		});
-		resultOptions.add(gameResult, 0, 1);
-		displayResult.setContent(resultOptions);
-		optionMenu.getChildren().add(displayResult);
-		
-		//Modified by Arion 14/05/17-------------------------------------
-		//create participant colour legend
-				TitledPane legend = new TitledPane();
-				legend.setText("4. Participant Legend");
-				GridPane legend_display = new GridPane();
-				legend_display.setHgap(4);
-				legend_display.setPadding(new Insets(5, 5, 5, 5));
-						
-				Rectangle swLeg = new Rectangle(10,10);
-				swLeg.setStyle("-fx-fill:#8fb1e8;");
-				Rectangle cyLeg = new Rectangle(10,10);
-				cyLeg.setStyle("-fx-fill:#7bfca2;");
-				Rectangle spLeg = new Rectangle(10,10);
-				spLeg.setStyle("-fx-fill:#fcfc7b;");
-				Rectangle supLeg = new Rectangle(10,10);
-				supLeg.setStyle("-fx-fill:#fc9d7b;");
-				Rectangle ofLeg = new Rectangle(10,10);
-				ofLeg.setStyle("-fx-fill:#d3c2d6;");
-						
-				legend_display.add(swLeg, 0, 0);
-				legend_display.add(new Label("Swimmers"), 1, 0);
-				legend_display.add(cyLeg, 0, 1);
-				legend_display.add(new Label("Cyclists"), 1, 1);
-				legend_display.add(spLeg, 0, 2);
-				legend_display.add(new Label("Sprinters"), 1, 2);
-				legend_display.add(supLeg, 0, 3);
-				legend_display.add(new Label("Superathletes"), 1, 3);
-				legend_display.add(ofLeg, 0, 4);
-				legend_display.add(new Label("Referees"), 1, 4);
-						
-				legend.setContent(legend_display);
-				optionMenu.getChildren().add(legend);
-				root.setLeft(optionMenu);
-				//----------------------------------------------------------------
-
+		root.setLeft(optionMenu);
 	}
 	//create display area for showing the information required
 	private void displayContentPane()
