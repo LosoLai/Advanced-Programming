@@ -1,9 +1,1 @@
-Current System Time : 2017-05-15 20:18:26.589
-========= C01 Results ==========
-
-Sprinter7, Sprinter, 512.1790618063449
-Swimmer7, Swimmer, 526.8317607825809
-Cyclist5, Cyclist, 595.0963569404544
-
-Referee: Official2
 

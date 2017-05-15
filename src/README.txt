@@ -62,11 +62,7 @@ NAVIGATION MENU:
 TOOLBAR:
 --------
 
-1. SAVE:
-   -----
-   Click on the save button to save all game results in the gameResults.txt file and in the results table of the embedded database
-
-2. HELP:
+1. HELP:
    -----
    Click on the help button to view the application instructions
 
