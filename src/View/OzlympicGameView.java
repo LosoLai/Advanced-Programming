@@ -107,6 +107,7 @@ public class OzlympicGameView extends Application {
         MenuItem menuItem_0 = new MenuItem(menuItem[0]);
         menuItem_0.setOnAction((ActionEvent e) -> {
                 System.out.println(menuItem[0]);
+                //Save to File and DB------------------------------------------------
                 data.writeToDB(gameDriver.getGameList());
                 data.writeToFile(gameDriver.getGameList());
         });

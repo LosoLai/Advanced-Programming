@@ -1,12 +1,15 @@
 package Controller;
 
 import Assignment02.GameUnexecutedException;
-import Model.*;
-import View.*;
+//import Model.*;
+
+import Model.Athlete;
+import Model.Game;
+import Model.Official;
+import Model.Participant;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 
 /**Author: Loso
  * The role of the Driver is to control the games
