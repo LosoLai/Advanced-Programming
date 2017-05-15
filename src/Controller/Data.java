@@ -35,16 +35,16 @@ import Model.SuperAthlete;
  */
 
 public class Data {
-	
-	private String writePath = this.getClass().getResource("gameResults.txt").getFile();
-	private boolean appendToFile = true;
+	//public static Data dataInstance;
+	private static String writePath = Data.class.getResource("gameResults.txt").getFile();
+	private static final boolean appendToFile = true;
 	private ArrayList<String[]> fileList = new ArrayList<String[]>();
 	private static Connection connection = null;
 	//Modified by Loso 10/05/17------------------------------------------
 	public static HashMap<String, Participant> participant = new HashMap<String, Participant>();
 	private static ArrayList<Official> officialList = new ArrayList<Official>();
 	private static ArrayList<Athlete> athleteList = new ArrayList<Athlete>();
-	private ArrayList<Game> gameList;
+	//private ArrayList<Game> gameList;
 	//Modified by Loso 14/05/17------------------------------------------
 	//DEFINE PARTICIPANT FORTMAT
 	public final int ID_INDEX   	 = 0;
@@ -234,13 +234,25 @@ public class Data {
 				
 		return true;
 	}
-	public void writeToFile(ArrayList<Game> gameList){
-	    	try 
-	    	{
+	public static void writeToFile(String text){
+	    try 
+	    {
+	    	 FileWriter write = new FileWriter(writePath, appendToFile);
+	    	 PrintWriter printLine = new PrintWriter(write);
+	    	
+	    	 printLine.printf("%s" + "%n", text);
+	    	 printLine.close();
+	    }
+	    catch(IOException e) {
+	    	e.printStackTrace();
+	    }
+	}
+	public static void writeToFile(ArrayList<Game> gameList){
+	    try 
+	    {
 	    	 FileWriter write = new FileWriter(writePath, appendToFile);
 	    	 PrintWriter printLine = new PrintWriter(write);
 	    	 
-	    	 this.gameList = gameList;
 	    	 Game game;
 	    	 
 	    	 for (int i=0; i<gameList.size(); i++) {
@@ -249,26 +261,22 @@ public class Data {
 	    	 }
 	    	
 	    	 printLine.close();
-	    	}
-	    	catch(IOException e) {
-	    		e.printStackTrace();
-	    	}
 	    }
-	public void writeToDB(ArrayList<Game> gameList){
-		this.gameList = gameList;
+	    catch(IOException e) {
+	    		e.printStackTrace();
+	    }
+	}
+	public static void writeToDB(Game game){
 		ArrayList<Athlete> candidates;
 		Participant referee;
-		Game game;
 		
-		for (int i=0; i<gameList.size(); i++) {
-			game = gameList.get(i);
-			candidates = game.getCandidate();
-			referee = game.getReferee();
-			Athlete record;
-			String str;
-			Collections.sort(candidates);
+		candidates = game.getCandidate();
+		referee = game.getReferee();
+		Athlete record;
+		String str;
+		Collections.sort(candidates);
 			
-			for (int j=0; j<candidates.size(); i++) {
+		for (int j=0; j<candidates.size(); j++) {
 				record = candidates.get(j);
 				try {
 					if(j == 0){
@@ -291,8 +299,6 @@ public class Data {
 					e.printStackTrace();
 				}
 			}
-			
-		}
 	}
 	private boolean fileNotFoundRecovery()
 	{

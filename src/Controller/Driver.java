@@ -139,9 +139,18 @@ public class Driver {
 		if(gameStatus == GAME_INITIATED) {
 			bExecuted = currentGame.executeGame();
 			if(bExecuted)
+			{
 				gameStatus = GAME_EXECUTED;
+				Data.writeToDB(currentGame);
+				Data.writeToFile(currentGame.getGameResult());
+			}
 		}
 		return bExecuted;
+	}
+	
+	public void writeGameResultIntoFile()
+	{
+		data.writeToFile(gameList);
 	}
 	//-------------------------------------------------------------------------
 }
