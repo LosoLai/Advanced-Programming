@@ -255,19 +255,21 @@ public class Data {
 	    }
 	}
 	public static void writeToFile(ArrayList<Game> gameList){
+		BufferedWriter write = null;
 	    try 
 	    {
-	    	 FileWriter write = new FileWriter(Data.class.getResource("gameResults.txt").getFile(), appendToFile);
-	    	 PrintWriter printLine = new PrintWriter(write);
+	    	write = new BufferedWriter(new FileWriter("gameResults.txt", true));
+	    	Game game;
 	    	 
-	    	 Game game;
-	    	 
-	    	 for (int i=0; i<gameList.size(); i++) {
-	    		 game = gameList.get(i);
-	    		 printLine.printf("%s" + "%n", game.getGameResult());
-	    	 }
-	    	
-	    	 printLine.close();
+	    	for (int i=0; i<gameList.size(); i++) {
+	    		game = gameList.get(i);
+	    		write.write(game.getGameResult());
+	    	}
+	    	write.close();
+	    }
+	    catch(FileNotFoundException e)
+	    {
+	    	e.printStackTrace();
 	    }
 	    catch(IOException e) {
 	    		e.printStackTrace();
