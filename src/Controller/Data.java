@@ -167,19 +167,13 @@ public class Data {
 	}
 	public boolean initialParticipantList()
 	{
-		//Modified by Arion--------------------------
 		Participant temp = null;	
-		//Modified by Loso
-		String rootPath = this.getClass().getResource("Participants.txt").getFile();
-		File fileToBeFound = new File(rootPath);
-		
-		//-------------------------------------------
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
 			    
 		try {
-			br = new BufferedReader(new FileReader(fileToBeFound.getAbsolutePath()));
+			br = new BufferedReader(new FileReader("Participants.txt"));
             while ((line = br.readLine()) != null) {
             // use comma as separator
 		    fileList.add(line.split(cvsSplitBy));
