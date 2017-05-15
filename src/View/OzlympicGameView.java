@@ -19,6 +19,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.property.IntegerProperty;
@@ -44,10 +45,8 @@ import javafx.scene.text.TextBoundsType;
 
 public class OzlympicGameView extends Application {
 	public static OzlympicGameView gameView;
-	//private Stage primaryStage;
 	private static Driver gameDriver;	//the role is game controller
 	private static BorderPane root;
-	//private static VBox displayContent;
 	
 	private final DataFormat buttonFormat = new DataFormat("com.example.myapp.formats.button");
 	private Button draggingButton ;
@@ -78,6 +77,7 @@ public class OzlympicGameView extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("OzlympicGame");
 			primaryStage.show();
+			
 		} /*catch(GameFullException e) {
 			e.printStackTrace();
 		} catch(NoRefereeException e) {
@@ -91,6 +91,17 @@ public class OzlympicGameView extends Application {
 		} 
 	}
 	
+	@Override
+	public void stop() throws Exception 
+	{
+	    super.stop();
+	    //gameDriver.writeGameResultIntoFile();
+	    //test
+	    //System.out.println("writeGameResultIntoFile method is executed");
+	    //Platform.exit();
+	    //System.exit(0);
+	}
+	
 	public static void main(String[] args){
 		gameDriver = Driver.getInstance();
 		launch(args);
@@ -98,28 +109,15 @@ public class OzlympicGameView extends Application {
 	
 	private void createMenuBar()
 	{
-		String[] menu = {"Save", "Help"};
-		String[] menuItem = {"Game Result Saving", 
-							 "Rules Explanation"};
 		MenuBar menuBar = new MenuBar();
-        // --- Menu Save
-        Menu menuSave = new Menu(menu[0]);
-        MenuItem menuItem_0 = new MenuItem(menuItem[0]);
-        menuItem_0.setOnAction((ActionEvent e) -> {
-                System.out.println(menuItem[0]);
-                //Save to File and DB------------------------------------------------
-                data.writeToDB(gameDriver.getGameList());
-                data.writeToFile(gameDriver.getGameList());
-        });
-        menuSave.getItems().add(menuItem_0);
         // --- Menu Help
-        Menu menuHelp = new Menu(menu[1]);
-        MenuItem menuItem_1 = new MenuItem(menuItem[1]);
+        Menu menuHelp = new Menu("Help");
+        MenuItem menuItem_1 = new MenuItem("Instructions");
         menuItem_1.setOnAction((e) -> {
-                System.out.println(menuItem[1]);
+        	InstractionsView instruction = new InstractionsView();
         });
         menuHelp.getItems().add(menuItem_1);
-        menuBar.getMenus().addAll(menuSave, menuHelp);
+        menuBar.getMenus().add(menuHelp);
         root.setTop(menuBar);
 	}
 	private void createNavigationMenu()
