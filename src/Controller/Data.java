@@ -1,6 +1,7 @@
 package Controller;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -235,13 +236,19 @@ public class Data {
 		return true;
 	}
 	public static void writeToFile(String text){
+		BufferedWriter write = null;
 	    try 
 	    {
-	    	 FileWriter write = new FileWriter(writePath, appendToFile);
-	    	 PrintWriter printLine = new PrintWriter(write);
+	    	write = new BufferedWriter(new FileWriter("gameResults.txt", true));
+	    	write.write(text);
+	    	write.newLine();
 	    	
-	    	 printLine.printf("%s" + "%n", text);
-	    	 printLine.close();
+	    	//printLine.printf("%s" + "%n", text);
+	    	write.close();
+	    }
+	    catch(FileNotFoundException e)
+	    {
+	    	e.printStackTrace();
 	    }
 	    catch(IOException e) {
 	    	e.printStackTrace();
@@ -250,7 +257,7 @@ public class Data {
 	public static void writeToFile(ArrayList<Game> gameList){
 	    try 
 	    {
-	    	 FileWriter write = new FileWriter(writePath, appendToFile);
+	    	 FileWriter write = new FileWriter(Data.class.getResource("gameResults.txt").getFile(), appendToFile);
 	    	 PrintWriter printLine = new PrintWriter(write);
 	    	 
 	    	 Game game;
