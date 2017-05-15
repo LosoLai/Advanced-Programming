@@ -176,18 +176,8 @@ public class OzlympicGameView extends Application {
         }
 	    
         addDropHandling(pane1);
-        // added try/catch for TooManyRefereeException---------------------------------------
-      
-        try {
+        
         addDropHandling_Validation_Referee(pane2);
-        } catch (TooManyRefereeException e) {
-        	Alert alert = new Alert(AlertType.WARNING);
-        	alert.setTitle("TooManyRefereeException Dialog");
-			alert.setHeaderText("Warning Dialog : Too many referees");
-			alert.setContentText(e.getMessage());
-			alert.showAndWait();
-        	//e.printStackTrace();
-        } 
 
         SplitPane splitPane_Ref = new SplitPane(pane1, pane2);
         splitPane_Ref.setStyle("-fx-border-color: #f26704;");
@@ -214,18 +204,7 @@ public class OzlympicGameView extends Application {
         }
 	    
         addDropHandling(pane3);
-        
-        // added try/catch for GameFullException--------------------------------------------------
-        try {
         addDropHandling_Validation_Athlete(pane4);
-        } catch (GameFullException e) {
-        	Alert alert = new Alert(AlertType.WARNING);
-        	alert.setTitle("GameFullException Dialog");
-			alert.setHeaderText("Warning Dialog : Game full");
-			alert.setContentText(e.getMessage());
-			alert.showAndWait();
-        	//e.printStackTrace();
-        } 
 
         SplitPane splitPane_Ath = new SplitPane(pane3, pane4);
         splitPane_Ath.setStyle("-fx-border-color: #206bd6;");
@@ -447,7 +426,7 @@ public class OzlympicGameView extends Application {
             }           
         });
     }
-	private void addDropHandling_Validation_Referee(Pane pane) throws TooManyRefereeException {
+	private void addDropHandling_Validation_Referee(Pane pane) {
         pane.setOnDragOver(e -> {
             Dragboard db = e.getDragboard();
             if (db.hasContent(buttonFormat) 
@@ -465,7 +444,17 @@ public class OzlympicGameView extends Application {
             	
             	//throw TooManyRefereeException-------------------------------------------------------------
             	if (pane.getChildren().size() > Game.REFEREELIMIT){
-            		throw new TooManyRefereeException("Too many referees selected. Please select only one referee.");
+            		try {
+						throw new TooManyRefereeException("Too many referees selected. Please select only one referee.");
+					} catch (TooManyRefereeException e1) {
+						Alert alert1 = new Alert(AlertType.WARNING);
+			        	alert1.setTitle("TooManyRefereeException Dialog");
+						alert1.setHeaderText("Warning Dialog : Too many referees");
+						alert1.setContentText(e1.getMessage());
+						alert1.showAndWait();
+			        	//e.printStackTrace();
+					}
+            		
             	}else
             	{
             		((Pane)draggingButton.getParent()).getChildren().remove(draggingButton);
@@ -476,7 +465,7 @@ public class OzlympicGameView extends Application {
             } 
         });
     }
-	private void addDropHandling_Validation_Athlete(Pane pane) throws GameFullException{
+	private void addDropHandling_Validation_Athlete(Pane pane){
         pane.setOnDragOver(e -> {
             Dragboard db = e.getDragboard();
             if (db.hasContent(buttonFormat) 
@@ -493,7 +482,16 @@ public class OzlympicGameView extends Application {
             	//test
             	System.out.println("Athlete selected:" + pane.getChildren().size());
             	if(pane.getChildren().size() > Game.CANDIDATELIMIT_MAX)
-            		throw new GameFullException("Too many athletes selected. Only up to 8 athletes allowed to compete."); 
+            		try{
+            		throw new GameFullException("Too many athletes selected. Only up to 8 athletes allowed to compete.");
+            		} catch (GameFullException e1) {
+            			Alert alert = new Alert(AlertType.WARNING);
+                    	alert.setTitle("GameFullException Dialog");
+            			alert.setHeaderText("Warning Dialog : Game full");
+            			alert.setContentText(e1.getMessage());
+            			alert.showAndWait();
+                    	//e.printStackTrace();
+            		}
             	else
             	{
             		((Pane)draggingButton.getParent()).getChildren().remove(draggingButton);

@@ -37,7 +37,6 @@ import Model.SuperAthlete;
 
 public class Data {
 	//public static Data dataInstance;
-	private static String writePath = Data.class.getResource("gameResults.txt").getFile();
 	private static final boolean appendToFile = true;
 	private ArrayList<String[]> fileList = new ArrayList<String[]>();
 	private static Connection connection = null;
@@ -239,11 +238,10 @@ public class Data {
 		BufferedWriter write = null;
 	    try 
 	    {
-	    	write = new BufferedWriter(new FileWriter("gameResults.txt", true));
+	    	write = new BufferedWriter(new FileWriter("gameResults.txt", appendToFile));
 	    	write.write(text);
 	    	write.newLine();
 	    	
-	    	//printLine.printf("%s" + "%n", text);
 	    	write.close();
 	    }
 	    catch(FileNotFoundException e)
