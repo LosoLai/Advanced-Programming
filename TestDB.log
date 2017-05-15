@@ -1,5 +1,0 @@
-/*C3*/SET SCHEMA PUBLIC
-drop table participants if exists
-create table participants (id varchar(7) not null, type varchar(10), name varchar(50), age integer, state varchar(20))
-INSERT INTO PARTICIPANTS VALUES('test','12345577','test',20,'test')
-COMMIT
