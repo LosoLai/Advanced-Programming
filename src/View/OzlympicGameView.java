@@ -73,20 +73,13 @@ public class OzlympicGameView extends Application {
 			displayContentPane();
 			
 			//window bind with the root prefer size
-			primaryStage.minWidthProperty().bind(root.prefWidthProperty());
+			root.prefWidthProperty().addListener((obs, oldVal, newVal) -> 
+			primaryStage.setWidth(newVal.doubleValue()));
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("OzlympicGame");
 			primaryStage.show();
 			
-		} /*catch(GameFullException e) {
-			e.printStackTrace();
-		} catch(NoRefereeException e) {
-			e.printStackTrace();
-		} catch(TooFewAthleteException e) {
-			e.printStackTrace();
-		} catch(WrongTypeException e) {
-			e.printStackTrace();
-		} */catch(Exception e) {
+		} catch(Exception e) {
 			e.printStackTrace();
 		} 
 	}
@@ -95,11 +88,12 @@ public class OzlympicGameView extends Application {
 	public void stop() throws Exception 
 	{
 	    super.stop();
-	    //gameDriver.writeGameResultIntoFile();
+	    gameDriver.writeGameResultIntoFile();
 	    //test
-	    //System.out.println("writeGameResultIntoFile method is executed");
-	    //Platform.exit();
-	    //System.exit(0);
+	    System.out.println("writeGameResultIntoFile method is executed");
+	    
+	    Platform.exit();
+	    System.exit(0);
 	}
 	
 	public static void main(String[] args){
@@ -230,7 +224,7 @@ public class OzlympicGameView extends Application {
 	}
 	private void createTableView_AthletePoints(ArrayList<Athlete> allAthlete)
 	{
-		root.setPrefWidth(500);
+		root.setPrefWidth(600);
 		Set<Athlete> set = new HashSet<Athlete>(allAthlete);
 		List<Athlete> list = set.stream().collect(Collectors.toList());
 		
@@ -243,6 +237,7 @@ public class OzlympicGameView extends Application {
 	}
 	private void createTableView_GameResults(ArrayList<Game> gameList)
 	{
+		root.setPrefWidth(700);
 		GameResultHistoryTable table = new GameResultHistoryTable(gameList);
 		
 		final VBox vbox = new VBox();

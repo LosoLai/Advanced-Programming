@@ -142,7 +142,7 @@ public class Driver {
 			{
 				gameStatus = GAME_EXECUTED;
 				Data.writeToDB(currentGame);
-				Data.writeToFile(currentGame.getGameResult());
+				//Data.writeToFile(currentGame.getGameResult());
 			}
 		}
 		return bExecuted;
