@@ -343,6 +343,20 @@ public class OzlympicGameView extends Application {
 		//get referee ID
 		String refereeID = "";
 		int nodeNum = referee.getChildren().size();
+		
+		//Add NoRefereeException Arion 16/05/17---------------------------------
+		if(nodeNum <2) {
+			try {
+				throw new NoRefereeException("No referee selected. Please choose a referee for the game.");
+			} catch (NoRefereeException e1) {
+				Alert alert = new Alert(AlertType.WARNING);
+	        	alert.setTitle("NoRefereeException Dialog");
+				alert.setHeaderText("Warning Dialog : No referees");
+				alert.setContentText(e1.getMessage());
+				alert.showAndWait();
+	        	//e.printStackTrace();
+			}
+		}
 		for(int i=0 ; i<nodeNum ; i++)
 		{
 			Node item = referee.getChildren().get(i);
@@ -352,6 +366,20 @@ public class OzlympicGameView extends Application {
 		//set athleteIDList
 		ArrayList<String> athleteIDList = new ArrayList<String>();
 		nodeNum = athlete.getChildren().size();
+		
+		//Add TooFewAthleteException Arion 16/05/17----------------------------
+		if(nodeNum <5) {
+			try {
+				throw new TooFewAthleteException("Not enough athletes selected. Please choose at least 4 athletes for the game.");
+			} catch (TooFewAthleteException e2) {
+				Alert alert = new Alert(AlertType.WARNING);
+	        	alert.setTitle("TooFewAthleteException Dialog");
+				alert.setHeaderText("Warning Dialog : Too few athletes.");
+				alert.setContentText(e2.getMessage());
+				alert.showAndWait();
+	        	//e.printStackTrace();
+			}
+		}
 		for(int j=0 ; j<nodeNum ; j++)
 		{
 			Node item = athlete.getChildren().get(j);
@@ -437,16 +465,16 @@ public class OzlympicGameView extends Application {
             	//test
             	System.out.println("Official selected:" + pane.getChildren().size());
             	
-            	//throw TooManyRefereeException-------------------------------------------------------------
+            	//throw TooManyRefereeException Arion 15/05/17-----------------------------------------------
             	if (pane.getChildren().size() > Game.REFEREELIMIT){
             		try {
 						throw new TooManyRefereeException("Too many referees selected. Please select only one referee.");
 					} catch (TooManyRefereeException e1) {
-						Alert alert1 = new Alert(AlertType.WARNING);
-			        	alert1.setTitle("TooManyRefereeException Dialog");
-						alert1.setHeaderText("Warning Dialog : Too many referees");
-						alert1.setContentText(e1.getMessage());
-						alert1.showAndWait();
+						Alert alert = new Alert(AlertType.WARNING);
+			        	alert.setTitle("TooManyRefereeException Dialog");
+						alert.setHeaderText("Warning Dialog : Too many referees");
+						alert.setContentText(e1.getMessage());
+						alert.showAndWait();
 			        	//e.printStackTrace();
 					}
             		
@@ -476,6 +504,8 @@ public class OzlympicGameView extends Application {
             if (db.hasContent(buttonFormat)) {
             	//test
             	System.out.println("Athlete selected:" + pane.getChildren().size());
+            	
+            	// add GameFullException Arion 15/05/17------------------------------------------------
             	if(pane.getChildren().size() > Game.CANDIDATELIMIT_MAX)
             		try{
             		throw new GameFullException("Too many athletes selected. Only up to 8 athletes allowed to compete.");
