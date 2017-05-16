@@ -115,6 +115,11 @@ public class Driver {
 			throw new NoRefereeException("There is no referee for the game, please choose one!");
 		
 		currentGame.setReferee(referee);
+		
+		//clean the candidate list first
+		if(currentGame.getCandidate() != null)
+			currentGame.getCandidate().removeAll(currentGame.getCandidate());
+		
 		for(int i=0 ; i<athleteIDList.size() ; i++)
 		{
 			String id = athleteIDList.get(i);

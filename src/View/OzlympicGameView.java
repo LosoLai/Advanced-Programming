@@ -174,8 +174,9 @@ public class OzlympicGameView extends Application {
         }
 	    
         addDropHandling(pane1);
-        
+        //Modified by Loso 16/05/17----------------------------------
         addDropHandling_Validation_Referee(pane2);
+       //-----------------------------------------------------------
 
         SplitPane splitPane_Ref = new SplitPane(pane1, pane2);
         splitPane_Ref.setStyle("-fx-border-color: #f26704;");
@@ -464,34 +465,31 @@ public class OzlympicGameView extends Application {
                 e.acceptTransferModes(TransferMode.MOVE);
             }
         });
-
+        
         pane.setOnDragDropped(e -> {
-            Dragboard db = e.getDragboard();
-            if (db.hasContent(buttonFormat)) {
-            	//test
-            	System.out.println("Official selected:" + pane.getChildren().size());
+        	try {
+        		Dragboard db = e.getDragboard();
+        		if (db.hasContent(buttonFormat)) {
+        			//test
+        			System.out.println("Official selected:" + pane.getChildren().size());
             	
-            	//throw TooManyRefereeException Arion 15/05/17-----------------------------------------------
-            	if (pane.getChildren().size() > Game.REFEREELIMIT){
-            		try {
-						throw new TooManyRefereeException("Too many referees selected. Please select only one referee.");
-					} catch (TooManyRefereeException e1) {
-						Alert alert = new Alert(AlertType.WARNING);
-			        	alert.setTitle("TooManyRefereeException Dialog");
-						alert.setHeaderText("Warning Dialog : Too many referees");
-						alert.setContentText(e1.getMessage());
-						alert.showAndWait();
-			        	//e.printStackTrace();
-					}
-            		
-            	}else
-            	{
-            		((Pane)draggingButton.getParent()).getChildren().remove(draggingButton);
-            		pane.getChildren().add(draggingButton);
-            		e.setDropCompleted(true); 
-            	}
+        			if(pane.getChildren().size() > Game.REFEREELIMIT)
+        				throw new TooManyRefereeException("Too many referees selected. Please select only one referee.");
+        			else
+        			{
+        				((Pane)draggingButton.getParent()).getChildren().remove(draggingButton);
+        				pane.getChildren().add(draggingButton);
+        				e.setDropCompleted(true); 
+        			}
              	
-            } 
+        		}
+        	} catch (TooManyRefereeException e1) {
+				Alert alert = new Alert(AlertType.WARNING);
+	        	alert.setTitle("TooManyRefereeException Dialog");
+				alert.setHeaderText("Warning Dialog : Too many referees");
+				alert.setContentText(e1.getMessage());
+				alert.showAndWait();
+			}
         });
     }
 	private void addDropHandling_Validation_Athlete(Pane pane){
@@ -504,17 +502,28 @@ public class OzlympicGameView extends Application {
             }
         });
 
-        //throw GameFullException---------------------------------------------------------------------
         pane.setOnDragDropped(e -> {
             Dragboard db = e.getDragboard();
-            if (db.hasContent(buttonFormat)) {
-            	//test
-            	System.out.println("Athlete selected:" + pane.getChildren().size());
-            	
-            		((Pane)draggingButton.getParent()).getChildren().remove(draggingButton);
-            		pane.getChildren().add(draggingButton);
-            		e.setDropCompleted(true); 
-            }           
+            try {
+            	if (db.hasContent(buttonFormat)) {
+            		//test
+            		System.out.println("Athlete selected:" + pane.getChildren().size());
+            			if(pane.getChildren().size() > Game.CANDIDATELIMIT_MAX)
+            				throw new GameFullException("Too many athletes selected. Only up to 8 athletes allowed to compete."); 
+            			else
+            			{
+            				((Pane)draggingButton.getParent()).getChildren().remove(draggingButton);
+            				pane.getChildren().add(draggingButton);
+            				e.setDropCompleted(true);
+            			}
+            	}
+            } catch (GameFullException e1) {
+				Alert alert = new Alert(AlertType.WARNING);
+	        	alert.setTitle("GameFullException Dialog");
+				alert.setHeaderText("Warning Dialog : Too many athletes");
+				alert.setContentText(e1.getMessage());
+				alert.showAndWait();
+			}
         });
     }
 	//-----------------------------------------------------------
