@@ -88,7 +88,11 @@ public class OzlympicGameView extends Application {
 	public void stop() throws Exception 
 	{
 	    super.stop();
+	    //Add by Loso 15/05/17--------------------------
+	    //Write file when the system is closed
+	    //For the performance issue
 	    gameDriver.writeGameResultIntoFile();
+	    //----------------------------------------------
 	    //test
 	    System.out.println("writeGameResultIntoFile method is executed");
 	    
@@ -387,11 +391,35 @@ public class OzlympicGameView extends Application {
 				athleteIDList.add(((Button) item).getText());
 		}
 		
+		//Modified by Loso 16/05/17 -------------------------------------------
 		try {
 			bSet = gameDriver.setRefereeAndCandidate(refereeID, athleteIDList);
 		} catch (GameUnexecutedException e){
-			e.printStackTrace();
+			Alert alert = new Alert(AlertType.WARNING);
+        	alert.setTitle("GameUnexecutedException Dialog");
+			alert.setHeaderText("Warning Dialog : Game Unexecuted Result");
+			alert.setContentText(e.getMessage());
+			alert.showAndWait();
+		} catch (TooFewAthleteException e){
+			Alert alert = new Alert(AlertType.WARNING);
+        	alert.setTitle("TooFewAthleteException Dialog");
+			alert.setHeaderText("Warning Dialog : Too Few Athlete");
+			alert.setContentText(e.getMessage());
+			alert.showAndWait();
+		} catch (GameFullException e){
+			Alert alert = new Alert(AlertType.WARNING);
+        	alert.setTitle("GameFullException Dialog");
+			alert.setHeaderText("Warning Dialog : Too many Athlete");
+			alert.setContentText(e.getMessage());
+			alert.showAndWait();
+		} catch (WrongTypeException e){
+			Alert alert = new Alert(AlertType.WARNING);
+        	alert.setTitle("WrongTypeException Dialog");
+			alert.setHeaderText("Warning Dialog : Athlete Wrong Type");
+			alert.setContentText(e.getMessage());
+			alert.showAndWait();
 		}
+		//---------------------------------------------------------------------
 		//display the game result progress
 		if(bSet)
 			displayGameResultAnimation(athleteIDList);

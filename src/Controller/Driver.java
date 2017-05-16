@@ -1,6 +1,6 @@
 package Controller;
 
-import Assignment02.GameUnexecutedException;
+import Assignment02.*;
 //import Model.*;
 
 import Model.Athlete;
@@ -104,7 +104,8 @@ public class Driver {
 	}
 	
 	//SET CANDIDATE & REFEREE
-	public boolean setRefereeAndCandidate(String refereeID, ArrayList<String> athleteIDList) throws GameUnexecutedException
+	public boolean setRefereeAndCandidate(String refereeID, ArrayList<String> athleteIDList) throws GameUnexecutedException, 
+	TooFewAthleteException, GameFullException, WrongTypeException
 	{
 		if(currentGame == null)
 			return false;
@@ -119,15 +120,55 @@ public class Driver {
 			Athlete cadidate = (Athlete)Data.participant.get(id);
 			if(cadidate == null)
 				continue;
-			currentGame.addCandidate(cadidate);
+			//check the athlete type to match the game type
+			boolean bMatch = checkAthleteType(cadidate);
+			if(bMatch)
+				currentGame.addCandidate(cadidate);
+			else
+				throw new WrongTypeException("Athlete type is not match the game type.");
 		}
+		
 		int cadidateNum = currentGame.getCandidate().size();
-		if(cadidateNum < Game.CANDIDATELIMIT_MIN || cadidateNum > Game.CANDIDATELIMIT_MAX)
-			return false;
+		if(cadidateNum <= Game.CANDIDATELIMIT_MIN)
+			throw new TooFewAthleteException("The Candidate number is not enough, in terms of type.");
+		if(cadidateNum > Game.CANDIDATELIMIT_MAX)
+			throw new GameFullException("The Candidate number is over the limitation.");
 		
 		//execute the game
 		boolean bExecute = executeCurrentGame();
 		return bExecute;
+	}
+	private boolean checkAthleteType(Athlete cadidate)
+	{
+		boolean bMatch = false;
+		String personType = cadidate.getPersonType();
+		String extraType = cadidate.getExtraType();
+		String gameType = currentGame.getGameType();
+		
+		// super is always return true
+		if(personType.equals(Participant.SUPERATHLETE) || extraType.equals(Participant.SUPERATHLETE))
+			return true;
+
+		if(gameType == Game.GAME_SWIMMING)
+		{
+			//allow swimmer
+			if(personType.equals(Participant.SWIMMER) || extraType.equals(Participant.SWIMMER))
+				return true;
+		}
+		if(gameType == Game.GAME_CYCLING)
+		{
+			//allow cyclist
+			if(personType.equals(Participant.CYCLIST) || extraType.equals(Participant.CYCLIST))
+				return true;
+		}
+		if(gameType == Game.GAME_RUNNING)
+		{
+			//allow sprinter
+			if(personType.equals(Participant.SPRINTER) || extraType.equals(Participant.SPRINTER))
+				return true;
+		}
+		
+		return bMatch;
 	}
 	private boolean executeCurrentGame() throws GameUnexecutedException
 	{
