@@ -12,9 +12,10 @@ public class Official extends Participant {
 	private final int INDEX_1ST = 0;
 	private final int INDEX_2ND = 1;
 	private final int INDEX_3RD = 2;
-	private final int POINT_1ST = 5;
-	private final int POINT_2ND = 2;
-	private final int POINT_3RD = 1;
+	public static final int POINT_1ST = 5;
+	public static final int POINT_2ND = 2;
+	public static final int POINT_3RD = 1;
+	public static final int NO_POINTS = 0;
 	
 	//Extra variables for recording ranking list and game result
 	private Athlete[] resultTop3;
@@ -58,26 +59,35 @@ public class Official extends Participant {
 		//reason: should do write file / DB when user close the application
 		//because write file / DB is time expensive, shouldn't execute each time after setResult
 		//display gameID first
-		this.gameResult = "Current System Time : " + timeStamp;
-		this.gameResult += "\n========= " + gameID + " Results ==========\n";
+		this.gameResult +=  gameID + ", " + this.getPersonID() + ", " + timeStamp;
+		
 		if(sortedList != null)
 		{
 			int index = 0;
-			while(index < RESULT_TOP3)
+			while(index < sortedList.size())
 			{
 				Athlete record = sortedList.get(index);
-				if(index == INDEX_1ST)
+				if(index == INDEX_1ST){
 					record.setPoints(POINT_1ST);
-				if(index == INDEX_2ND)
+					this.gameResult += record.toString() + POINT_1ST;
+					resultTop3[index] = record;
+				}
+				else if(index == INDEX_2ND) {
 					record.setPoints(POINT_2ND);
-				if(index == INDEX_3RD)
+					this.gameResult += record.toString() + POINT_2ND;
+					resultTop3[index] = record;
+				}
+				else if(index == INDEX_3RD) {
 					record.setPoints(POINT_3RD);
+					this.gameResult += record.toString() + POINT_3RD;
+					resultTop3[index] = record;
+				}
+				else {
+					this.gameResult += record.toString() + NO_POINTS;
+				}
 					
-				resultTop3[index] = record;
-				this.gameResult += record.toString();
 				index++;
 			}
-			this.gameResult += "\n\nReferee: " + this.getName() + "\n";
 		}
 		return this.gameResult;
 		//-----------------------------------------------------------------
