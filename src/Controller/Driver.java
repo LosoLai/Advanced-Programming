@@ -132,7 +132,7 @@ public class Driver {
 		int cadidateNum = currentGame.getCandidate().size();
 		if(cadidateNum <= Game.CANDIDATELIMIT_MIN)
 			throw new TooFewAthleteException("The Candidate number is not enough, in terms of size or type.");
-		if(cadidateNum > Game.CANDIDATELIMIT_MAX + 1)
+		if(cadidateNum > Game.CANDIDATELIMIT_MAX)
 			throw new GameFullException("The Candidate number is over the limitation.");
 		
 		//execute the game
