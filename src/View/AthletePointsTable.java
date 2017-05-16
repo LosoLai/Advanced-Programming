@@ -3,6 +3,7 @@ package View;
 import java.util.List;
 
 import Model.Athlete;
+import Model.Participant;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
@@ -19,16 +20,17 @@ public class AthletePointsTable extends TableView{
 	            FXCollections.observableArrayList(list);
 		
 		TableColumn name = new TableColumn("Name");
-		name.setMinWidth(200);
+		name.setMinWidth(100);
 		name.setCellValueFactory(new PropertyValueFactory<>("name"));
-		TableColumn type = new TableColumn("Type");
-		type.setMinWidth(100);
-		type.setCellValueFactory(new PropertyValueFactory<>("personType"));
+		TableColumn<Participant, String> type = new TableColumn<>("Type");
+		type.setCellValueFactory(new PropertyValueFactory<Participant, String>("personType"));
+		TableColumn extraType = new TableColumn("Extra Type");
+		extraType.setCellValueFactory(new PropertyValueFactory<>("extraType"));
 		TableColumn score = new TableColumn("Score");
 		score.setMinWidth(60);
 		score.setCellValueFactory(new PropertyValueFactory<>("points"));
 		
 		this.setItems(data);
-		this.getColumns().addAll(name, type, score);
+		this.getColumns().addAll(name, type, extraType, score);
 	}
 }

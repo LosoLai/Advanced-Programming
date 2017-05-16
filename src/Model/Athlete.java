@@ -37,18 +37,14 @@ public class Athlete extends Participant implements Competable, Comparable<Athle
 		this.points += points;
 	}
 	
-	/* Overridden method from Competable
-	 * Gets the compete time by current game type
-	 */
+	@Override
 	public double Compete()
 	{
 		double competeSec = Driver.currentGame.generateTime(); 
 		return competeSec;
 	}
 	
-	/* Overridden method from Comparable
-	 * For sorting purposes
-	 */
+	@Override
 	public int compareTo(Athlete comparePerson)
 	{
 		double compareTime = comparePerson.getExecuteTime();
