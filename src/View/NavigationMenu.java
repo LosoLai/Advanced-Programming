@@ -82,7 +82,7 @@ public class NavigationMenu extends VBox{
 		participant.add(new Label("Referee :\n" + 
 								  "One official only"), 0, 0);
 		participant.add(new Label("Athlete List :\n" + 
-								  "Minimum: 4 athletes\n" + 
+								  "Minimum: 5 athletes\n" + 
 								  "Maximum: 8 athletes"), 0, 1);
 		participantInfo.setContent(participant);
 		this.getChildren().add(participantInfo);

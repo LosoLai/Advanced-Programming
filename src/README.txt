@@ -37,7 +37,7 @@ NAVIGATION MENU:
    Click on the game you wish to run (Swimming, Cycling, Running): 
    	-Brings up list of referees and athletes to choose from for the game
 	-Use the colour coded legend in the navigation menu to choose appropriate participants for the game
-	-Drag and drop one referee for each game to the Official Selected box and from 4 to 8 athletes in the Athletes Selected box
+	-Drag and drop one referee for each game to the Official Selected box and from 5 to 8 athletes in the Athletes Selected box
 	-When you are finished with your selections, click on the Confirm button on the bottom of the screen to start the game
 
 2. PARTICIPANT INFO:
