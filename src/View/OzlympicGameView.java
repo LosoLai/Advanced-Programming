@@ -325,9 +325,9 @@ public class OzlympicGameView extends Application {
 		vbox.getChildren().add(title);
         
 		GridPane gPane = new GridPane();
-		gPane.setVgap(50);
+		gPane.setVgap(30);
 		gPane.setHgap(30);
-		gPane.setPadding(new Insets(30, 10, 10, 20));
+		gPane.setPadding(new Insets(20, 10, 10, 20));
 		
 		int listSize = athleteIDList.size();
 		final double ANIMATION_TIME = gameDriver.currentGame.getAnimationTime();
