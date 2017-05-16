@@ -27,7 +27,7 @@ INSTALLATION INSTRUCTIONS
 OPERATING INSTRUCTIONS
 ----------------------
 
-Run OzlympicGameView main class in command line. Follow the instructions provided by the user interface to run the games.
+Run OzlympicGameView application. Follow the instructions provided by the user interface to run the games.
 
 NAVIGATION MENU:
 ----------------
@@ -68,6 +68,16 @@ TOOLBAR:
    -----
    Click on the help button to view the application instructions
 
+EXTERNAL DATA STORE:
+--------------------
+
+1. DATABASE - GAMERESULT:
+   ---------------------
+   Insert each record while the game is excuted.
+   
+2. FILE - GAMERESULT:
+   ------------------
+   Write all the game histroy when the application is closed.
 
 FILE MANIFEST
 -------------
