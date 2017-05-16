@@ -15,6 +15,8 @@ import java.sql.SQLException;
 
 import org.hsqldb.Server;
 
+import Assignment02.GameUnexecutedException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -246,13 +248,14 @@ public class Data {
 	    	e.printStackTrace();
 	    }
 	}
-	public static void writeToFile(ArrayList<Game> gameList){
+	public static void writeToFile(ArrayList<Game> gameList) throws GameUnexecutedException{
 		BufferedWriter write = null;
+		if(gameList == null || (gameList.size() == 0))
+			throw new GameUnexecutedException("There is no game histroy to write.");
 	    try 
 	    {
 	    	write = new BufferedWriter(new FileWriter("gameResults.txt", true));
 	    	Game game;
-	    	 
 	    	for (int i=0; i<gameList.size(); i++) {
 	    		game = gameList.get(i);
 	    		write.write(game.getGameResult());

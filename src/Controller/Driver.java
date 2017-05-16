@@ -197,7 +197,11 @@ public class Driver {
 	
 	public void writeGameResultIntoFile()
 	{
-		data.writeToFile(gameList);
+		try {
+			data.writeToFile(gameList);
+		} catch(GameUnexecutedException e){
+			System.err.println(e.getMessage());
+		}
 	}
 	//-------------------------------------------------------------------------
 }

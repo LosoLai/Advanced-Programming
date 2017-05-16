@@ -244,9 +244,15 @@ public class OzlympicGameView extends Application {
 	    table.getBackButton().prefWidthProperty().bind(root.widthProperty());
 	    table.getBackButton().setOnAction((ActionEvent e) -> {
 	    	if(gameDriver.gameStatus == Driver.GAME_INITIATED)
+	    	{
 	    		createListView_SelectParticipants();
+	    		table.getBackButton().setText("Back to Select Participants");
+	    	}
 	    	else
+	    	{
 	    		displayContentPane();
+	    		table.getBackButton().setText("Back to Home Page");
+	    	}
 	    });
 	    root.setBottom(table.getBackButton());
 	}
@@ -266,9 +272,15 @@ public class OzlympicGameView extends Application {
 	    table.getBackButton().prefWidthProperty().bind(root.widthProperty());
 	    table.getBackButton().setOnAction((ActionEvent e) -> {
 	    	if(gameDriver.gameStatus == Driver.GAME_INITIATED)
+	    	{
 	    		createListView_SelectParticipants();
+	    		table.getBackButton().setText("Back to Select Participants");
+	    	}
 	    	else
+	    	{
 	    		displayContentPane();
+	    		table.getBackButton().setText("Back to Home Page");
+	    	}
 	    });
 	    root.setBottom(table.getBackButton());
 	}
