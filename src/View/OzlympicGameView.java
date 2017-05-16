@@ -87,8 +87,7 @@ public class OzlympicGameView extends Application {
 	@Override
 	public void stop() throws Exception 
 	{
-	    super.stop();
-	    //Add by Loso 15/05/17--------------------------
+		//Add by Loso 15/05/17--------------------------
 	    //Write file when the system is closed
 	    //For the performance issue
 	    gameDriver.writeGameResultIntoFile();
@@ -96,6 +95,7 @@ public class OzlympicGameView extends Application {
 	    //test
 	    System.out.println("writeGameResultIntoFile method is executed");
 	    
+	    super.stop();
 	    Platform.exit();
 	    System.exit(0);
 	}
@@ -347,20 +347,6 @@ public class OzlympicGameView extends Application {
 		//get referee ID
 		String refereeID = "";
 		int nodeNum = referee.getChildren().size();
-		
-		//Add NoRefereeException Arion 16/05/17---------------------------------
-		if(nodeNum <2) {
-			try {
-				throw new NoRefereeException("No referee selected. Please choose a referee for the game.");
-			} catch (NoRefereeException e1) {
-				Alert alert = new Alert(AlertType.WARNING);
-	        	alert.setTitle("NoRefereeException Dialog");
-				alert.setHeaderText("Warning Dialog : No referees");
-				alert.setContentText(e1.getMessage());
-				alert.showAndWait();
-	        	//e.printStackTrace();
-			}
-		}
 		for(int i=0 ; i<nodeNum ; i++)
 		{
 			Node item = referee.getChildren().get(i);
@@ -370,20 +356,6 @@ public class OzlympicGameView extends Application {
 		//set athleteIDList
 		ArrayList<String> athleteIDList = new ArrayList<String>();
 		nodeNum = athlete.getChildren().size();
-		
-		//Add TooFewAthleteException Arion 16/05/17----------------------------
-		if(nodeNum <5) {
-			try {
-				throw new TooFewAthleteException("Not enough athletes selected. Please choose at least 4 athletes for the game.");
-			} catch (TooFewAthleteException e2) {
-				Alert alert = new Alert(AlertType.WARNING);
-	        	alert.setTitle("TooFewAthleteException Dialog");
-				alert.setHeaderText("Warning Dialog : Too few athletes.");
-				alert.setContentText(e2.getMessage());
-				alert.showAndWait();
-	        	//e.printStackTrace();
-			}
-		}
 		for(int j=0 ; j<nodeNum ; j++)
 		{
 			Node item = athlete.getChildren().get(j);
