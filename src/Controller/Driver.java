@@ -105,14 +105,15 @@ public class Driver {
 	
 	//SET CANDIDATE & REFEREE
 	public boolean setRefereeAndCandidate(String refereeID, ArrayList<String> athleteIDList) throws GameUnexecutedException, 
-	TooFewAthleteException, GameFullException, WrongTypeException
+	TooFewAthleteException, GameFullException, WrongTypeException, NoRefereeException
 	{
 		if(currentGame == null)
 			return false;
 		
 		Participant referee = Data.participant.get(refereeID);
 		if(referee == null)
-			return false;
+			throw new NoRefereeException("There is no referee for the game, please choose one!");
+		
 		currentGame.setReferee(referee);
 		for(int i=0 ; i<athleteIDList.size() ; i++)
 		{

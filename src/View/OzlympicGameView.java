@@ -418,6 +418,12 @@ public class OzlympicGameView extends Application {
 			alert.setHeaderText("Warning Dialog : Athlete Wrong Type");
 			alert.setContentText(e.getMessage());
 			alert.showAndWait();
+		} catch (NoRefereeException e){
+			Alert alert = new Alert(AlertType.WARNING);
+        	alert.setTitle("NoRefereeException Dialog");
+			alert.setHeaderText("Warning Dialog : No Referee");
+			alert.setContentText(e.getMessage());
+			alert.showAndWait();
 		}
 		//---------------------------------------------------------------------
 		//display the game result progress
