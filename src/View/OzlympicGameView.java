@@ -141,6 +141,9 @@ public class OzlympicGameView extends Application {
 	//create display area for showing the information required
 	private void displayContentPane()
 	{
+		root.setPrefWidth(650);
+		root.setBottom(null);
+		
 		InstractionsPane display = new InstractionsPane();
 		root.setPrefWidth(600);
 		display.setPrefHeight(root.getHeight());
