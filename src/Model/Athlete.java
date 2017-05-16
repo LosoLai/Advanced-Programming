@@ -32,9 +32,14 @@ public class Athlete extends Participant implements Competable, Comparable<Athle
 	public int getPoints() {
 		return points;
 	}
-
 	public void setPoints(int points) {
 		this.points += points;
+	}
+	public String getExtraType() {
+		return this.extraType;
+	}
+	public void setExtraType(String extraType) {
+		this.extraType = extraType;
 	}
 	
 	@Override
