@@ -106,6 +106,8 @@ OzlympicDB.lck
 OzlympicDB.log
 OzlympicDB.properties
 OzlympicDB.script
+Design.docx
+LeanTesting - Bug Report.csv
 README.txt
 
 
