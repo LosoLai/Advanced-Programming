@@ -20,7 +20,9 @@ The Ozlympic menu provides the user with a variety of options to run the games.
 INSTALLATION INSTRUCTIONS
 -------------------------
 
-Unzip and run from command line.
+1. Unzip file and Run the Assignment02.Jar file.
+2. Unzip file and run from command line.
+   OzlympicGameView has the main(String[] args) method
 
 OPERATING INSTRUCTIONS
 ----------------------
