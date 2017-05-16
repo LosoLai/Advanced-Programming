@@ -251,7 +251,7 @@ public class Data {
 	public static void writeToFile(ArrayList<Game> gameList) throws GameUnexecutedException{
 		BufferedWriter write = null;
 		if(gameList == null || (gameList.size() == 0))
-			throw new GameUnexecutedException("There is no game histroy to write.");
+			throw new GameUnexecutedException("There is no game history to write.");
 	    try 
 	    {
 	    	write = new BufferedWriter(new FileWriter("gameResults.txt", true));

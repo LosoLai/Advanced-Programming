@@ -1,5 +1,6 @@
 package Model;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
@@ -165,8 +166,9 @@ public class Game {
 			max = R_TIMELIMIT_MAX;
 		}
 		
+		DecimalFormat df = new DecimalFormat("#.###");
 		//Returns random time with 3 decimal places
 		randomNum = ThreadLocalRandom.current().nextDouble(min, max);
-		return randomNum;
+		return Double.parseDouble(df.format(randomNum));
 	}
 }
