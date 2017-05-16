@@ -12,7 +12,7 @@
   </class>  
   <class id="2" language="java" name="View.NavigationMenu" project="Advanced Programming" 
     file="/Advanced Programming/src/View/NavigationMenu.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1976" y="-150"/>    
+    <position height="-1" width="-1" x="1958" y="-178"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="View.InstractionsPane" project="Advanced Programming" 
     file="/Advanced Programming/src/View/InstractionsPane.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="682" y="-14"/>    
+    <position height="-1" width="-1" x="1936" y="400"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -30,7 +30,7 @@
   </class>  
   <class id="4" language="java" name="View.GameResultHistoryTable" project="Advanced Programming" 
     file="/Advanced Programming/src/View/GameResultHistoryTable.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1992" y="140"/>    
+    <position height="-1" width="-1" x="1970" y="78"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -39,7 +39,7 @@
   </class>  
   <class id="5" language="java" name="View.AthletePointsTable" project="Advanced Programming" 
     file="/Advanced Programming/src/View/AthletePointsTable.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="676" y="-170"/>    
+    <position height="-1" width="-1" x="1962" y="244"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -120,7 +120,7 @@
   </interface>  
   <class id="14" language="java" name="Assignment02.GameFullException" project="Advanced Programming" 
     file="/Advanced Programming/src/Assignment02/GameFullException.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="656" y="202"/>    
+    <position height="-1" width="-1" x="688" y="210"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -129,7 +129,7 @@
   </class>  
   <class id="15" language="java" name="Assignment02.GameUnexecutedException" project="Advanced Programming" 
     file="/Advanced Programming/src/Assignment02/GameUnexecutedException.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="690" y="436"/>    
+    <position height="-1" width="-1" x="772" y="426"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -138,165 +138,183 @@
   </class>  
   <class id="16" language="java" name="Assignment02.TooManyRefereeException" project="Advanced Programming" 
     file="/Advanced Programming/src/Assignment02/TooManyRefereeException.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1996" y="324"/>    
+    <position height="-1" width="-1" x="668" y="-50"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <association id="17">    
+  <class id="17" language="java" name="Assignment02.TooFewAthleteException" project="Advanced Programming" 
+    file="/Advanced Programming/src/Assignment02/TooFewAthleteException.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="698" y="-176"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="Assignment02.NoRefereeException" project="Advanced Programming" 
+    file="/Advanced Programming/src/Assignment02/NoRefereeException.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="674" y="78"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="19">    
     <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="18" name="currentGame">        
+      <attribute id="20" name="gameDriver">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="19" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="20">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="3"/>  
-  </dependency>  
-  <generalization id="21">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="8"/>  
-  </generalization>  
-  <association id="22">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="23" name="gameDriver">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="24" minimum="0" maximum="1">        
+      <multiplicity id="21" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="25">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="15"/>  
-  </dependency>  
+  <association id="22">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="23" name="gameList">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="24" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="25">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="13"/>  
+  </realization>  
   <association id="26">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="27" name="gameView">        
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="27" name="referee">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="28" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
+    <end type="TARGET" refId="8" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="29">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="30" name="data">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="31" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="32">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="33" name="data">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="34" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="35">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="5"/>  
-  </dependency>  
-  <generalization id="36">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="8"/>  
-  </generalization>  
-  <generalization id="37">    
+  <generalization id="29">    
     <end type="SOURCE" refId="11"/>    
     <end type="TARGET" refId="10"/>  
   </generalization>  
-  <realization id="38">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="13"/>  
-  </realization>  
-  <association id="39">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="40" name="gameDriver">        
+  <association id="30">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="31" name="participant">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="41" minimum="0" maximum="1">        
+      <multiplicity id="32" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="33">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="34" name="gameView">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="35" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="36">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="8"/>  
+  </generalization>  
+  <association id="37">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="38" name="data">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="39" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="40">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="41" name="gameDriver">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="42" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="42">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="43" name="gameList">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="44" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
+  <generalization id="43">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="8"/>  
+  </generalization>  
+  <dependency id="44">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
   <association id="45">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="46" name="referee">        
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="46" name="data">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="47" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
+    <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <dependency id="48">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="1"/>  
-  </dependency>  
-  <association id="49">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="50" name="participant">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="51" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="52">    
     <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="4"/>  
+    <end type="TARGET" refId="5"/>  
   </dependency>  
-  <dependency id="53">    
-    <end type="SOURCE" refId="6"/>    
+  <dependency id="49">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="50">    
+    <end type="SOURCE" refId="1"/>    
     <end type="TARGET" refId="15"/>  
   </dependency>  
-  <dependency id="54">    
+  <dependency id="51">    
     <end type="SOURCE" refId="1"/>    
     <end type="TARGET" refId="2"/>  
   </dependency>  
+  <dependency id="52">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="15"/>  
+  </dependency>  
+  <dependency id="53">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <association id="54">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="55" name="currentGame">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="56" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    
