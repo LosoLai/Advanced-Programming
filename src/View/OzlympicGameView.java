@@ -239,6 +239,16 @@ public class OzlympicGameView extends Application {
         vbox.setPadding(new Insets(10, 0, 0, 10));
         vbox.getChildren().addAll(table);
         root.setCenter(vbox);
+        
+        //set back button
+	    table.getBackButton().prefWidthProperty().bind(root.widthProperty());
+	    table.getBackButton().setOnAction((ActionEvent e) -> {
+	    	if(gameDriver.gameStatus == Driver.GAME_INITIATED)
+	    		createListView_SelectParticipants();
+	    	else
+	    		displayContentPane();
+	    });
+	    root.setBottom(table.getBackButton());
 	}
 	private void createTableView_GameResults(ArrayList<Game> gameList)
 	{
@@ -251,6 +261,16 @@ public class OzlympicGameView extends Application {
         vbox.getChildren().addAll(table);
 		
 	    root.setCenter(vbox);
+	    
+	    //set back button
+	    table.getBackButton().prefWidthProperty().bind(root.widthProperty());
+	    table.getBackButton().setOnAction((ActionEvent e) -> {
+	    	if(gameDriver.gameStatus == Driver.GAME_INITIATED)
+	    		createListView_SelectParticipants();
+	    	else
+	    		displayContentPane();
+	    });
+	    root.setBottom(table.getBackButton());
 	}
 	//handling buttons' action
 	private void gameTypeButtonHandler(String gameType)
@@ -275,13 +295,15 @@ public class OzlympicGameView extends Application {
 	}
 	private void displayAthletePoint()
 	{
+		//clean the bottom pane
+		root.setBottom(null);
+		
 		createTableView_AthletePoints(Driver.athleteList);
-		//test
-		System.out.println("Athlete points clicked");
 	}
 	private void displayGameResultAnimation(ArrayList<String> athleteIDList)
 	{
 		//remove button at the bottom
+		root.setPrefWidth(800);
 		root.setBottom(null);
 		
 		GridPane vbox = new GridPane();
@@ -337,10 +359,11 @@ public class OzlympicGameView extends Application {
 	}
 	private void displayGameResultHistory()
 	{
+		//clean the bottom pane
+		root.setBottom(null);
+		
 		ArrayList<Game> gameList = gameDriver.getGameList();
 		createTableView_GameResults(gameList);
-		//test
-		System.out.println("Game result history clicked");
 	}
 	private void setCandidateList(FlowPane referee, FlowPane athlete)
 	{

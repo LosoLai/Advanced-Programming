@@ -6,11 +6,19 @@ import Model.Athlete;
 import Model.Participant;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class AthletePointsTable extends TableView{
+	private Button back;
+	public Button getBackButton()
+	{
+		return this.back;
+	}
 	public AthletePointsTable(List<Athlete> list)
 	{
 		super();
@@ -32,5 +40,13 @@ public class AthletePointsTable extends TableView{
 		
 		this.setItems(data);
 		this.getColumns().addAll(name, type, extraType, score);
+		
+		setHomeButton();
+	}
+	private void setHomeButton()
+	{
+		back = new Button("Back");
+		back.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
+		back.setMinHeight(40);
 	}
 }
