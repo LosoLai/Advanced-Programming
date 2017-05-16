@@ -126,11 +126,11 @@ public class Driver {
 			if(bMatch)
 				currentGame.addCandidate(cadidate);
 			else
-				throw new WrongTypeException("Athlete type is not match the game type.");
+				throw new WrongTypeException("You have selected one or more athletes whose type does not match the game type.");
 		}
 		
 		int cadidateNum = currentGame.getCandidate().size();
-		if(cadidateNum <= Game.CANDIDATELIMIT_MIN)
+		if(cadidateNum < Game.CANDIDATELIMIT_MIN)
 			throw new TooFewAthleteException("The Candidate number is not enough, in terms of size or type.");
 		if(cadidateNum > Game.CANDIDATELIMIT_MAX)
 			throw new GameFullException("The Candidate number is over the limitation.");
