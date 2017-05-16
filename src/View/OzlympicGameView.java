@@ -41,6 +41,7 @@ import javafx.scene.input.DataFormat;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextBoundsType;
 
 public class OzlympicGameView extends Application {
@@ -246,16 +247,7 @@ public class OzlympicGameView extends Application {
         //set back button
 	    table.getBackButton().prefWidthProperty().bind(root.widthProperty());
 	    table.getBackButton().setOnAction((ActionEvent e) -> {
-	    	if(gameDriver.gameStatus == Driver.GAME_INITIATED)
-	    	{
-	    		createListView_SelectParticipants();
-	    		table.getBackButton().setText("Back to Select Participants");
-	    	}
-	    	else
-	    	{
-	    		displayContentPane();
-	    		table.getBackButton().setText("Back to Home Page");
-	    	}
+	    	setButtonAtTheBottom(table.getBackButton());
 	    });
 	    root.setBottom(table.getBackButton());
 	}
@@ -274,16 +266,7 @@ public class OzlympicGameView extends Application {
 	    //set back button
 	    table.getBackButton().prefWidthProperty().bind(root.widthProperty());
 	    table.getBackButton().setOnAction((ActionEvent e) -> {
-	    	if(gameDriver.gameStatus == Driver.GAME_INITIATED)
-	    	{
-	    		createListView_SelectParticipants();
-	    		table.getBackButton().setText("Back to Select Participants");
-	    	}
-	    	else
-	    	{
-	    		displayContentPane();
-	    		table.getBackButton().setText("Back to Home Page");
-	    	}
+	    	setButtonAtTheBottom(table.getBackButton());
 	    });
 	    root.setBottom(table.getBackButton());
 	}
@@ -308,6 +291,19 @@ public class OzlympicGameView extends Application {
 		//create lists showing all the participants
 		createListView_SelectParticipants();
 	}
+	private void setButtonAtTheBottom(Button back)
+	{
+		if(gameDriver.gameStatus == Driver.GAME_INITIATED)
+    	{
+    		createListView_SelectParticipants();
+    		back.setText("Back to Select Participants");
+    	}
+    	else
+    	{
+    		displayContentPane();
+    		back.setText("Back to Home Page");
+    	}
+	}
 	private void displayAthletePoint()
 	{
 		//clean the bottom pane
@@ -321,13 +317,21 @@ public class OzlympicGameView extends Application {
 		root.setPrefWidth(800);
 		root.setBottom(null);
 		
-		GridPane vbox = new GridPane();
-		vbox.setVgap(30);
-		vbox.setHgap(30);
-		vbox.setPadding(new Insets(30, 10, 10, 20));
+		VBox vbox = new VBox();
+		vbox.setSpacing(5);
+        vbox.setPadding(new Insets(10, 0, 0, 10));
+        Text title = new Text("Game Result Animation");
+		title.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+		vbox.getChildren().add(title);
+        
+		GridPane gPane = new GridPane();
+		gPane.setVgap(50);
+		gPane.setHgap(30);
+		gPane.setPadding(new Insets(30, 10, 10, 20));
 		
 		int listSize = athleteIDList.size();
-		final double ONEMINUTE = 60;
+		final double ANIMATION_TIME = gameDriver.currentGame.getAnimationTime();
+		
 		final double theMaxSec = gameDriver.currentGame.getCandidate().get(listSize-1).getExecuteTime();
 		IntegerProperty seconds = new SimpleIntegerProperty();
 		for(int i=0 ; i<listSize ; i++)
@@ -338,35 +342,36 @@ public class OzlympicGameView extends Application {
 			Label athleteName = new Label(textName);
 			ProgressBar progress = new ProgressBar();
 	        progress.setMinWidth(300);
-	        double v = ((candidate.getExecuteTime() / theMaxSec) * ONEMINUTE);
+	        double v = ((candidate.getExecuteTime() / theMaxSec) * ANIMATION_TIME);
 	        System.out.println("divide by " + v);
 	        progress.progressProperty().bind(seconds.divide(v));
-	        vbox.add(athleteName, 0, i);
-	        vbox.add(progress, 1, i);
+	        gPane.add(athleteName, 0, i+1);
+	        gPane.add(progress, 1, i+1);
 			//Test
 			System.out.println(candidate.getName() + " :" + candidate.getExecuteTime());
 		}
 		
 		Text currTimeText = new Text("Current time: 0 secs" );
 		currTimeText.setBoundsType(TextBoundsType.VISUAL);
-		vbox.add(currTimeText, 0, listSize);
+		currTimeText.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
+		currTimeText.setTextAlignment(TextAlignment.RIGHT);
+		root.setBottom(currTimeText);
+		vbox.getChildren().add(gPane);
 		root.setCenter(vbox);
 		
 		Timeline timeline = new Timeline(
 	        new KeyFrame(Duration.ZERO, new KeyValue(seconds, 0)),
-	        new KeyFrame(Duration.minutes(1), e-> {
-	            // do anything you need here on completion...
-	            System.out.println("game end");
-	        }, new KeyValue(seconds, 60))   
+	        new KeyFrame(Duration.seconds(ANIMATION_TIME), e-> {
+	        	displayContentPane();
+	        }, new KeyValue(seconds, (int)ANIMATION_TIME))   
 	    );
 		timeline.currentTimeProperty().addListener(new InvalidationListener() {
 			
 			public void invalidated(Observable ov) {
-			
 				int time = (int) timeline.getCurrentTime().toSeconds();
-				int exect = (int)((theMaxSec / ONEMINUTE) * time);
-				currTimeText.setText("Current time: " + time + " secs\n" +
-									 "Exect time : " + exect);
+				int exect = (int)((theMaxSec / ANIMATION_TIME) * time);
+				currTimeText.setText("System time: " + time + " secs\n" +
+									 "Game Excute time : " + exect + " secs\n");
 			}
 		});
 	    timeline.setCycleCount(1);

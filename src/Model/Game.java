@@ -36,6 +36,9 @@ public class Game {
 	public final int C_TIMELIMIT_MAX   = 800;
 	public final int R_TIMELIMIT_MIN   = 10;
 	public final int R_TIMELIMIT_MAX   = 20;
+	public final double ANIMATION_SWIMMING = 40.0;
+	public final double ANIMATION_CYCLING = 60.0;
+	public final double ANIMATION_RUNNING = 20.0;
 	
 	//protected static variable for counting the game round number
 	private static int gameRoundNum = 0;
@@ -54,7 +57,15 @@ public class Game {
 		setGameType(gameType);
 		setGameID(gameType);
 	}
-	
+	public final double getAnimationTime()
+	{
+		if(gameType.equals(Game.GAME_SWIMMING))
+			return ANIMATION_SWIMMING;
+		else if(gameType.equals(Game.GAME_CYCLING))
+			return ANIMATION_CYCLING;
+		else
+			return ANIMATION_RUNNING;
+	}
 	public void setGameID(String gameType)
 	{
 		this.gameID = gameType.substring(0, 1) + String.format("%02d", gameRoundNum);
