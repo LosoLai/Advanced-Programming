@@ -512,7 +512,7 @@ public class OzlympicGameView extends Application {
             	System.out.println("Athlete selected:" + pane.getChildren().size());
             	
             	// add GameFullException Arion 15/05/17------------------------------------------------
-            	if(pane.getChildren().size() > Game.CANDIDATELIMIT_MAX)
+            	/*if(pane.getChildren().size() > Game.CANDIDATELIMIT_MAX)
             		try{
             		throw new GameFullException("Too many athletes selected. Only up to 8 athletes allowed to compete.");
             		} catch (GameFullException e1) {
@@ -524,11 +524,11 @@ public class OzlympicGameView extends Application {
                     	//e.printStackTrace();
             		}
             	else
-            	{
+            	{*/
             		((Pane)draggingButton.getParent()).getChildren().remove(draggingButton);
             		pane.getChildren().add(draggingButton);
             		e.setDropCompleted(true); 
-            	}
+            	//}
             }           
         });
     }
